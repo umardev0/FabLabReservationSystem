@@ -5,6 +5,10 @@ Provides the database API to access the FabLab database.
 
 @author: PWP20_2018
 We reuse the code of Ivan and Mika in Programmable Web Project exercise _ University of Oulu
+
+
+
+------------------------------------------------------IMPORTANT: SEARCH #PWP20_2018 FOR REQUIRED MODIFICATION PART----------------------------------------------------
 '''
 
 from datetime import datetime
@@ -79,7 +83,7 @@ class Engine(object):
             cur = con.cursor()
             cur.execute("DELETE FROM messages")
             cur.execute("DELETE FROM users")
-            cur.execute("DELETE FROM machines")
+            cur.execute("DELETE FROM machinetypes")
             #NOTE since we have ON DELETE CASCADE BOTH IN users_profile AND #PWP20_2018
             #friends, WE DO NOT HAVE TO WORRY TO CLEAR THOSE TABLES.
 
