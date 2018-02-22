@@ -35,7 +35,7 @@ class Engine(object):
 
     :param db_path: The path of the database file (always with respect to the
         calling script. If not specified, the Engine will use the file located
-        at *db/forum.db*
+        at *db/forum.db*. We will create the database from .sql file.
 
     '''
     def __init__(self, db_path=None):
@@ -131,143 +131,7 @@ class Engine(object):
         finally:
             con.close()
 
-    #METHODS TO CREATE THE TABLES PROGRAMMATICALLY WITHOUT USING SQL SCRIPT
-    def create_messages_table(self):
-        '''
-        Create the table ``messages`` programmatically, without using .sql file.
 
-        Print an error message in the console if it could not be created.
-
-        :return: ``True`` if the table was successfully created or ``False``
-            otherwise.
-
-        '''
-        keys_on = 'PRAGMA foreign_keys = ON'
-        stmnt = 'CREATE TABLE messages(message_id INTEGER PRIMARY KEY, \
-                    title TEXT, body TEXT, timestamp INTEGER, \
-                    ip TEXT, timesviewed INTEGER, \
-                    reply_to INTEGER, \
-                    user_nickname TEXT, user_id INTEGER, \
-                    editor_nickname TEXT, \
-                    FOREIGN KEY(reply_to) REFERENCES messages(message_id) \
-                    ON DELETE CASCADE, \
-                    FOREIGN KEY(user_id,user_nickname) \
-                    REFERENCES users(user_id, nickname) ON DELETE SET NULL)'
-        con = sqlite3.connect(self.db_path)
-        with con:
-            #Get the cursor object.
-            #It allows to execute SQL code and traverse the result set
-            cur = con.cursor()
-            try:
-                cur.execute(keys_on)
-                #execute the statement
-                cur.execute(stmnt)
-            except sqlite3.Error as excp:
-                print("Error %s:" % excp.args[0])
-                return False
-        return True
-
-    def create_users_table(self):
-        '''
-        Create the table ``users`` programmatically, without using .sql file.
-
-        Print an error message in the console if it could not be created.
-
-        :return: ``True`` if the table was successfully created or ``False``
-            otherwise.
-
-        '''
-        keys_on = 'PRAGMA foreign_keys = ON'
-        stmnt = 'CREATE TABLE users(user_id INTEGER PRIMARY KEY,\
-                                    nickname TEXT UNIQUE, regDate INTEGER,\
-                                    lastLogin INTEGER, timesviewed INTEGER,\
-                                    UNIQUE(user_id, nickname))'
-        #Connects to the database. Gets a connection object
-        con = sqlite3.connect(self.db_path)
-        with con:
-            #Get the cursor object.
-            #It allows to execute SQL code and traverse the result set
-            cur = con.cursor()
-            try:
-                cur.execute(keys_on)
-                #execute the statement
-                cur.execute(stmnt)
-            except sqlite3.Error as excp:
-                print("Error %s:" % excp.args[0])
-                return False
-        return True
-
-    def create_users_profile_table(self):
-        '''
-        Create the table ``users_profile`` programmatically, without using
-        .sql file.
-
-        Print an error message in the console if it could not be created.
-
-        :return: ``True`` if the table was successfully created or ``False``
-            otherwise.
-
-        '''
-        keys_on = 'PRAGMA foreign_keys = ON'
-        '''
-        #TASK3 TODO#
-        Write the SQL Statement to create users_profile table
-        '''
-
-        stmnt = 'CREATE TABLE users_profile(user_id INTEGER PRIMARY KEY, \
-                    firstname TEXT, lastname TEXT, \
-                    email TEXT, website TEXT, \
-                    picture TEXT, mobile TEXT, \
-                    skype TEXT, birthday TEXT, \
-                    residence TEXT, gender TEXT, \
-                    signature TEXT, avatar TEXT, \
-                    FOREIGN KEY(user_id) REFERENCES users(user_id) \
-                    ON DELETE CASCADE)'
-        #Connects to the database. Gets a connection object
-        con = sqlite3.connect(self.db_path)
-        with con:
-            #Get the cursor object.
-            #It allows to execute SQL code and traverse the result set
-            cur = con.cursor()
-            try:
-                cur.execute(keys_on)
-                #execute the statement
-                cur.execute(stmnt)
-            except sqlite3.Error as excp:
-                print("Error %s:" % excp.args[0])
-                return False
-        return True
-
-    def create_friends_table(self):
-        '''
-        Create the table ``friends`` programmatically, without using .sql file.
-
-        Print an error message in the console if it could not be created.
-
-        :return: ``True`` if the table was successfully created or ``False``
-            otherwise.
-        '''
-        keys_on = 'PRAGMA foreign_keys = ON'
-        stmnt = 'CREATE TABLE friends (user_id INTEGER, friend_id INTEGER, \
-                     PRIMARY KEY(user_id, friend_id), \
-                     FOREIGN KEY(user_id) REFERENCES users(user_id) \
-                     ON DELETE CASCADE, \
-                     FOREIGN KEY(friend_id) REFERENCES users(user_id) \
-                     ON DELETE CASCADE)'
-        #Connects to the database. Gets a connection object
-        con = sqlite3.connect(self.db_path)
-        with con:
-            #Get the cursor object.
-            #It allows to execute SQL code and traverse the result set
-            cur = con.cursor()
-            try:
-                cur.execute(keys_on)
-                #execute the statement
-                cur.execute(stmnt)
-            except sqlite3.Error as excp:
-                print("Error %s:" % excp.args[0])
-                return False
-        return True
 
 
 class Connection(object):
@@ -376,8 +240,8 @@ class Connection(object):
     #Here the helpers that transform database rows into dictionary. They work
     #similarly to ORM
 
-    #Helpers for messages
-    def _create_message_object(self, row):
+    #Helpers for machine
+    def _create_machine_object(self, row):
         '''
         It takes a :py:class:`sqlite3.Row` and transform it into a dictionary.
 
@@ -385,52 +249,58 @@ class Connection(object):
         :type row: sqlite3.Row
         :return: a dictionary containing the following keys:
 
-            * ``messageid``: id of the message (int)
-            * ``title``: message's title
-            * ``body``: message's text
-            * ``timestamp``: UNIX timestamp (long integer) that specifies when
-              the message was created.
-            * ``replyto``: The id of the parent message. String with the format
-              msg-{id}. Its value can be None.
-            * ``sender``: The nickname of the message's creator.
-            * ``editor``: The nickname of the message's editor.
+            * ``machineID``: id of the machine (int)
+            * ``machinename``: machine's name
+            * ``typeID``: type of the machine (int & FK - machinetypes table)
+            * ``tutorial``: link to a HTML file that has tutorial for this machine (text)            
+            * ``createdAt, updatedAt``: UNIX timestamp (long integer) that specifies when
+              the machine was created or updated.
+            * ``createBy & updateBy``: The userID owner or modifier.
 
             Note that all values in the returned dictionary are string unless
             otherwise stated.
+            
+            Structure of an object:
+                    machine = {'machineID': message_id, 'machinename': machine_name,
+                   'typeID': machine_type_id, 'tutorial': machine_tutorial,
+                   'createdAt': machine_created_at, 'updatedAt': machine_updated_at,
+                   'createdBy': machine_created_by, 'updateBy': machine_updated_by}
 
         '''
-        message_id = 'msg-' + str(row['message_id'])
-        message_replyto = 'msg-' + str(row['reply_to']) \
-            if row['reply_to'] is not None else None
-        message_sender = row['user_nickname']
-        message_editor = row['editor_nickname']
-        message_title = row['title']
-        message_body = row['body']
-        message_timestamp = row['timestamp']
-        message = {'messageid': message_id, 'title': message_title,
-                   'timestamp': message_timestamp, 'replyto': message_replyto,
-                   'body': message_body, 'sender': message_sender,
-                   'editor': message_editor}
-        return message
+        machine_id = 'machine-' + str(row['machineID'])
+        machine_name = row['machinename']
+        machine_type_id = str(row['typeID'])
+        machine_tutorial = row['tutorial']
+        machine_created_at = row['createdAt']
+        machine_updated_at = row['updatedAt']
+        machine_created_by = row['createdBy']
+        machine_updated_by = row['updateBy']        
+        machine = {'machineID': message_id, 'machinename': machine_name,
+                   'typeID': machine_type_id, 'tutorial': machine_tutorial,
+                   'createdAt': machine_created_at, 'updatedAt': machine_updated_at,
+                   'createdBy': machine_created_by, 'updateBy': machine_updated_by}
+        return machine
 
-    def _create_message_list_object(self, row):
+    def _create_machine_list_object(self, row):
         '''
-        Same as :py:meth:`_create_message_object`. However, the resulting
-        dictionary is targeted to build messages in a list.
+        Same as :py:meth:`_create_machine_object`. However, the resulting
+        dictionary is targeted to build machines in a list.
 
         :param row: The row obtained from the database.
         :type row: sqlite3.Row
-        :return: a dictionary with the keys ``messageid``, ``title``,
-            ``timestamp`` and ``sender``.
-
+        :return: a dictionary with the keys ``machineID``, ``machinename``,
+            ``typeID`` and ``tutorial``.
+        Structure of an object:
+                message = {'machineID': machine_id, 'machinename': machine_name,
+                'typeID': machine_type_id, 'tutorial': machine_tutorial}
         '''
-        message_id = 'msg-' + str(row['message_id'])
-        message_sender = row['user_nickname']
-        message_title = row['title']
-        message_timestamp = row['timestamp']
-        message = {'messageid': message_id, 'title': message_title,
-                   'timestamp': message_timestamp, 'sender': message_sender}
-        return message
+        machine_id = 'machine-' + str(row['machineID'])
+        machine_name = row['machinename']
+        machine_type_id = str(row['typeID'])
+        machine_tutorial = row['tutorial']
+        machine = {'machineID': machine_id, 'machinename': machine_name,
+                   'typeID': machine_type_id, 'tutorial': machine_tutorial}
+        return machine
 
     #Helpers for users
     def _create_user_object(self, row):
@@ -443,13 +313,10 @@ class Connection(object):
 
             .. code-block:: javascript
 
-                {'public_profile':{'registrationdate':,'nickname':'',
-                                   'signature':'','avatar':''},
-                'restricted_profile':{'firstname':'','lastname':'','email':'',
-                                      'website':'','mobile':'','skype':'',
-                                      'birthday':'','residence':'','gender':'',
-                                      'picture':''}
+                {'userID':,'nickname':'',
+                                   'signature':'','avatar':''
                 }
+                
 
             where:
 
@@ -472,7 +339,12 @@ class Connection(object):
             Note that all values are string if they are not otherwise indicated.
 
         '''
-        reg_date = row['regDate']
+        user_id = row['userID']
+        user_name = row['username']
+        user_password = row['password']
+        user_isAdmin = str(row['isAdmin'])
+        user_id = str(row['userID'])
+        user_id = str(row['userID'])
         return {'public_profile': {'registrationdate': reg_date,
                                    'nickname': row['nickname'],
                                    'signature': row['signature'],
