@@ -269,13 +269,13 @@ class Connection(object):
         '''
         machine_id = 'machine-' + str(row['machineID'])
         machine_name = row['machinename']
-        machine_type_id = str(row['typeID'])
+        machine_type_id = row['typeID']
         machine_tutorial = row['tutorial']
         machine_created_at = row['createdAt']
         machine_updated_at = row['updatedAt']
         machine_created_by = row['createdBy']
         machine_updated_by = row['updateBy']        
-        machine = {'machineID': message_id, 'machinename': machine_name,
+        machine = {'machineID': machine_id, 'machinename': machine_name,
                    'typeID': machine_type_id, 'tutorial': machine_tutorial,
                    'createdAt': machine_created_at, 'updatedAt': machine_updated_at,
                    'createdBy': machine_created_by, 'updateBy': machine_updated_by}
@@ -288,15 +288,15 @@ class Connection(object):
 
         :param row: The row obtained from the database.
         :type row: sqlite3.Row
-        :return: a dictionary with the keys ``machineID``, ``machinename``,
+        :return: a dictionary with the keys `machine-`machineID``, ``machinename``,
             ``typeID`` and ``tutorial``.
         Structure of an object:
-                message = {'machineID': machine_id, 'machinename': machine_name,
+                machine = {'machineID': machine_id, 'machinename': machine_name,
                 'typeID': machine_type_id, 'tutorial': machine_tutorial}
         '''
         machine_id = 'machine-' + str(row['machineID'])
         machine_name = row['machinename']
-        machine_type_id = str(row['typeID'])
+        machine_type_id = row['typeID']
         machine_tutorial = row['tutorial']
         machine = {'machineID': machine_id, 'machinename': machine_name,
                    'typeID': machine_type_id, 'tutorial': machine_tutorial}
@@ -313,66 +313,227 @@ class Connection(object):
 
             .. code-block:: javascript
 
-                {'userID':,'nickname':'',
-                                   'signature':'','avatar':''
-                }
+               {'userID': user_id,
+               'username': user_name,
+               'password': user_password,
+               'email': user_email,
+               'mobile': user_mobile,
+               'website': user_website,
+               'isAdmin': user_isAdmin,
+               'createdAt': user_createdAt,
+               'modifiedAt': user_modifiedAt}
                 
 
             where:
 
-            * ``registrationdate``: UNIX timestamp when the user registered in
-                                 the system (long integer)
-            * ``nickname``: nickname of the user
-            * ``signature``: text chosen by the user for signature
-            * ``avatar``: name of the image file used as avatar
-            * ``firstanme``: given name of the user
-            * ``lastname``: family name of the user
+            * ``userID``: unique ID
+            * ``username``: nickname of the user
+            * ``password``: password
             * ``email``: current email of the user.
-            * ``website``: url with the user's personal page. Can be None
             * ``mobile``: string showing the user's phone number. Can be None.
-            * ``skype``: user's nickname in skype. Can be None.
-            * ``residence``: complete user's home address.
-            * ``picture``: file which contains an image of the user.
-            * ``gender``: User's gender ('male' or 'female').
-            * ``birthday``: string containing the birthday of the user.
-
+            * ``website``: url with the user's personal page. Can be None
+            * ``isAdmin``: role of user
+            * ``createdAt``: UNIX timestamp 
+            * ``modifiedAt``: UNIX timestamp 
             Note that all values are string if they are not otherwise indicated.
 
         '''
         user_id = row['userID']
         user_name = row['username']
         user_password = row['password']
+        user_email = row['email']
+        user_mobile = row['mobile']
+        user_website = row['website']
         user_isAdmin = str(row['isAdmin'])
-        user_id = str(row['userID'])
-        user_id = str(row['userID'])
-        return {'public_profile': {'registrationdate': reg_date,
-                                   'nickname': row['nickname'],
-                                   'signature': row['signature'],
-                                   'avatar': row['avatar']},
-                'restricted_profile': {'firstname': row['firstname'],
-                                       'lastname': row['lastname'],
-                                       'email': row['email'],
-                                       'website': row['website'],
-                                       'mobile': row['mobile'],
-                                       'skype': row['skype'],
-                                       'birthday': row['birthday'],
-                                       'residence': row['residence'],
-                                       'gender': row['gender'],
-                                       'picture': row['picture']}
-                }
+        user_createdAt = row['createdAt']
+        user_modifiedAt = row['modifiedAt']
+        return {'userID': user_id,
+               'username': user_name,
+               'password': user_password,
+               'email': user_email,
+               'mobile': user_mobile,
+               'website': user_website,
+               'isAdmin': user_isAdmin,
+               'createdAt': user_createdAt,
+               'modifiedAt': user_modifiedAt}
 
     def _create_user_list_object(self, row):
         '''
-        Same as :py:meth:`_create_message_object`. However, the resulting
-        dictionary is targeted to build messages in a list.
+        Same as :py:meth:`_create_machine_list_object`. However, the resulting
+        dictionary is targeted to build users in a list.
 
         :param row: The row obtained from the database.
         :type row: sqlite3.Row
-        :return: a dictionary with the keys ``registrationdate`` and
-            ``nickname``
+        :return: a dictionary with the keys ``userID`` and
+            ``username``
 
         '''
-        return {'registrationdate': row['regDate'], 'nickname': row['nickname']}
+        return {'userID': row['userID'], 'username': row['username']}
+
+    #Helpers for type
+    def _create_type_object(self, row):
+        '''
+        It takes a database Row and transform it into a python dictionary.
+
+        :param row: The row obtained from the database.
+        :type row: sqlite3.Row
+        :return: a dictionary with the following format:
+
+            .. code-block:: javascript
+
+               {'typeID': row['typeID'],
+               'typeName': row['typeName'],
+               'pastProject': row['pastProject'],
+               'createdAt': row['createdAt'],
+               'modifiedAt': row['modifiedAt'],
+               'createdBy': row['createdBy'],
+               'modifiedBy': row['modifiedBy']}
+                
+
+            where:
+
+            * ``typeID``: unique ID
+            * ``typeName``: name of the type
+            * ``pastProject``: text contains location of HTML that contains previous projects using this type
+            * ``createdAt & modifiedAt``: UNIX timestamp
+            * ``createdBy & modifiedBy``: userID
+            Note that all values are string if they are not otherwise indicated.
+
+        '''
+
+        return {'typeID': row['typeID'],
+               'typeName': row['typeName'],
+               'pastProject': row['pastProject'],
+               'createdAt': row['createdAt'],
+               'modifiedAt': row['modifiedAt'],
+               'createdBy': row['createdBy'],
+               'modifiedBy': row['modifiedBy']}
+
+    def _create_type_list_object(self, row):
+        '''
+        Same as :py:meth:`_create_machine_list_object`. However, the resulting
+        dictionary is targeted to build users in a list.
+
+        :param row: The row obtained from the database.
+        :type row: sqlite3.Row
+        :return: a dictionary with the keys ``typeID`` and
+            ``typeName``
+
+        '''
+        return {'typeID': row['typeID'], 'typeName': row['typeName']}
+        
+    #Helpers for message
+    def _create_message_object(self, row):
+        '''
+        It takes a database Row and transform it into a python dictionary.
+
+        :param row: The row obtained from the database.
+        :type row: sqlite3.Row
+        :return: a dictionary with the following format:
+
+            .. code-block:: javascript
+
+               {'messageID': 'msg-' + str(row['messageID']),
+               'fromUserID': row['fromUserID'],
+               'toUserID': row['toUserID'],
+               'content': row['content'],
+               'createdAt': row['createdAt']}
+                
+
+            where:
+
+            * ``messageID``: id of the message
+            * ``fromUserID & toUserID``: sender and receiver
+            * ``content``: message's content
+            * ``createdAt``: UNIX timestamp
+            Note that all values are string if they are not otherwise indicated.
+
+        '''
+
+        return {'messageID': 'msg-' + str(row['messageID']),
+               'fromUserID': row['fromUserID'],
+               'toUserID': row['toUserID'],
+               'content': row['content'],
+               'createdAt': row['createdAt']}
+
+    def _create_message_list_object(self, row):
+        '''
+        Same as :py:meth:`_create_machine_list_object`. However, the resulting
+        dictionary is targeted to build users in a list.
+
+        :param row: The row obtained from the database.
+        :type row: sqlite3.Row
+        :return: a dictionary with the keys ``messageID`` and
+            ``createdAt``
+
+        '''
+        return {'messageID': 'msg-' + str(row['messageID']), 'createdAt': row['createdAt']}
+
+    #Helpers for reservation
+    def _create_reservation_object(self, row):
+        '''
+        It takes a database Row and transform it into a python dictionary.
+
+        :param row: The row obtained from the database.
+        :type row: sqlite3.Row
+        :return: a dictionary with the following format:
+
+            .. code-block:: javascript
+
+               {'reservationID': row['reservationID'],
+               'userID': row['userID'],
+               'machineID': 'machine-' + str(row['machineID']),
+               'startTime': row['startTime'],
+               'endTime': row['endTime'],
+               'isActive': row['isActive'],
+               'createdAt': row['createdAt'],
+               'createdBy': row['createdBy'],
+               'updatedAt': row['updatedAt'],
+               'updateBy': row['updateBy']}
+                
+
+            where:
+
+            * ``reservationID``: id of the reservation
+            * ``userID``: user who reserved the machin
+            * ``machineID``: machine that is reserved
+            * ``startTime & endTime``: UNIX timestamp
+            * ``createdAt``: machine that is reserved
+            * ``isActive``: status of reservation
+            * ``createdAt & updatedAt``: UNIX timestamp
+            * ``createdBy & updateBy``: userID
+            
+            Note that all values are string if they are not otherwise indicated.
+
+        '''
+
+        return {'reservationID': row['reservationID'],
+               'userID': row['userID'],
+               'machineID': 'machine-' + str(row['machineID']),
+               'startTime': row['startTime'],
+               'endTime': row['endTime'],
+               'isActive': row['isActive'],
+               'createdAt': row['createdAt'],
+               'createdBy': row['createdBy'],
+               'updatedAt': row['updatedAt'],
+               'updateBy': row['updateBy']}
+
+    def _create_reservation_list_object(self, row):
+        '''
+        Same as :py:meth:`_create_machine_list_object`. However, the resulting
+        dictionary is targeted to build users in a list.
+
+        :param row: The row obtained from the database.
+        :type row: sqlite3.Row
+        :return: a dictionary with the keys ``messageID`` and
+            ``createdAt``
+
+        '''
+        return {'reservationID': row['reservationID'], 'userID': row['userID'],
+               'machineID': 'machine-' + str(row['machineID']),
+               'startTime': row['startTime'],
+               'endTime': row['endTime'],
+               'isActive': row['isActive']}
 
     #API ITSELF
     #Message Table API.
@@ -396,7 +557,7 @@ class Connection(object):
         #Activate foreign key support
         self.set_foreign_keys_support()
         #Create the SQL Query
-        query = 'SELECT * FROM messages WHERE message_id = ?'
+        query = 'SELECT * FROM messages WHERE messageID = ?'
         #Cursor and row initialization
         self.con.row_factory = sqlite3.Row
         cur = self.con.cursor()
@@ -411,16 +572,16 @@ class Connection(object):
         #Build the return object
         return self._create_message_object(row)
 
-    def get_messages(self, nickname=None, number_of_messages=-1,
+    def get_messages(self, fromUserID=None, number_of_messages=-1,
                      before=-1, after=-1):
         '''
         Return a list of all the messages in the database filtered by the
         conditions provided in the parameters.
 
-        :param nickname: default None. Search messages of a user with the given
-            nickname. If this parameter is None, it returns the messages of
+        :param fromUserID: default None. Search messages of a user with the given
+            fromUserID. If this parameter is None, it returns the messages of
             any user in the system.
-        :type nickname: str
+        :type fromUserID: int
         :param number_of_messages: default -1. Sets the maximum number of
             messages returning in the list. If set to -1, there is no limit.
         :type number_of_messages: int
@@ -436,8 +597,8 @@ class Connection(object):
 
             * ``messageid``: string with the format msg-\d{1,3}.Id of the
                 message.
-            * ``sender``: nickname of the message's author.
-            * ``title``: string containing the title of the message.
+            * ``fromUserID` & `toUserID``: userID of the message's sender and receiver.
+            * ``content``: string containing the title of the message.
             * ``timestamp``: UNIX timestamp (long int) that specifies when the
                 message was created.
 
@@ -449,25 +610,25 @@ class Connection(object):
 
         '''
         #Create the SQL Statement build the string depending on the existence
-        #of nickname, numbero_of_messages, before and after arguments.
+        #of fromUserID, numbero_of_messages, before and after arguments.
         query = 'SELECT * FROM messages'
-          #Nickname restriction
-        if nickname is not None or before != -1 or after != -1:
+          #fromUserID restriction
+        if fromUserID is not None or before != -1 or after != -1:
             query += ' WHERE'
-        if nickname is not None:
-            query += " user_nickname = '%s'" % nickname
+        if fromUserID is not None:
+            query += " fromUserID = '%d'" % fromUserID
           #Before restriction
         if before != -1:
-            if nickname is not None:
+            if fromUserID is not None:
                 query += ' AND'
-            query += " timestamp < %s" % str(before)
+            query += " createdAt < %s" % str(before)
           #After restriction
         if after != -1:
             if nickname is not None or before != -1:
                 query += ' AND'
-            query += " timestamp > %s" % str(after)
+            query += " createdAt > %s" % str(after)
           #Order of results
-        query += ' ORDER BY timestamp DESC'
+        query += ' ORDER BY createdAt DESC'
           #Limit the number of resulst return
         if number_of_messages > -1:
             query += ' LIMIT ' + str(number_of_messages)
@@ -504,25 +665,8 @@ class Connection(object):
         if match is None:
             raise ValueError("The messageid is malformed")
         messageid = int(match.group(1))
-        '''
-        #TASK5 TODO:#
-        * Implement this method.
-        * HINTS:
-           * To remove a message use the DELETE sql command
-           * To check if the message has been previously deleted you can check
-             the size of the rows returned in the cursor. You can check it from
-             the attribute cursor.rowcount. If the rowcount is < 1 means that
-             no row has been  deleted and hence you should return False.
-             Otherwise return True.
-           * Be sure that you commit the current transaction
-        * HOW TO TEST: Use the database_api_tests_message. The following tests
-          must pass without failure or error:
-            * test_delete_message
-            * test_delete_message_malformed_id
-            * test_delete_message_noexisting_id
-        '''
         #Create the SQL statment
-        stmnt = 'DELETE FROM messages WHERE message_id = ?'
+        stmnt = 'DELETE FROM messages WHERE messageID = ?'
         #Activate foreign key support
         self.set_foreign_keys_support()
         #Cursor and row initialization
@@ -537,99 +681,22 @@ class Connection(object):
             print("Error %s:" % (e.args[0]))
         return bool(cur.rowcount)
 
-    def modify_message(self, messageid, title, body, editor="Anonymous"):
-        '''
-        Modify the title, the body and the editor of the message with id
-        ``messageid``
-
-        :param str messageid: The id of the message to remove. Note that
-            messageid is a string with format msg-\d{1,3}
-        :param str title: the message's title
-        :param str body: the message's content
-        :param str editor: default 'Anonymous'. The nickname of the person
-            who is editing this message. If it is not provided "Anonymous"
-            will be stored in db.
-        :return: the id of the edited message or None if the message was
-              not found. The id of the message has the format ``msg-\d{1,3}``,
-              where \d{1,3} is the id of the message in the database.
-        :raises ValueError: if the messageid has a wrong format.
-
-        '''
-        #Extracts the int which is the id for a message in the database
-        match = re.match(r'msg-(\d{1,3})', messageid)
-        if match is None:
-            raise ValueError("The messageid is malformed")
-        messageid = int(match.group(1))
-        '''
-        TASK5 TODO:
-        * Finish this method
-        HINTS:
-        * Remember that to modify the value of a row you have to use the UPDATE
-         sql command
-        * You have to modify just the title, the body and the
-          editor_nickname of the message
-        * You can check if a database has been modifed after an UPDATE using
-          the attribute cur.rowcount. If rowcount < 1, there has not been an
-          update.
-        * Remember to activate the foreign key support
-        HOW TO TEST: Use the database_api_tests_message. The following tests
-                     must pass without failure or error:
-                        * test_modify_message
-                        * test_modify_message_malformed_id
-                        * test_modify_message_noexisting_id
-        '''
-        #Create the SQL statment
-        stmnt = 'UPDATE messages SET title=:title , body=:body, editor_nickname=:editor\
-                 WHERE message_id =:msg_id'
-        #Activate foreign key support
-        self.set_foreign_keys_support()
-        #Cursor and row initialization
-        self.con.row_factory = sqlite3.Row
-        cur = self.con.cursor()
-        #Execute main SQL Statement
-        pvalue = {"msg_id": messageid,
-                  "title": title,
-                  "body": body,
-                  "editor": editor}
-        try:
-            cur.execute(stmnt, pvalue)
-            self.con.commit()
-        except sqlite3.Error as e:
-            print ("Error %s:" % (e.args[0]))
-        else: 
-            if cur.rowcount < 1:
-                return None
-        return 'msg-%s' % messageid
-
-    def create_message(self, title, body, sender="Anonymous",
-                       ipaddress="0.0.0.0", replyto=None):
+    def create_message(self, content, fromUserID,
+                       toUserID):
         '''
         Create a new message with the data provided as arguments.
 
-        :param str title: the message's title
-        :param str body: the message's content
-        :param str sender: the nickname of the person who is editing this
-            message. If it is not provided "Anonymous" will be stored in db.
-        :param str ipaddress: The ip address from which the message was created.
-            It is a string with format "xxx.xxx.xxx.xxx". If no ipaddress is
-            provided then database will store "0.0.0.0"
-        :param str replyto: Only provided if this message is an answer to a
-            previous message (parent). Otherwise, Null will be stored in the
-            database. The id of the message has the format msg-\d{1,3}
-
+        :param str content: the message's content
+        :param int fromUserID: the userID of the person who create this message
+        :param int toUserID: the userID of the person who receive this message
         :return: the id of the created message or None if the message was not
             found. Note that the returned value is a string with the format msg-\d{1,3}.
 
         :raises ForumDatabaseError: if the database could not be modified.
-        :raises ValueError: if the replyto has a wrong format.
 
         '''
         #Extracts the int which is the id for a message in the database
-        if replyto is not None:
-            match = re.match('msg-(\d{1,3})', replyto)
-            if match is None:
-                raise ValueError("The replyto is malformed")
-            replyto = int(match.group(1))
+
         '''
         TASK5 TODO:
         * Finish this method
@@ -674,42 +741,19 @@ class Connection(object):
                 * test_append_answer_malformed_id
                 * test_append_answer_noexistingid
         '''
-        #Create the SQL statment
-          #SQL to test that the message which I am answering does exist
-        query1 = 'SELECT * from messages WHERE message_id = ?'
-          #SQL Statement for getting the user id given a nickname
-        query2 = 'SELECT user_id from users WHERE nickname = ?'
-          #SQL Statement for inserting the data
-        stmnt = 'INSERT INTO messages (title,body,timestamp,ip, \
-                 timesviewed,reply_to,user_nickname,user_id) \
-                 VALUES(?,?,?,?,?,?,?,?)'
+        #Create the SQL statement for inserting the data
+        stmnt = 'INSERT INTO messages (fromUserID,toUserID,content, \
+                 createdAt) \
+                 VALUES(?,?,?,?)'
           #Variables for the statement.
           #user_id is obtained from first statement.
-        user_id = None
         timestamp = time.mktime(datetime.now().timetuple())
         #Activate foreign key support
         self.set_foreign_keys_support()
         #Cursor and row initialization
         self.con.row_factory = sqlite3.Row
         cur = self.con.cursor()
-        #If exists the replyto argument, check that the message exists in
-        #the database table
-        if replyto is not None:
-            pvalue = (replyto,)
-            cur.execute(query1, pvalue)
-            messages = cur.fetchall()
-            if len(messages) < 1:
-                return None
-        #Execute SQL Statement to get userid given nickname
-        pvalue = (sender,)
-        cur.execute(query2, pvalue)
-        #Extract user id
-        row = cur.fetchone()
-        if row is not None:
-            user_id = row["user_id"]
-        #Generate the values for SQL statement
-        pvalue = (title, body, timestamp, ipaddress, 0, replyto, sender,
-                  user_id)
+        pvalue = (fromUserID, toUserID, content, timestamp)
         #Execute the statement
         cur.execute(stmnt, pvalue)
         self.con.commit()
@@ -718,102 +762,486 @@ class Connection(object):
         #Return the id in
         return 'msg-' + str(lid) if lid is not None else None
 
-    def append_answer(self, replyto, title, body, sender="Anonymous",
-                      ipaddress="0.0.0.0"):
+    #MACHINE API
+    def get_machine(self, machineID):
         '''
-        Same as :py:meth:`create_message`. The ``replyto`` parameter is not
-        a keyword argument, though.
+        Extracts a message from the database.
 
-        :param str replyto: Only provided if this message is an answer to a
-            previous message (parent). Otherwise, Null will be stored in the
-            database. The id of the message has the format msg-\d{1,3}
-        :param str title: the message's title
-        :param str body: the message's content
-        :param str sender: the nickname of the person who is editing this
-            message. If it is not provided "Anonymous" will be stored in db.
-        :param str ipaddress: The ip address from which the message was created.
-            It is a string with format "xxx.xxx.xxx.xxx". If no ipaddress is
-            provided then database will store "0.0.0.0"
+        :param machineID: The id of the machine. Note that messageid is a
+            string with format ``machine-\d{1,3}``.
+        :return: A dictionary with the format provided in
+            :py:meth:`_create_message_object` or None if the message with target
+            id does not exist.
+        :raises ValueError: when ``machineID`` is not well formed
 
+        '''
+        #Extracts the int which is the id for a message in the database
+        match = re.match(r'machine-(\d{1,3})', machineID)
+        if match is None:
+            raise ValueError("The machineID is malformed")
+        machineID = int(match.group(1))
+        #Activate foreign key support
+        self.set_foreign_keys_support()
+        #Create the SQL Query
+        query = 'SELECT * FROM machines WHERE machineID = ?'
+        #Cursor and row initialization
+        self.con.row_factory = sqlite3.Row
+        cur = self.con.cursor()
+        #Execute main SQL Statement
+        pvalue = (machineID,)
+        cur.execute(query, pvalue)
+        #Process the response.
+        #Just one row is expected
+        row = cur.fetchone()
+        if row is None:
+            return None
+        #Build the return object
+        return self._create_machine_object(row)
+
+    def get_machines(self, typeName=None):
+        '''
+        Return a list of all the machines in the database filtered by the
+        conditions provided in the parameters.
+
+        :param typeID: default None. Search machines with type TypeID
+
+        :return: A list of machines. Each machines is a dictionary containing
+            the following keys:
+
+            * ``machineID``: string with the format machine-\d{1,3}.Id of the
+                machine.
+            * ``machinename``: name of the machine.
+            * ``typeID``: type of the machine.
+            * ``tutorial``: a HTML link store the tutorial how to use the machine
+            * ``createdAt & updatedAt``: UNIX timestamp (long int) that specifies when the
+                machine was created or updated.
+            * ``createdBy & updatedBy``: UserID
+                
+
+            Note that all values in the returned dictionary are string unless
+            otherwise stated.
+
+        :raises ValueError: if ``typeName`` are not found
+
+        '''
+        #Create the SQL Statement build the string depending on the existence
+        #of fromUserID, numbero_of_messages, before and after arguments.
+        #SQL Statement to query machinetypes
+        query = 'SELECT typeID FROM machinetypes'
+        #SQL Statement to query machines
+        stmnt = 'SELECT * FROM machines'
+        if typeName is not None:
+            query += " WHERE typeName = '%s' " % typeName
+            self.con.row_factory = sqlite3.Row
+            cur = self.con.cursor()
+            cur.execute(query)
+            row = cur.fetchone()
+            if row is None:
+                return None
+            typeID = row["typeID"]
+            if typeID is not None:
+                stmnt += " WHERE typeID = " +  str(typeID)
+            #Activate foreign key support
+            self.set_foreign_keys_support()
+            #Cursor and row initialization
+            self.con.row_factory = sqlite3.Row
+            cur = self.con.cursor()
+            cur.execute(stmnt)
+            rows = cur.fetchall()
+            if rows is None:
+                return None
+            machines = []
+            for machine in rows:
+                machine = self._create_machine_list_object(machine)
+                machines.append(machine)
+                #Limit the number of resulst return
+            return machines
+
+
+        #Activate foreign key support
+        self.set_foreign_keys_support()
+        #Cursor and row initialization
+        self.con.row_factory = sqlite3.Row
+        cur = self.con.cursor()
+        cur.execute(stmnt)
+        rows = cur.fetchall()
+        if rows is None:
+            return None
+        machines = []
+        for machine in rows:
+            machine = self._create_machine_list_object(machine)
+            machines.append(machine)
+            #Limit the number of resulst return
+    
+        return machines        
+
+    def delete_machine(self, machineID):
+        '''
+        Delete the machine with id given as parameter.
+
+        :param str machineID: id of the message to remove.Note that messageid
+            is a string with format ``machine-\d{1,3}``
+        :return: True if the machine has been deleted, False otherwise
+        :raises ValueError: if the machineID has a wrong format.
+
+        '''
+        #Extracts the int which is the id for a message in the database
+        match = re.match(r'machine-(\d{1,3})', machineID)
+        if match is None:
+            raise ValueError("The machineID is malformed")
+        machineID = int(match.group(1))
+
+        #Create the SQL statment
+        stmnt = 'DELETE FROM machines WHERE machineID = ?'
+        #Activate foreign key support
+        self.set_foreign_keys_support()
+        #Cursor and row initialization
+        self.con.row_factory = sqlite3.Row
+        cur = self.con.cursor()
+        pvalue = (machineID,)
+        try:
+            cur.execute(stmnt, pvalue)
+            #Commit the message
+            self.con.commit()
+        except sqlite3.Error as e:
+            print("Error %s:" % (e.args[0]))
+        return bool(cur.rowcount)
+
+    def modify_machine(self, machineID, machinename, typeID, tutorial, updatedBy = '0'):
+        '''
+        Modify the name, the type and the tutorial of the machine with id
+        ``machineID``
+
+        :param str machinename: name of the machine
+        :param int typeID: machine's type ID
+        :param str tutorial: the tutorial HTML link
+        :param str updatedBy: ID of the user who updated this machine. Default value is 0 - SQLAdmin
+        :return: the id of the edited machine or None if the machine was
+              not found. The id of the machine has the format ``machine-\d{1,3}``,
+              where \d{1,3} is the id of the machine in the database.
+        :raises ValueError: if the machineID has a wrong format.
+
+        '''
+        #Extracts the int which is the id for a machine in the database
+        match = re.match(r'machine-(\d{1,3})', machineID)
+        if match is None:
+            raise ValueError("The machineID is malformed")
+        machineID = int(match.group(1))
+
+        #Create the SQL statment
+        stmnt = 'UPDATE machines SET machinename=:machinename , typeID=:typeID, tutorial=:tutorial, updatedBy=:updatedBy,\
+                  updatedAt=:updatedAt WHERE machineID =:machineID'
+        #Activate foreign key support
+        self.set_foreign_keys_support()
+        #Cursor and row initialization
+        self.con.row_factory = sqlite3.Row
+        cur = self.con.cursor()
+        #Execute main SQL Statement
+        timestamp = time.mktime(datetime.now().timetuple())
+
+        pvalue = {"machineID": machineID,
+                  "machinename": machinename,
+                  "typeID": typeID,
+                  "tutorial": tutorial,
+                  "updatedAt":timestamp,
+                  "updatedBy":updatedBy}
+        try:
+            cur.execute(stmnt, pvalue)
+            self.con.commit()
+        except sqlite3.Error as e:
+            print ("Error %s:" % (e.args[0]))
+        else: 
+            if cur.rowcount < 1:
+                return None
+        return 'machine-%s' % machineID  
+
+    def create_machine(self, machinename, typeID, tutorial, createdBy='0'):
+        '''
+        Create a new machine with the data provided as arguments.
+
+        :param str machinename: the machine's content
+        :param int typeID: the type of the machine
+        :param string tutorial: HTML link for tutorial
+        :param int createdBy: the userID of the person who receive this message. Default value is 0, SQLAdmin
         :return: the id of the created message or None if the message was not
-            found. Note that 
-            the returned value is a string with the format msg-\d{1,3}.
+            found. Note that the returned value is a string with the format msg-\d{1,3}.
 
         :raises ForumDatabaseError: if the database could not be modified.
-        :raises ValueError: if the replyto has a wrong format.
 
         '''
-        return self.create_message(title, body, sender, ipaddress, replyto)
+        #Extracts the int which is the id for a message in the database
 
-    #MESSAGE UTILS
-    def get_sender(self, messageid):
+        
+        #Create the SQL statement for inserting the data
+        stmnt = 'INSERT INTO machines (machinename, typeID, tutorial, \
+                 createdBy, createdAt) \
+                 VALUES(?,?,?,?,?)'
+          #Variables for the statement.
+          #user_id is obtained from first statement.
+        timestamp = time.mktime(datetime.now().timetuple())
+        #Activate foreign key support
+        self.set_foreign_keys_support()
+        #Cursor and row initialization
+        self.con.row_factory = sqlite3.Row
+        cur = self.con.cursor()
+        pvalue = (machinename, typeID, tutorial, createdBy,timestamp)
+        #Execute the statement
+        cur.execute(stmnt, pvalue)
+        self.con.commit()
+        #Extract the id of the added message
+        lid = cur.lastrowid
+        #Return the id in
+        return 'msg-' + str(lid) if lid is not None else None
+
+
+        
+    #TYPE API
+    def get_type(self, typeName):
         '''
-        Get the information of the user who sent a message which id is
-        ``messageid``
+        Extracts a machine type from the database.
 
-        :param str messageid: Id of the message to search. Note that messageid
-            is a string with the format msg-\d{1,3}.
-
-        :return: a dictionary with the following format:
-
-            .. code-block:: javascript
-
-                {'public_profile':{'registrationdate':,'nickname':'',
-                                   'signature':'','avatar':''},
-                'restricted_profile':{'firstname':'','lastname':'','email':'',
-                                      'website':'','mobile':'','skype':'',
-                                      'age':'','residence':'','gender':'',
-                                      'picture':''}
-                }
-
-            where:
-
-            * ``registrationdate``: UNIX timestamp when the user registered in
-                                 the system (long integer)
-            * ``nickname``: nickname of the user
-            * ``signature``: text chosen by the user for signature
-            * ``avatar``: name of the image file used as avatar
-            * ``firstanme``: given name of the user
-            * ``lastname``: family name of the user
-            * ``email``: current email of the user.
-            * ``website``: url with the user's personal page. Can be None
-            * ``mobile``: string showing the user's phone number. Can be None.
-            * ``skype``: user's nickname in skype. Can be None.
-            * ``residence``: complete user's home address.
-            * ``picture``: file which contains an image of the user.
-            * ``gender``: User's gender ('male' or 'female').
-            * ``birthday``: string containing the birthday of the user.
-
-            Note that all values are string if they are not otherwise indicated.
-            In the case that it is an unregistered user the dictionary just
-            contains the key ``nickname``;
+        :param typeName: name of the Type
+        :return: A dictionary with the format provided in
+            :py:meth:`_create_message_object` or None if the message with target
+            id does not exist.
+        :raises ValueError: when ``machineID`` is not well formed
 
         '''
-        raise NotImplementedError("")
+        #Activate foreign key support
+        self.set_foreign_keys_support()
+        #Create the SQL Query
+        query = 'SELECT * FROM machinetypes WHERE typeName = ?'
+        #Cursor and row initialization
+        self.con.row_factory = sqlite3.Row
+        cur = self.con.cursor()
+        #Execute main SQL Statement
+        pvalue = (typeName,)
+        cur.execute(query, pvalue)
+        #Process the response.
+        #Just one row is expected
+        row = cur.fetchone()
+        if row is None:
+            return None
+        #Build the return object
+        return self._create_type_object(row)
 
-    def contains_message(self, messageid):
+    def get_types(self):
         '''
-        Checks if a message is in the database.
+        Return a list of all the types in the database filtered by the
+        conditions provided in the parameters.
 
-        :param str messageid: Id of the message to search. Note that messageid
-            is a string with the format msg-\d{1,3}.
-        :return: True if the message is in the database. False otherwise.
+
+        :return: A list of types. 
+            * ``typeID``: typeID of the machine
+            * ``typeName``: name of the type.
+
+            Note that all values in the returned dictionary are string unless
+            otherwise stated.
+
 
         '''
-        return self.get_message(messageid) is not None
+        #Create the SQL Statement build the string depending on the existence
+        #of fromUserID, numbero_of_messages, before and after arguments.
+        #SQL Statement to query machinetypes
+        query = 'SELECT * FROM machinetypes'
+        #Activate foreign key support
+        self.set_foreign_keys_support()
+        #Cursor and row initialization
+        self.con.row_factory = sqlite3.Row
+        cur = self.con.cursor()
+        cur.execute(query)
+        rows = cur.fetchall()
+        if rows is None:
+            return None
+        types = []
+        for type in rows:
+            type = self._create_type_list_object(type)
+            types.append(type)
+            #Limit the number of resulst return
+    
+        return types        
 
-    def get_message_time(self, messageid):
+    def delete_type(self, typeName):
         '''
-        Get the time when the message was sent.
+        Delete the typeID with id given as parameter.
 
-        :param str messageid: Id of the message to search. Note that messageid
-            is a string with the format msg-\d{1,3}.
-        :return: message time as a string or None if that message does not
-            exist.
-        :raises ValueError: if messageId is not well formed
+        :param str machineID: id of the message to remove.Note that messageid
+            is a string with format ``machine-\d{1,3}``
+        :return: True if the machine has been deleted, False otherwise
+        :raises ValueError: if the machineID has a wrong format.
+
         '''
-        raise NotImplementedError("")
+        #Create the SQL statment
+        stmnt = 'DELETE FROM machinetypes WHERE typeName = ?'
+        #Activate foreign key support
+        self.set_foreign_keys_support()
+        #Cursor and row initialization
+        self.con.row_factory = sqlite3.Row
+        cur = self.con.cursor()
+        pvalue = (typeName,)
+        try:
+            cur.execute(stmnt, pvalue)
+            #Commit the message
+            self.con.commit()
+        except sqlite3.Error as e:
+            print("Error %s:" % (e.args[0]))
+        return bool(cur.rowcount)
 
+    def modify_type(self, typeID, typeName, pastProject):
+        '''
+        Modify the name, the past project of the type with id
+        ``typeID``
+
+        :param str typeName: name of the type
+        :param int typeID: machine's type ID
+        :param str pastProject: the previous projects HTML link
+        :return: the id of the edited type or None if the type was
+              not found.
+        :raises ValueError: if the machineID has a wrong format.
+
+        '''
+        #Extracts the int which is the id for a machine in the database
+        #Create the SQL statment
+        stmnt = 'UPDATE machinetypes SET typeName=:typeName , pastProject=:pastProject \
+                 WHERE typeID =:typeID'
+        #Activate foreign key support
+        self.set_foreign_keys_support()
+        #Cursor and row initialization
+        self.con.row_factory = sqlite3.Row
+        cur = self.con.cursor()
+        #Execute main SQL Statement
+        pvalue = {"typeID": typeID,
+                  "typeName": typeName,
+                  "pastProject": pastProject}
+        try:
+            cur.execute(stmnt, pvalue)
+            self.con.commit()
+        except sqlite3.Error as e:
+            print ("Error %s:" % (e.args[0]))
+        else: 
+            if cur.rowcount < 1:
+                return None
+        return typeID  
+
+    # RESERVATION API
+    def get_reservation_list(self, userID = None, machineID = None, startTime=-1, endTime=-1):
+        #Create the SQL Statement build the string depending on the existence
+        #of userID, machineID, startTime and endTime arguments.
+        match = re.match(r'machine-(\d{1,3})', machineID)
+        if match is None:
+            raise ValueError("The machineID is malformed")
+        machineID = int(match.group(1))
+
+        query = 'SELECT * FROM reservations'
+          #userID restriction
+        if userID is not None or machineID is not None or startTime != -1 or endTime != -1:
+            query += ' WHERE'
+        if userID is not None:
+            query += " userID = " + str(userID)
+        if machineID is not None:
+            if userID is not None:
+                query += ' AND '
+            query += " machineID = " + str(machineID)
+
+        #startTime restriction
+        if startTime != -1:
+            if userID is not None or machineID is not None:
+                query += ' AND'
+            query += " startTime > %s" % str(startTime)
+          #endTime restriction
+        if endTime != -1:
+            if nickname is not None or machineID is not None or startTime != -1:
+                query += ' AND'
+            query += " endTime < %s" % str(endTime)
+          #Order of results
+        query += ' ORDER BY startTime DESC'
+        print(query)
+        #Activate foreign key support
+        self.set_foreign_keys_support()
+        #Cursor and row initialization
+        self.con.row_factory = sqlite3.Row
+        cur = self.con.cursor()
+        #Execute main SQL Statement
+        cur.execute(query)
+        #Get results
+        rows = cur.fetchall()
+        if rows is None:
+            return None
+        #Build the return object
+        reservations = []
+        for row in rows:
+            reservation = self._create_reservation_list_object(row)
+            reservations.append(reservation)
+        return reservations
+        
+    def get_reservation (self, reservationID):
+        '''
+        Extracts a specific reservation from the database.
+
+        :param reservationID: ID of reservation
+        :return: A dictionary with the format provided in
+            :py:meth:`_create_reservation_object` or None if the reservation with target
+            id does not exist.
+        '''
+        #Activate foreign key support
+        self.set_foreign_keys_support()
+        #Create the SQL Query
+        query = 'SELECT * FROM reservations WHERE reservationID = ?'
+        #Cursor and row initialization
+        self.con.row_factory = sqlite3.Row
+        cur = self.con.cursor()
+        #Execute main SQL Statement
+        pvalue = (reservationID,)
+        cur.execute(query, pvalue)
+        #Process the response.
+        #Just one row is expected
+        row = cur.fetchone()
+        if row is None:
+            return None
+        #Build the return object
+        return self._create_reservation_object(row)   
+        
+    def modify_reservation (self, reservationID, startTime, endTime, updateBy = None):
+        '''
+        Modify the startTime and endTime of the reservation
+
+        :param int reservationID: ID of the reservation
+        :param int startTime & endTime: UNIX time stamp
+        :return: the id of the edited reservation or None if the type was
+              not found.
+
+        '''
+        #Extracts the int which is the id for a machine in the database
+        #Create the SQL statment
+        stmnt = 'UPDATE reservations SET startTime=:startTime , endTime=:endTime,  \
+                 WHERE reservationID =:reservationID'
+        #Activate foreign key support
+        self.set_foreign_keys_support()
+        #Cursor and row initialization
+        self.con.row_factory = sqlite3.Row
+        cur = self.con.cursor()
+        #Execute main SQL Statement
+        pvalue = {"typeID": typeID,
+                  "typeName": typeName,
+                  "pastProject": pastProject}
+        try:
+            cur.execute(stmnt, pvalue)
+            self.con.commit()
+        except sqlite3.Error as e:
+            print ("Error %s:" % (e.args[0]))
+        else: 
+            if cur.rowcount < 1:
+                return None
+        return typeID      
+    def disable_reservation (self, reservationID):
+        return None
+    
+    def delete_500_oldest_reservations (self):
+        return None
+    
+    def create_reservation(self, userID, machineID, startTime, endTime):
+        return None
+    
     #ACCESSING THE USER and USER_PROFILE tables
     def get_users(self):
         '''

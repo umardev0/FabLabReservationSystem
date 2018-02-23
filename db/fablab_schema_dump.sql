@@ -3,11 +3,14 @@ BEGIN TRANSACTION;
 CREATE TABLE IF NOT EXISTS `users` (
 	`userID`	INTEGER PRIMARY KEY AUTOINCREMENT,
 	`username`	TEXT NOT NULL UNIQUE,
-	`password`	TEXT NOT NULL,
+	`password`	NUMERIC NOT NULL,
+	`email`	TEXT,
+	`mobile`	TEXT,
+	`website`	TEXT,
 	`isAdmin`	INTEGER DEFAULT 0,
 	`createdAt`	INTEGER,
 	`modifiedAt`	INTEGER,
-	UNIQUE(userID, username)
+	UNIQUE(`userID`,`username`)
 );
 CREATE TABLE IF NOT EXISTS `reservations` (
 	`reservationID`	INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
