@@ -1493,7 +1493,6 @@ class Connection(object):
         #execute the statement
         cur.execute(stmnt, pvalue)
         #Process the response. Only one posible row is expected.
-        self.con.commit()
         #Extract the id of the added message
         lid = cur.lastrowid
         #Return the id in
