@@ -1,6 +1,6 @@
 BEGIN TRANSACTION;
 INSERT INTO `users` VALUES (0,'admin','adminpassword','admin@fablab.oulu.fi','0414868685','https://wiki.oulu.fi/display/FLOWS/Fab+Lab+Oulu+Wiki+Space',1,1519472330,NULL,0,NULL);
-INSERT INTO `users` VALUES (1,'user1','user1password','user1@fablab.oulu.fi','0414868688','https://wiki.oulu.fi/display/FLOWS/Fab+Lab+Oulu+Wiki+Space',1,1519472333,1519472333,1,0);
+INSERT INTO `users` VALUES (1,'user1','user1password','user1@fablab.oulu.fi','0414868688','https://wiki.oulu.fi/display/FLOWS/Fab+Lab+Oulu+Wiki+Space',1,1519472333,1519474333,1,0);
 INSERT INTO `users` VALUES (2,'user2','user2password','user2@fablab.oulu.fi','0414868688','https://wiki.oulu.fi/display/FLOWS/Fab+Lab+Oulu+Wiki+Space',0,1519473318,NULL,2,NULL);
 INSERT INTO `users` VALUES (3,'user3','user3password','user3@fablab.oulu.fi','0414868688','https://wiki.oulu.fi/display/FLOWS/Fab+Lab+Oulu+Wiki+Space',0,1519473418,NULL,3,NULL);
 INSERT INTO `users` VALUES (4,'user4','user4password','user4@fablab.oulu.fi','0414868688','https://wiki.oulu.fi/display/FLOWS/Fab+Lab+Oulu+Wiki+Space',0,1519473518,NULL,4,NULL);
