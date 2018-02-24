@@ -403,6 +403,7 @@ class Connection(object):
 
         return {'typeID': row['typeID'],
                'typeName': row['typeName'],
+               'typeFullname': row['typeFullname'],
                'pastProject': row['pastProject'],
                'createdAt': row['createdAt'],
                'updatedAt': row['updatedAt'],
@@ -420,7 +421,7 @@ class Connection(object):
             ``typeName``
 
         '''
-        return {'typeID': row['typeID'], 'typeName': row['typeName']}
+        return {'typeID': row['typeID'], 'typeName': row['typeName'], 'typeFullname': row['typeFullname']}
         
     #Helpers for message
     def _create_message_object(self, row):
@@ -1087,12 +1088,13 @@ class Connection(object):
             print("Error %s:" % (e.args[0]))
         return bool(cur.rowcount)
 
-    def modify_type(self, typeID, typeName, pastProject, updatedBy= '0'):
+    def modify_type(self, typeID, typeName, typeFullname, pastProject, updatedBy= '0'):
         '''
         Modify the name, the past project of the type with id
         ``typeID``
 
-        :param str typeName: name of the type
+        :param str typeName: short name of the type
+        :param str typeFullname: full name of the type
         :param int typeID: machine's type ID
         :param str pastProject: the previous projects HTML link
         :return: the id of the edited type or None if the type was
@@ -1102,7 +1104,7 @@ class Connection(object):
         '''
         #Extracts the int which is the id for a machine in the database
         #Create the SQL statment
-        stmnt = 'UPDATE machinetypes SET typeName=:typeName , pastProject=:pastProject, updatedAt=:timestamp, updatedBy=:updatedBy \
+        stmnt = 'UPDATE machinetypes SET typeName=:typeName , typeFullname=:typeFullname pastProject=:pastProject, updatedAt=:timestamp, updatedBy=:updatedBy \
                  WHERE typeID =:typeID'
         #Activate foreign key support
         self.set_foreign_keys_support()
@@ -1114,6 +1116,7 @@ class Connection(object):
         #Execute main SQL Statement
         pvalue = {"typeID": typeID,
                   "typeName": typeName,
+                  "typeFullname": typeFullname,
                   "pastProject": pastProject,
                   "timestamp":timestamp,
                   "updatedBy":updatedBy}
@@ -1127,11 +1130,12 @@ class Connection(object):
                 return None
         return typeID  
 
-    def create_type(self, typeName, pastProject, createdBy='0'):
+    def create_type(self, typeName, typeFullname, pastProject, createdBy='0'):
         '''
         Create a new machine type with the data provided as arguments.
 
-        :param str typeName: the machine's content
+        :param str typeName: short name of the type
+        :param str typeFullname: full name of the type
         :param int typeID: the type of the machine
         :param string pastProject: HTML link for past projects
         :param int createdBy: the userID of the person who receive this message. Default value is 0, SQLAdmin
@@ -1145,9 +1149,9 @@ class Connection(object):
 
         
         #Create the SQL statement for inserting the data
-        stmnt = 'INSERT INTO machinetypes (typeName, pastProject, createdAt, \
+        stmnt = 'INSERT INTO machinetypes (typeName, typeFullname, pastProject, createdAt, \
                  createdBy) \
-                 VALUES(?,?,?,?)'
+                 VALUES(?,?,?,?,?)'
           #Variables for the statement.
           #user_id is obtained from first statement.
         timestamp = time.mktime(datetime.now().timetuple())
@@ -1156,7 +1160,7 @@ class Connection(object):
         #Cursor and row initialization
         self.con.row_factory = sqlite3.Row
         cur = self.con.cursor()
-        pvalue = (typeName, pastProject, timestamp, createdBy)
+        pvalue = (typeName, typeFullname, pastProject, timestamp, createdBy)
         #Execute the statement
         cur.execute(stmnt, pvalue)
         self.con.commit()

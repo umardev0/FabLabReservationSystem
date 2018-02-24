@@ -9,7 +9,9 @@ CREATE TABLE IF NOT EXISTS `users` (
 	`website`	TEXT,
 	`isAdmin`	INTEGER DEFAULT 0,
 	`createdAt`	INTEGER,
-	`modifiedAt`	INTEGER,
+	`updatedAt`	INTEGER,
+	`createdBy`	INTEGER,
+	`updatedBy`	INTEGER,
 	UNIQUE(`userID`,`username`)
 );
 CREATE TABLE IF NOT EXISTS `reservations` (
@@ -18,41 +20,43 @@ CREATE TABLE IF NOT EXISTS `reservations` (
 	`machineID`	INTEGER NOT NULL,
 	`startTime`	INTEGER,
 	`endTime`	INTEGER,
-	`reservationDate`	INTEGER,
 	`isActive`	INTEGER NOT NULL DEFAULT 1,
 	`createdAt`	INTEGER,
 	`createdBy`	INTEGER,
 	`updatedAt`	INTEGER,
 	`updateBy`	INTEGER,
-	FOREIGN KEY(userID) REFERENCES users(userID) ON DELETE CASCADE,
-	FOREIGN KEY(machineID) REFERENCES machines(machineID) ON DELETE CASCADE);
-
+	FOREIGN KEY(`machineID`) REFERENCES `machines`(`machineID`) ON DELETE CASCADE,
+	FOREIGN KEY(`userID`) REFERENCES `users`(`userID`) ON DELETE CASCADE
+);
 CREATE TABLE IF NOT EXISTS `messages` (
 	`messageID`	INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
 	`fromUserID`	INTEGER,
 	`toUserID`	INTEGER,
 	`content`	TEXT,
 	`createdAt`	INTEGER,
-	FOREIGN KEY(fromUserID) REFERENCES users(userID) ON DELETE CASCADE,
-	FOREIGN KEY(toUserID) REFERENCES users(userID) ON DELETE CASCADE);
-
+	FOREIGN KEY(`fromUserID`) REFERENCES `users`(`userID`) ON DELETE CASCADE,
+	FOREIGN KEY(`toUserID`) REFERENCES `users`(`userID`) ON DELETE CASCADE
+);
 CREATE TABLE IF NOT EXISTS `machinetypes` (
 	`typeID`	INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
 	`typeName`	TEXT UNIQUE,
+	`typeFullname`	TEXT,
 	`pastProject`	TEXT,
 	`createdAt`	INTEGER,
-	`modifiedAt`	INTEGER,
+	`updatedAt`	INTEGER,
 	`createdBy`	INTEGER,
-	`modifiedBy`	INTEGER);
+	`updatedBy`	INTEGER
+);
 CREATE TABLE IF NOT EXISTS `machines` (
 	`machineID`	INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
 	`machinename`	TEXT UNIQUE,
-	`typeID`	INTEGER NOT NULL,
+	`typeID`	INTEGER,
 	`tutorial`	TEXT,
 	`createdAt`	INTEGER,
 	`updatedAt`	INTEGER,
 	`createdBy`	INTEGER,
-	`updateBy`	INTEGER,
-	FOREIGN KEY(typeID) REFERENCES machinetypes(typeID) ON DELETE CASCADE);
+	`updatedBy`	INTEGER,
+	FOREIGN KEY(`typeID`) REFERENCES `machinetypes`(`typeID`) ON DELETE CASCADE
+);
 COMMIT;
 PRAGMA foreign_keys=ON;
