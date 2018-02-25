@@ -754,6 +754,17 @@ class Connection(object):
         #Build the return object
         return self._create_machine_object(row)
 
+    def contains_machine(self, machineID):
+        '''
+        Checks if a machine is in the database.
+
+        :param str machineID: Id of the machine to search. Note that machineID
+            is a string with the format machine-\d{1,3}.
+        :return: True if the machine is in the database. False otherwise.
+
+        '''
+        return self.get_machine(machineID) is not None
+
     def get_machines(self, typeName=None):
         '''
         Return a list of all the machines in the database filtered by the

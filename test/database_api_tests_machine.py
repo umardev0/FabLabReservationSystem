@@ -5,20 +5,24 @@ from fablab import database
 #Path to the database file, different from the deployment db
 DB_PATH = 'db/fablab_test.db'
 ENGINE = database.Engine(DB_PATH)
+ENGINE.remove_database()
+ENGINE.create_tables()
+ENGINE.populate_tables()
 
-MACHINE1_ID = 'machine-1'
+
+MACHINE1_ID = 'machine-001'
 MACHINE1 = {'machineID': 1, 'machinename': 'Stratasys 380mc',
 'typeID': 1, 'tutorial': 'www.google.com',
 'createdAt': 1519472221, 'updatedAt': None,
 'createdBy': 0, 'updateBy': None}
 
-MACHINE2_ID = 'machine-2'
+MACHINE2_ID = 'machine-002'
 MACHINE2 = {'machineID': 2, 'machinename': 'Formlabs Form 2',
 'typeID': 1, 'tutorial': 'www.google.com',
 'createdAt': 1519472221, 'updatedAt': 1519472221,
 'createdBy': 0, 'updateBy': 1}
 
-MACHINE1_MODIFIED = {'machineID': 1, 'machinename': 'Roland CAMM-1 GS-24',
+MACHINE1_MODIFIED = {'machineID': 1, 'machinename': 'Roland CAMM-1 GS-25',
 'typeID': 5, 'tutorial': 'www.yahoo.com'}
 
 WRONG_machineID = 'machine-10'
@@ -28,6 +32,10 @@ class MachineDBAPITestCase(unittest.TestCase):
     '''
     Test cases for the Machines related methods.
     '''
+
+    #Creates a Connection instance to use the API
+    connection = ENGINE.connect()
+
     #INITIATION AND TEARDOWN METHODS
     @classmethod
     def setUpClass(cls):
@@ -253,7 +261,7 @@ class MachineDBAPITestCase(unittest.TestCase):
         '''
         print('('+self.test_create_machine.__name__+')',\
               self.test_create_machine.__doc__)
-        machineid = self.connection.create_machine('Roland CAMM-1 GS-24', "5", "www.gmail.com")
+        machineid = self.connection.create_machine('Roland', "5", "www.gmail.com")
         self.assertIsNotNone(machineid)
         #Get the expected created machine
         new_machine = {}
