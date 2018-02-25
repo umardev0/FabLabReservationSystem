@@ -81,11 +81,10 @@ class Engine(object):
         cur.execute(keys_on)
         with con:
             cur = con.cursor()
-            cur.execute("DELETE FROM messages")
             cur.execute("DELETE FROM users")
             cur.execute("DELETE FROM machinetypes")
-            #NOTE since we have ON DELETE CASCADE BOTH IN users_profile AND #PWP20_2018
-            #friends, WE DO NOT HAVE TO WORRY TO CLEAR THOSE TABLES.
+            #NOTE since we have ON DELETE CASCADE BOTH IN messages AND reservations AND
+            #machines, WE DO NOT HAVE TO WORRY TO CLEAR THOSE TABLES.
 
     #METHODS TO CREATE AND POPULATE A DATABASE USING DIFFERENT SCRIPTS
     def create_tables(self, schema=None):
@@ -150,18 +149,18 @@ class Connection(object):
 
     :param db_path: Location of the database file.
     :type dbpath: str
-
+     def isclosed(self):
+        
+        #return: ``True`` if connection has already being closed.  
+        
+        return self._isclosed
     '''
     def __init__(self, db_path):
         super(Connection, self).__init__()
         self.con = sqlite3.connect(db_path)
         self._isclosed = False
 
-    def isclosed(self):
-        '''
-        :return: ``True`` if connection has already being closed.  
-        '''
-        return self._isclosed
+    
 
     def close(self):
         '''
@@ -698,50 +697,6 @@ class Connection(object):
         '''
         #Extracts the int which is the id for a message in the database
 
-        '''
-        TASK5 TODO:
-        * Finish this method
-        HINTS
-        * Remember that add a new row you must use the INSERT command.
-         sql command
-        * You have to add the following fields in the INSERT command:
-            - title -> passed as argument
-            - body -> passed as argument
-            - timestamp -> Use the expression:
-                           time.mktime(datetime.now().timetuple()) to get
-                           current timestamp.
-            - ip -> passed as argument ipaddres
-            - timesviewed -> Use the int 0.
-            - reply_to -> passed as argument replyto. It is recommended
-                          that you check that the message exists.
-                          Otherwise, return None.
-                          To check if the message exists check the messages
-                          table using the following SQL Query:
-                          'SELECT * from messages WHERE message_id = ?'
-            - user_nickname -> passed as sender argument
-            - user_id -> You must find the user_id accessing the users table.
-                         Use the following statement:
-                         'SELECT user_id from users WHERE nickname = ?'
-        * You can extract the id of the new row using lastrowid property
-          in cursor
-        * Be sure that you commit the current transaction
-        * Remember to activate the foreign key support
-        RECOMMENDED PROCEDURE:
-          - Activate foreign key support
-          - Calculate current timestamp
-          - Check that the replyto message exists, otherwise return None
-            'SELECT * from messages WHERE message_id = ?'
-          - Get the user_id from a given nickname
-            'SELECT user_id from users WHERE nickname = ?'
-          - Append the new message to the database using a INSERT statement
-
-        * HOW TO TEST: Use the database_api_tests_message. The following tests
-                       must pass without failure or error:
-                * test_create_message
-                * test_append_answer
-                * test_append_answer_malformed_id
-                * test_append_answer_noexistingid
-        '''
         #Create the SQL statement for inserting the data
         stmnt = 'INSERT INTO messages (fromUserID,toUserID,content, \
                  createdAt) \
@@ -1303,6 +1258,7 @@ class Connection(object):
 
         :param int reservationID: ID of the reservation
         :param int startTime & endTime: UNIX time stamp
+        :param int updatedBy: userID of user
         :return: the id of the edited reservation or None if the type was
               not found.
 
@@ -1335,7 +1291,7 @@ class Connection(object):
         Modify the reservation's isActive state
 
         :param int reservationID: ID of the reservation
-        :param int startTime & endTime: UNIX time stamp
+        :param int updatedBy: userID of user
         :return: the id of the edited reservation or None if the type was
               not found.
 
@@ -1416,8 +1372,8 @@ class Connection(object):
         Extracts all users in the database.
 
         :return: list of Users of the database. Each user is a dictionary
-            that contains two keys: ``nickname``(str) and ``registrationdate``
-            (long representing UNIX timestamp). None is returned if the database
+            that contains two keys: ``userName``(str) and ``userID``
+            (int). None is returned if the database
             has no users.
 
         '''
@@ -1445,7 +1401,7 @@ class Connection(object):
         '''
         Extracts all the information of a user.
 
-        :param str nickname: The nickname of the user to search for.
+        :param str username: The username of the user to search for.
         :return: dictionary with the format provided in the method:
             :py:meth:`_create_user_object`
 
@@ -1473,11 +1429,16 @@ class Connection(object):
 
     def create_user(self, username, password, email = None, mobile = None, website = None, isAdmin='0', createdBy='0'):
         '''
-        Extracts all the information of a user.
+        Create a new user with username, password and other information.
 
-        :param str nickname: The nickname of the user to search for.
-        :return: dictionary with the format provided in the method:
-            :py:meth:`_create_user_object`
+        :param str username: The username of the user.
+        :param str password: The password of the user.
+        :param str email: The email of the user.
+        :param str mobile: The mobile of the user.
+        :param str website: The website of the user.
+        :param integer isAdmin: 0: user, 1: admin.
+        :param integer createdBy: userID of user who created this user, or blank.
+        :return: userID:
 
         '''
         #Create the SQL Statements
@@ -1539,7 +1500,7 @@ class Connection(object):
         :param str email: The email of the user to modify
         :param str mobile: The mobile of the user to modify
         :param str website: The website of the user to modify
-        :param str updatedBy: The username of the user who modify this user
+        :param integer updatedBy: The username of the user who modify this user
 
 
             Note that all values are string if they are not otherwise indicated.
@@ -1576,49 +1537,18 @@ class Connection(object):
 
     def change_role_user(self, username, isAdmin='0', updatedBy='0'):
         '''
-        Create a new user in the database.
+        Change user role of user in the database.
 
-        :param str nickname: The nickname of the user to modify
-        :param dict user: a dictionary with the information to be modified. The
-                dictionary has the following structure:
+        :param str username: The username of the user to modify
+        :param integer isAdmin: 0:normal user or 1: admin
+        :param integer updatedBy: The userID of the user who modify this user
 
-                .. code-block:: javascript
-
-                    {'public_profile':{'registrationdate':,'signature':'',
-                                       'avatar':''},
-                    'restricted_profile':{'firstname':'','lastname':'',
-                                          'email':'', 'website':'','mobile':'',
-                                          'skype':'','birthday':'','residence':'',
-                                          'gender':'', 'picture':''}
-                    }
-
-                where:
-
-                * ``registrationdate``: UNIX timestamp when the user registered
-                    in the system (long integer)
-                * ``signature``: text chosen by the user for signature
-                * ``avatar``: name of the image file used as avatar
-                * ``firstanme``: given name of the user
-                * ``lastname``: family name of the user
-                * ``email``: current email of the user.
-                * ``website``: url with the user's personal page. Can be None
-                * ``mobile``: string showing the user's phone number. Can be
-                    None.
-                * ``skype``: user's nickname in skype. Can be None.
-                * ``residence``: complete user's home address.
-                * ``picture``: file which contains an image of the user.
-                * ``gender``: User's gender ('male' or 'female').
-                * ``birthday``: string containing the birthday of the user.
-
-            Note that all values are string if they are not otherwise indicated.
-
-        :return: the nickname of the modified user or None if the
-            ``nickname`` passed as parameter is not  in the database.
-        :raise ValueError: if the user argument is not well formed.
+        :return: the username of the modified user or None if the
+            username passed as parameter is not  in the database.
 
         '''
         #Create the SQL Statements
-          #SQL Statement for extracting the userid given a nickname
+          #SQL Statement for extracting the userid given a username
         query = 'UPDATE users SET isAdmin = ?,updatedBy = ?, \
                                            updatedAt = ? WHERE username = ?'
         #temporal variables
@@ -1628,7 +1558,7 @@ class Connection(object):
         #Cursor and row initialization
         self.con.row_factory = sqlite3.Row
         cur = self.con.cursor()
-        #Execute the statement to extract the id associated to a nickname
+        #Execute the statement to extract the id associated to a username
         #execute the main statement
         timestamp = time.mktime(datetime.now().timetuple()) 
         pvalue = (isAdmin, updatedBy, timestamp, username)
