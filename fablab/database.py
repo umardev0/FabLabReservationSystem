@@ -1541,7 +1541,7 @@ class Connection(object):
 
         :param str username: The username of the user to modify
         :param integer isAdmin: 0:normal user or 1: admin
-        :param integer updatedBy: The username of the user who modify this user
+        :param integer updatedBy: The userID of the user who modify this user
 
         :return: the username of the modified user or None if the
             username passed as parameter is not  in the database.
