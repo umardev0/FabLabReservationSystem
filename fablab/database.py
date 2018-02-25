@@ -150,18 +150,18 @@ class Connection(object):
 
     :param db_path: Location of the database file.
     :type dbpath: str
-
+     def isclosed(self):
+        
+        #return: ``True`` if connection has already being closed.  
+        
+        return self._isclosed
     '''
     def __init__(self, db_path):
         super(Connection, self).__init__()
         self.con = sqlite3.connect(db_path)
         self._isclosed = False
 
-    def isclosed(self):
-        '''
-        :return: ``True`` if connection has already being closed.  
-        '''
-        return self._isclosed
+    
 
     def close(self):
         '''
