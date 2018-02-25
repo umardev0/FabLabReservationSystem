@@ -35,7 +35,7 @@ class Engine(object):
 
     :param db_path: The path of the database file (always with respect to the
         calling script. If not specified, the Engine will use the file located
-        at *db/forum.db*. We will create the database from .sql file.
+        at *db/fablab.db*. We will create the database from .sql file.
 
     '''
     def __init__(self, db_path=None):
@@ -150,9 +150,9 @@ class Connection(object):
     :param db_path: Location of the database file.
     :type dbpath: str
      def isclosed(self):
-        
-        #return: ``True`` if connection has already being closed.  
-        
+
+        #return: ``True`` if connection has already being closed.
+
         return self._isclosed
     '''
     def __init__(self, db_path):
@@ -160,7 +160,7 @@ class Connection(object):
         self.con = sqlite3.connect(db_path)
         self._isclosed = False
 
-    
+
 
     def close(self):
         '''
@@ -251,14 +251,14 @@ class Connection(object):
             * ``machineID``: id of the machine (int)
             * ``machinename``: machine's name
             * ``typeID``: type of the machine (int & FK - machinetypes table)
-            * ``tutorial``: link to a HTML file that has tutorial for this machine (text)            
+            * ``tutorial``: link to a HTML file that has tutorial for this machine (text)
             * ``createdAt, updatedAt``: UNIX timestamp (long integer) that specifies when
               the machine was created or updated.
             * ``createdBy & updatedBy``: The userID owner or modifier.
 
             Note that all values in the returned dictionary are string unless
             otherwise stated.
-            
+
             Structure of an object:
                     machine = {'machineID': message_id, 'machinename': machine_name,
                    'typeID': machine_type_id, 'tutorial': machine_tutorial,
@@ -273,7 +273,7 @@ class Connection(object):
         machine_created_at = row['createdAt']
         machine_updated_at = row['updatedAt']
         machine_created_by = row['createdBy']
-        machine_updated_by = row['updatedBy']        
+        machine_updated_by = row['updatedBy']
         machine = {'machineID': machine_id, 'machinename': machine_name,
                    'typeID': machine_type_id, 'tutorial': machine_tutorial,
                    'createdAt': machine_created_at, 'updatedAt': machine_updated_at,
@@ -321,7 +321,7 @@ class Connection(object):
                'isAdmin': user_isAdmin,
                'createdAt': user_createdAt,
                'updatedAt': user_updatedAt}
-                
+
 
             where:
 
@@ -332,8 +332,8 @@ class Connection(object):
             * ``mobile``: string showing the user's phone number. Can be None.
             * ``website``: url with the user's personal page. Can be None
             * ``isAdmin``: role of user
-            * ``createdAt``: UNIX timestamp 
-            * ``updatedAt``: UNIX timestamp 
+            * ``createdAt``: UNIX timestamp
+            * ``updatedAt``: UNIX timestamp
             Note that all values are string if they are not otherwise indicated.
 
         '''
@@ -387,7 +387,7 @@ class Connection(object):
                'updatedAt': row['updatedAt'],
                'createdBy': row['createdBy'],
                'updatedBy': row['updatedBy']}
-                
+
 
             where:
 
@@ -421,7 +421,7 @@ class Connection(object):
 
         '''
         return {'typeID': row['typeID'], 'typeName': row['typeName'], 'typeFullname': row['typeFullname']}
-        
+
     #Helpers for message
     def _create_message_object(self, row):
         '''
@@ -438,7 +438,7 @@ class Connection(object):
                'toUserID': row['toUserID'],
                'content': row['content'],
                'createdAt': row['createdAt']}
-                
+
 
             where:
 
@@ -490,7 +490,7 @@ class Connection(object):
                'createdBy': row['createdBy'],
                'updatedAt': row['updatedAt'],
                'updatedBy': row['updatedBy']}
-                
+
 
             where:
 
@@ -502,7 +502,7 @@ class Connection(object):
             * ``isActive``: status of reservation
             * ``createdAt & updatedAt``: UNIX timestamp
             * ``createdBy & updatedBy``: userID
-            
+
             Note that all values are string if they are not otherwise indicated.
 
         '''
@@ -721,17 +721,17 @@ class Connection(object):
     #MACHINE API
     def get_machine(self, machineID):
         '''
-        Extracts a message from the database.
+        Extracts a machine from the database.
 
-        :param machineID: The id of the machine. Note that messageid is a
+        :param machineID: The id of the machine. Note that machineid is a
             string with format ``machine-\d{1,3}``.
         :return: A dictionary with the format provided in
-            :py:meth:`_create_message_object` or None if the message with target
+            :py:meth:`_create_machine_object` or None if the machine with target
             id does not exist.
         :raises ValueError: when ``machineID`` is not well formed
 
         '''
-        #Extracts the int which is the id for a message in the database
+        #Extracts the int which is the id for a machine in the database
         match = re.match(r'machine-(\d{1,3})', machineID)
         if match is None:
             raise ValueError("The machineID is malformed")
@@ -772,7 +772,7 @@ class Connection(object):
             * ``createdAt & updatedAt``: UNIX timestamp (long int) that specifies when the
                 machine was created or updated.
             * ``createdBy & updatedBy``: UserID
-                
+
 
             Note that all values in the returned dictionary are string unless
             otherwise stated.
@@ -828,8 +828,8 @@ class Connection(object):
             machine = self._create_machine_list_object(machine)
             machines.append(machine)
             #Limit the number of resulst return
-    
-        return machines        
+
+        return machines
 
     def delete_machine(self, machineID):
         '''
@@ -906,10 +906,10 @@ class Connection(object):
             self.con.commit()
         except sqlite3.Error as e:
             print ("Error %s:" % (e.args[0]))
-        else: 
+        else:
             if cur.rowcount < 1:
                 return None
-        return 'machine-%s' % machineID  
+        return 'machine-%s' % machineID
 
     def create_machine(self, machinename, typeID, tutorial, createdBy='0'):
         '''
@@ -927,7 +927,7 @@ class Connection(object):
         '''
         #Extracts the int which is the id for a message in the database
 
-        
+
         #Create the SQL statement for inserting the data
         stmnt = 'INSERT INTO machines (machinename, typeID, tutorial, \
                  createdBy, createdAt) \
@@ -950,7 +950,7 @@ class Connection(object):
         return 'machine-' + str(lid) if lid is not None else None
 
 
-        
+
     #TYPE API
     def get_type(self, typeName):
         '''
@@ -987,7 +987,7 @@ class Connection(object):
         conditions provided in the parameters.
 
 
-        :return: A list of types. 
+        :return: A list of types.
             * ``typeID``: typeID of the machine
             * ``typeName``: name of the type.
 
@@ -1014,8 +1014,8 @@ class Connection(object):
             type = self._create_type_list_object(type)
             types.append(type)
             #Limit the number of resulst return
-    
-        return types        
+
+        return types
 
     def delete_type(self, typeName):
         '''
@@ -1080,10 +1080,10 @@ class Connection(object):
             self.con.commit()
         except sqlite3.Error as e:
             print ("Error %s:" % (e.args[0]))
-        else: 
+        else:
             if cur.rowcount < 1:
                 return None
-        return typeID  
+        return typeID
 
     def create_type(self, typeName, typeFullname, pastProject, createdBy='0'):
         '''
@@ -1095,14 +1095,14 @@ class Connection(object):
         :param string pastProject: HTML link for past projects
         :param int createdBy: the userID of the person who receive this message. Default value is 0, SQLAdmin
         :return: the id of the created machine type or None if the machine was not
-            found. 
+            found.
 
         :raises ForumDatabaseError: if the database could not be modified.
 
         '''
         #Extracts the int which is the id for a message in the database
 
-        
+
         #Create the SQL statement for inserting the data
         stmnt = 'INSERT INTO machinetypes (typeName, typeFullname, pastProject, createdAt, \
                  createdBy) \
@@ -1123,7 +1123,7 @@ class Connection(object):
         lid = cur.lastrowid
         #Return the id in
         return str(lid) if lid is not None else None
-        
+
     # RESERVATION API
     def get_reservation_list(self, userID = None, machineID = None, startTime=-1, endTime=-1):
         #Create the SQL Statement build the string depending on the existence
@@ -1174,7 +1174,7 @@ class Connection(object):
             reservation = self._create_reservation_list_object(row)
             reservations.append(reservation)
         return reservations
-        
+
     def get_active_reservation_list(self, userID = None, machineID = None, startTime=-1, endTime=-1):
         #Create the SQL Statement build the string depending on the existence
         #of userID, machineID, startTime and endTime arguments.
@@ -1224,7 +1224,7 @@ class Connection(object):
             reservation = self._create_reservation_list_object(row)
             reservations.append(reservation)
         return reservations
-        
+
     def get_reservation (self, reservationID):
         '''
         Extracts a specific reservation from the database.
@@ -1250,8 +1250,8 @@ class Connection(object):
         if row is None:
             return None
         #Build the return object
-        return self._create_reservation_object(row)   
-        
+        return self._create_reservation_object(row)
+
     def modify_reservation (self, reservationID, startTime, endTime, updatedBy = '0'):
         '''
         Modify the startTime and endTime of the reservation
@@ -1281,11 +1281,11 @@ class Connection(object):
             self.con.commit()
         except sqlite3.Error as e:
             print ("Error %s:" % (e.args[0]))
-        else: 
+        else:
             if cur.rowcount < 1:
                 return None
-        return reservationID  
-        
+        return reservationID
+
     def disable_reservation (self, reservationID, updatedBy = '0'):
         '''
         Modify the reservation's isActive state
@@ -1313,11 +1313,11 @@ class Connection(object):
             self.con.commit()
         except sqlite3.Error as e:
             print ("Error %s:" % (e.args[0]))
-        else: 
+        else:
             if cur.rowcount < 1:
                 return None
-        return reservationID         
-    
+        return reservationID
+
     def delete_500_oldest_reservations (self):
         stmnt = 'DELETE FROM reservations WHERE reservationID IN (SELECT reservationID FROM reservations ORDER BY reservationID ASC LIMIT 500)'
         try:
@@ -1326,7 +1326,7 @@ class Connection(object):
         except sqlite3.Error as e:
             print ("Error %s:" % (e.args[0]))
         return None
-    
+
     def create_reservation(self, userID, machineID, startTime=None, endTime=None, createdBy = '0'):
         '''
         Create a new reservation with the data provided as arguments.
@@ -1336,14 +1336,14 @@ class Connection(object):
         :param string pastProject: HTML link for past projects
         :param int createdBy: the userID of the person who receive this message. Default value is 0, SQLAdmin
         :return: the id of the created machine type or None if the machine was not
-            found. 
+            found.
 
         :raises ForumDatabaseError: if the database could not be modified.
 
         '''
         #Extracts the int which is the id for a message in the database
 
-        
+
         #Create the SQL statement for inserting the data
         stmnt = 'INSERT INTO reservations (userID, machineID, startTime, \
                  endTime, createdBy, createdAt) \
@@ -1365,7 +1365,7 @@ class Connection(object):
         #Return the id in
         return str(lid) if lid is not None else None
 
-        
+
     #ACCESSING THE USERS tables
     def get_users(self):
         '''
@@ -1446,7 +1446,7 @@ class Connection(object):
         stmnt = 'INSERT INTO users (username, password, email, \
                  mobile, website, isAdmin, createdBy, createdAt) \
                  VALUES(?,?,?,?,?,?,?,?)'
-        timestamp = time.mktime(datetime.now().timetuple()) 
+        timestamp = time.mktime(datetime.now().timetuple())
         #Variable to be used in the second query.
         #Activate foreign key support
         self.set_foreign_keys_support()
@@ -1517,7 +1517,7 @@ class Connection(object):
                                            WHERE username = ?'
         #temporal variables
         user_id = None
-        
+
         #Activate foreign key support
         self.set_foreign_keys_support()
         #Cursor and row initialization
@@ -1525,7 +1525,7 @@ class Connection(object):
         cur = self.con.cursor()
         #Execute the statement to extract the id associated to a nickname
         #execute the main statement
-        timestamp = time.mktime(datetime.now().timetuple()) 
+        timestamp = time.mktime(datetime.now().timetuple())
         pvalue = (password, email, mobile, website, timestamp,
                 updatedBy, username)
         cur.execute(query, pvalue)
@@ -1552,7 +1552,7 @@ class Connection(object):
         query = 'UPDATE users SET isAdmin = ?,updatedBy = ?, \
                                            updatedAt = ? WHERE username = ?'
         #temporal variables
-        
+
         #Activate foreign key support
         self.set_foreign_keys_support()
         #Cursor and row initialization
@@ -1560,7 +1560,7 @@ class Connection(object):
         cur = self.con.cursor()
         #Execute the statement to extract the id associated to a username
         #execute the main statement
-        timestamp = time.mktime(datetime.now().timetuple()) 
+        timestamp = time.mktime(datetime.now().timetuple())
         pvalue = (isAdmin, updatedBy, timestamp, username)
         cur.execute(query, pvalue)
         self.con.commit()
@@ -1568,4 +1568,3 @@ class Connection(object):
         if cur.rowcount < 1:
             return None
         return username
-
