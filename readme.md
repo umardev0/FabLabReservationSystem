@@ -1,6 +1,18 @@
 # PWP20 - FabLab reservation API
+In this implementation, we followed the example code from Programable web project by Ivan and Mika, University of Oulu
 
-Database fucntions:
+The database is generated from SQLite (https://www.sqlite.org/index.html)
+
+There are two ways to setup and populate the database:
+1/ Run SQL scripts in /db/*dump.sql 
+2/ Run API function create_tables and populate_tables
+
+To run the tests of database, type 
+python -m test.test_module
+
+Which test_module is the file name in /test/
+
+# Database functions:
 class Engine(object):
 
     def __init__(self, db_path=None):
