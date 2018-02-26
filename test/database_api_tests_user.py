@@ -12,43 +12,43 @@ import fablab.database as database
 
 #Path to the database file, different from the deployment db
 DB_PATH = 'db/fablab_test.db'
-ENGINE = database.Engine()
+ENGINE = database.Engine(DB_PATH)
 
 
 #CONSTANTS DEFINING DIFFERENT USERS AND USER PROPERTIES
 USER1_USERNAME = 'user1'
-USER1_ID = 1
+USER1_ID = '1'
 USER1 = {'userID': USER1_ID ,
-         'username': USER1_USERNAME,'passwrod': 23459,
-		 'email':'adcd@gmail.com','mobile': '012345678',
-         'isAdmin': 1,'createdAt': 1362015937,
-         'UpdatedAt': 1362015937, 'createdBy':  2, 
-         'updatedBy`': 2 
+         'username': USER1_USERNAME,'passwrod': 'user1password',
+         'email':'user1@fablab.oulu.fi','mobile': '0414868685',
+         'website': 'https://wiki.oulu.fi/display/FLOWS/Fab+Lab+Oulu+Wiki+Space'
+         'isAdmin': '1','createdAt': '1519472330',
+         'UpdatedAt': '1519474333' , 'createdBy':  '0', 
+         'updatedBy`': '0' 
          }
-USER1 = {'userID': USER1_ID ,
-         'username': USER1_USERNAME,'passwrod': 23459,
-		 'email':'efcj@gmail.com','mobile': '012345678',
-         'isAdmin': 1,'createdAt': 1362015937,
-         'UpdatedAt': 1362015937, 'createdBy': 'New York', 
-         'updatedBy`': 2
+M_USER1= {'username': USER1_USERNAME,'passwrod': 'muser1password',
+         'email': 'muser1@fablab.oulu.fi','mobile': '0449518991',
+         'website': 'https://wiki.oulu.fi/display/FLOWS/Fab+Lab+Oulu+Wiki+Space'
+         'isAdmin': '1','createdAt': '0',
+         'UpdatedAt': '4', 'createdBy': '3', 
+         'updatedBy`': '0'
          }
 USER2_USERNAME = 'user2'
-USER2_ID = 5
-USER1 = {'userID': USER2_ID ,
-          'username': USER1_USERNAME,'passwrod': 23459,
-		  'email':'adcd@gmail.com', 'mobile': '012345678',
-          'isAdmin': 1, 'createdAt': 1362015937,
-          'UpdatedAt': 1362015937, 'createdBy':  2, 
-          'updatedBy`': 2 
+USER2_ID = '5'
+USER2 = {'userID': USER2_ID ,
+          'username': USER1_USERNAME,'passwrod': 'user2password',
+          'email':'user2@fablab.oulu.fi', 'mobile': '0414868688',
+          'website': 'https://wiki.oulu.fi/display/FLOWS/Fab+Lab+Oulu+Wiki+Space'
+          'isAdmin': '0', 'createdAt': '1519473318',
+          'UpdatedAt': '1362015937', 'createdBy':  '2', 
+          'updatedBy`': 'NULL' 
          }
 NEW_USER_USERNAME = 'user10'
-NEW_USER = {'username': NEW_USER_USERNAME,
-			'passwrod': 23459,
-			'email':'adcd@gmail.com','mobile': '012345678',
-			'isAdmin': 1,'createdAt': 1362015937,
-			'UpdatedAt': 1362015937, 'createdBy':  2, 
-			'updatedBy`': 2 
-         }
+NEW_USER = {'username': NEW_USER_USERNAME, 'passwrod': '23459',
+            'email':'adcd@gmail.com','mobile': '012345678',
+            'website': 'https://wiki.oulu.fi/display/FLOWS/Fab+Lab+Oulu+Wiki+Space'
+            'isAdmin': '1', 'createdBy':  '2', 
+            }
 USER_WRONG_USERNAME = 'user11'
 INITIAL_SIZE = 10
 
@@ -199,45 +199,63 @@ class UserDBAPITestCase(unittest.TestCase):
 
     def test_delete_user(self):
         '''
-        Test that the user1 is deleted
+        Test that the user2 is deleted
         '''
         print('('+self.test_delete_user.__name__+')', \
               self.test_delete_user.__doc__)
-        resp = self.connection.delete_user(USER1_USERNAME)
+        resp = self.connection.delete_user(USER2_USERNAME)
         self.assertTrue(resp)
         #Check that the users has been really deleted thorough a get
-        resp2 = self.connection.get_user(USER1_USERNAME)
+        resp2 = self.connection.get_user(USER2_USERNAME)
         self.assertIsNone(resp2)
         
 
-    def test_delete_user_noexistingnickname(self):
+    def test_delete_user_noexistingusername(self):
         '''
         Test delete_user with  user11 (no-existing)
         '''
-        print('('+self.test_delete_user_noexistingnickname.__name__+')', \
-              self.test_delete_user_noexistingnickname.__doc__)
+        print('('+self.test_delete_user_noexistingusername.__name__+')', \
+              self.test_delete_user_noexistingusername.__doc__)
         #Test with an existing user
         resp = self.connection.delete_user(USER_WRONG_USERNAME)
         self.assertFalse(resp)
 
-
-    def test_not_contains_user(self):
+    def test_changerole_user(self):
         '''
-        Check if the database does not contain users with id user11
-        '''
-        print('('+self.test_contains_user.__name__+')', \
-              self.test_contains_user.__doc__)
-        self.assertFalse(self.connection.contains_user(USER_WRONG_USERNAME))
-
-    def test_contains_user(self):
-        '''
-        Check if the database contains users with username user1 and user2
+        Check if the role of user with username user1 is changed contains 
         '''
         print('('+self.test_contains_user.__name__+')', \
               self.test_contains_user.__doc__)
-        self.assertTrue(self.connection.contains_user(USER1_USERNAME))
-        self.assertTrue(self.connection.contains_user(USER2_USERNAME))
+              
+        user = self.connection.change_role_type(USER1_USERNAME,0,0)
+        userobj = self.connection.get_user(user)
 
+        #test the role is changed 
+        self.assertEqual(userobj['isAdmin'],'0')
+
+    def test_modify_user(self):
+        '''
+        Test that the user user1 is modifed
+        '''
+        print('('+self.test_modify_user.__name__+')', \
+              self.test_modify_user.__doc__)
+        #Get the modified user
+        user = self.connection.modify_user(USER1_USERNAME,muser1password,'muser1@fablab.oulu.fi','12345678','https://wiki.oulu.fi/display/FLOWS/Fab+Lab+Oulu+Wiki+Space',0)
+        self.assertEqual(user, USER1_NICKNAME)
+        #Check that the users has been really modified through a get
+        resp2 = self.connection.get_user(user)
+        
+        #Check the expected values
+        
+        self.assertEqual(M_USER1['password'], resp2['password'])
+        self.assertEqual(M_USER1['email'], resp2['email'])
+        self.assertEqual(M_USER1['mobile'], resp2['mobile'])
+        self.assertEqual(M_USER1['email'], resp2['email'])
+        self.assertEqual(M_USER1['website'], resp2['website'])
+        self.assertEqual(M_USER1['UpdatedBy'], resp2['UpdatedBy'])
+        self.assertDictEqual(resp2, MODIFIED_USER1)
+       
+        
    
 
 if __name__ == '__main__':
