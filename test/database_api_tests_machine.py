@@ -5,9 +5,7 @@ from fablab import database
 #Path to the database file, different from the deployment db
 DB_PATH = 'db/fablab_test_api.db'
 ENGINE = database.Engine()
-ENGINE.remove_database()
-ENGINE.create_tables()
-ENGINE.populate_tables()
+
 
 MACHINE1_ID = 'machine-001'
 MACHINE1 = {'machineID': 1, 'machinename': 'Stratasys 380mc',
@@ -33,7 +31,6 @@ class MachineDBAPITestCase(unittest.TestCase):
     '''
 
     #Creates a Connection instance to use the API
-    connection = ENGINE.connect()
 
     #INITIATION AND TEARDOWN METHODS
     @classmethod

@@ -7,14 +7,12 @@ is been utilized.
 '''
 
 import sqlite3, unittest, collections
-import fablab.database as database
 
 from fablab import database
 
 #Path to the test database file, It is different from the deployment db
 DB_PATH = 'db/fablab_test.db'
 ENGINE = database.Engine(DB_PATH)
-connection = ENGINE.connect()
 
 INITIAL_SIZE_machines = 7
 INITIAL_SIZE_users = 10
@@ -29,7 +27,6 @@ class TestCaseCreatedTables(unittest.TestCase):
     Test cases for the created tables.
     Setup Test class 
     '''
-    connection = ENGINE.connect()
     #INITIATION AND TEARDOWN METHODS
     @classmethod
     def setUpClass(cls):

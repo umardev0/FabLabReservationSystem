@@ -21,14 +21,14 @@ USER1_ID = '1'
 USER1 = {'userID': USER1_ID ,
          'username': USER1_USERNAME,'passwrod': 'user1password',
          'email':'user1@fablab.oulu.fi','mobile': '0414868685',
-         'website': 'https://wiki.oulu.fi/display/FLOWS/Fab+Lab+Oulu+Wiki+Space'
+         'website': 'https://wiki.oulu.fi/display/FLOWS/Fab+Lab+Oulu+Wiki+Space',
          'isAdmin': '1','createdAt': '1519472330',
          'UpdatedAt': '1519474333' , 'createdBy':  '0', 
          'updatedBy`': '0' 
          }
 M_USER1= {'username': USER1_USERNAME,'passwrod': 'muser1password',
          'email': 'muser1@fablab.oulu.fi','mobile': '0449518991',
-         'website': 'https://wiki.oulu.fi/display/FLOWS/Fab+Lab+Oulu+Wiki+Space'
+         'website': 'https://wiki.oulu.fi/display/FLOWS/Fab+Lab+Oulu+Wiki+Space',
          'isAdmin': '1','createdAt': '0',
          'UpdatedAt': '4', 'createdBy': '3', 
          'updatedBy`': '0'
@@ -38,7 +38,7 @@ USER2_ID = '5'
 USER2 = {'userID': USER2_ID ,
           'username': USER1_USERNAME,'passwrod': 'user2password',
           'email':'user2@fablab.oulu.fi', 'mobile': '0414868688',
-          'website': 'https://wiki.oulu.fi/display/FLOWS/Fab+Lab+Oulu+Wiki+Space'
+          'website': 'https://wiki.oulu.fi/display/FLOWS/Fab+Lab+Oulu+Wiki+Space',
           'isAdmin': '0', 'createdAt': '1519473318',
           'UpdatedAt': '1362015937', 'createdBy':  '2', 
           'updatedBy`': 'NULL' 
@@ -46,7 +46,7 @@ USER2 = {'userID': USER2_ID ,
 NEW_USER_USERNAME = 'user10'
 NEW_USER = {'username': NEW_USER_USERNAME, 'passwrod': '23459',
             'email':'adcd@gmail.com','mobile': '012345678',
-            'website': 'https://wiki.oulu.fi/display/FLOWS/Fab+Lab+Oulu+Wiki+Space'
+            'website': 'https://wiki.oulu.fi/display/FLOWS/Fab+Lab+Oulu+Wiki+Space',
             'isAdmin': '1', 'createdBy':  '2', 
             }
 USER_WRONG_USERNAME = 'user11'
@@ -55,7 +55,6 @@ INITIAL_SIZE = 10
 
 
 class UserDBAPITestCase(unittest.TestCase):
-    connection = ENGINE.connect()
     '''
     Test cases for the Users related methods.
     '''
