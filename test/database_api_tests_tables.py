@@ -13,7 +13,7 @@ from fablab import database
 
 #Path to the test database file, It is different from the deployment db
 DB_PATH = 'db/fablab_test.db'
-ENGINE = database.Engine()
+ENGINE = database.Engine(DB_PATH)
 connection = ENGINE.connect()
 
 INITIAL_SIZE_machines = 7
