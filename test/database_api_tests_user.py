@@ -12,7 +12,7 @@ import fablab.database as database
 
 #Path to the database file, different from the deployment db
 DB_PATH = 'db/fablab_test.db'
-ENGINE = database.Engine()
+ENGINE = database.Engine(DB_PATH)
 
 
 #CONSTANTS DEFINING DIFFERENT USERS AND USER PROPERTIES
