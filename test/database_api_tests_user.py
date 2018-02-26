@@ -55,7 +55,7 @@ INITIAL_SIZE = 10
 
 
 class UserDBAPITestCase(unittest.TestCase):
-    
+    connection = ENGINE.connect()
     '''
     Test cases for the Users related methods.
     '''

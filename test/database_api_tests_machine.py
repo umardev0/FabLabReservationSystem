@@ -9,7 +9,6 @@ ENGINE.remove_database()
 ENGINE.create_tables()
 ENGINE.populate_tables()
 
-
 MACHINE1_ID = 'machine-001'
 MACHINE1 = {'machineID': 1, 'machinename': 'Stratasys 380mc',
 'typeID': 1, 'tutorial': 'www.google.com',

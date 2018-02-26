@@ -12,12 +12,13 @@ import fablab.database as database
 from fablab import database
 
 #Path to the test database file, It is different from the deployment db
-DB_PATH = 'db/forum_test.db'
-ENGINE = database.Engine(DB_PATH)
+DB_PATH = 'db/fablab_test.db'
+ENGINE = database.Engine()
+connection = ENGINE.connect()
 
-INITIAL_SIZE_machines = 6
+INITIAL_SIZE_machines = 7
 INITIAL_SIZE_users = 10
-INITIAL_SIZE_machinetypes = 7
+INITIAL_SIZE_machinetypes = 6
 INITIAL_SIZE_messages = 3
 INITIAL_SIZE_reservations = 10
 
@@ -27,8 +28,8 @@ class TestCaseCreatedTables(unittest.TestCase):
     '''
     Test cases for the created tables.
     Setup Test class 
-	'''
-	
+    '''
+    connection = ENGINE.connect()
     #INITIATION AND TEARDOWN METHODS
     @classmethod
     def setUpClass(cls):
@@ -71,6 +72,9 @@ class TestCaseCreatedTables(unittest.TestCase):
         Checks that the messages table has the right schema.
         
         '''
+        print('('+self.test_machine_table_schema.__name__+')', \
+                  self.test_machine_table_schema.__doc__)
+        
         con = self.connection.con
         with con:
             c = con.cursor()
@@ -127,13 +131,17 @@ class TestCaseCreatedTables(unittest.TestCase):
             
 
     def test_machinetypes_table_schema(self):
-		'''
+        
+        '''
         Checks that the machinetypes table has the right schema.
         
         '''
+        print('('+self.test_machinetypes_table_schema.__name__+')', \
+                  self.test_machinetypes_table_schema.__doc__)
+        
          
-         con = self.connection.con
-         with con:
+        con = self.connection.con
+        with con:
             c = con.cursor()
 
             # Retrieve column information
@@ -157,8 +165,8 @@ class TestCaseCreatedTables(unittest.TestCase):
         Checks that the table initially contains 7 machine type (check
         forum_data_dump.sql). 
         '''
-        print('('+self.test_user_table_created.__name__+')', \
-                  self.test_user_table_created.__doc__)
+        print('('+self.test_machinetypes_table_created.__name__+')', \
+                  self.test_machinetypes_table_created.__doc__)
         #Create the SQL Statement
         keys_on = 'PRAGMA foreign_keys = ON'
         query = 'SELECT * FROM machinetypes'
@@ -174,14 +182,18 @@ class TestCaseCreatedTables(unittest.TestCase):
             cur.execute(query)
             users = cur.fetchall()
             
-			#Assert
+            #Assert
             self.assertEqual(len(users), INITIAL_SIZE_machinetypes)
 
     def test_user_table_schema(self):
-	'''
+        
+        '''
         Checks that the user table has the right schema.
         
         '''
+        print('('+self.test_user_table_schema.__name__+')', \
+                  self.test_user_table_schema.__doc__)
+        
         con = self.connection.con
         with con:
             c = con.cursor()
@@ -198,11 +210,7 @@ class TestCaseCreatedTables(unittest.TestCase):
             names=['userID','username','password','email','mobile','website','isAdmin','createdAt','createdAt','createdBy','updatedBy']
             types=['INTEGER','TEXT','NUMERIC','TEXT','TEXT','TEXT','INTEGER','INTEGER','INTEGER','INTEGER','INTEGER']  
             self.assertEquals(names, names)    
-            self.assertEquals(types, types) 
-			
-			
-
-           
+            self.assertEquals(types, types)      
 
   
     def test_user_table_created(self):
@@ -215,7 +223,7 @@ class TestCaseCreatedTables(unittest.TestCase):
                   self.test_user_table_created.__doc__)
         #Create the SQL Statement
         keys_on = 'PRAGMA foreign_keys = ON'
-        query = 'SELECT * FROM users'
+        query = 'SELECT * FROM  users'
         #Get the sqlite3 con from the Connection instance
         con = self.connection.con
         with con:
@@ -227,17 +235,21 @@ class TestCaseCreatedTables(unittest.TestCase):
             #Execute main SQL Statement
             cur.execute(query)
             users = cur.fetchall()
-			
-			#Assert
-            self.assertEqual(len(users), INITIAL_SIZE_machinetypes)
+
+            #Assert
+            self.assertEqual(len(users), INITIAL_SIZE_users)
 
 
 
     def test_messages_table_schema(self):
-	'''
+
+        '''
         Checks that the messages table has the right schema.
         
         '''
+        print('('+self.test_messages_table_schema.__name__+')', \
+                  self.test_messages_table_schema.__doc__)
+        
 
         con = self.connection.con
         with con:
@@ -271,8 +283,8 @@ class TestCaseCreatedTables(unittest.TestCase):
         forum_data_dump.sql). 
         
         '''
-        print('('+self.test_user_table_created.__name__+')', \
-                  self.test_user_table_created.__doc__)
+        print('('+self.test_messages_table_created.__name__+')', \
+                  self.test_messages_table_created.__doc__)
         #Create the SQL Statement
         keys_on = 'PRAGMA foreign_keys = ON'
         query = 'SELECT * FROM users'
@@ -291,10 +303,14 @@ class TestCaseCreatedTables(unittest.TestCase):
             self.assertEqual(len(users), INITIAL_SIZE_messages)	
 
     def test_reservation_table_schema(self):
-	'''
+
+        '''
         Checks that the reservation table has the right schema.
         
         '''
+        print('('+self.test_reservation_table_schema.__name__+')', \
+                  self.test_reservation_table_schema.__doc__)
+        
         con = self.connection.con
         with con:
             c = con.cursor()
@@ -327,8 +343,8 @@ class TestCaseCreatedTables(unittest.TestCase):
         forum_data_dump.sql). 
         
         '''
-        print('('+self.test_user_table_created.__name__+')', \
-                  self.test_user_table_created.__doc__)
+        print('('+self.test_reservation_table_created.__name__+')', \
+                  self.test_reservation_table_created.__doc__)
         #Create the SQL Statement
         keys_on = 'PRAGMA foreign_keys = ON'
         query = 'SELECT * FROM reservations'
