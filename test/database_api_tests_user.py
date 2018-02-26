@@ -1,5 +1,12 @@
+'''
+Database interface for checking the tables been created correctly.
+@authors: PWP-20
+Code of Ivan and Mika provided in Programmable Web Project exercise _ University of Oulu
+is been utilized. 
 
-import unittest, sqlite3, re, os
+'''
+
+import unittest, sqlite3
 import fablab.database as database
 
 
@@ -9,7 +16,7 @@ ENGINE = database.Engine()
 
 
 #CONSTANTS DEFINING DIFFERENT USERS AND USER PROPERTIES
-USER1_USERNAME = 'Daniel'
+USER1_USERNAME = 'user1'
 USER1_ID = 1
 USER1 = {'userID': USER1_ID ,
          'username': USER1_USERNAME,'passwrod': 23459,
@@ -25,7 +32,7 @@ USER1 = {'userID': USER1_ID ,
          'UpdatedAt': 1362015937, 'createdBy': 'New York', 
          'updatedBy`': 2
          }
-USER2_NICKNAME = 'John'
+USER2_USERNAME = 'user2'
 USER2_ID = 5
 USER1 = {'userID': USER2_ID ,
           'username': USER1_USERNAME,'passwrod': 23459,
@@ -34,7 +41,7 @@ USER1 = {'userID': USER2_ID ,
           'UpdatedAt': 1362015937, 'createdBy':  2, 
           'updatedBy`': 2 
          }
-NEW_USER_USERNAME = 'Jack'
+NEW_USER_USERNAME = 'user10'
 NEW_USER = {'username': NEW_USER_USERNAME,
 			'passwrod': 23459,
 			'email':'adcd@gmail.com','mobile': '012345678',
@@ -42,8 +49,8 @@ NEW_USER = {'username': NEW_USER_USERNAME,
 			'UpdatedAt': 1362015937, 'createdBy':  2, 
 			'updatedBy`': 2 
          }
-USER_WRONG_USERNAME = 'Matt'
-INITIAL_SIZE = 1
+USER_WRONG_USERNAME = 'user11'
+INITIAL_SIZE = 10
 
 
 
@@ -84,7 +91,13 @@ class UserDBAPITestCase(unittest.TestCase):
           ENGINE.clear()
 
 
-    
+    def tearDown(self):
+        '''
+        Close underlying connection and remove all records from database
+        '''
+		
+        self.connection.close()
+        ENGINE.clear()
 
     def test_users_table_created(self):
         '''
@@ -113,7 +126,7 @@ class UserDBAPITestCase(unittest.TestCase):
 
     def test_create_user_object(self):
         '''
-        Check that the method create_user_object works return adequate values
+        Check that the method create_user_object works and two dictionaries have the same values
         for the first database row. 
         '''
         print('('+self.test_create_user_object.__name__+')', \
@@ -141,24 +154,24 @@ class UserDBAPITestCase(unittest.TestCase):
         #    con.close()
         #Test the method
         user = self.connection._create_user_object(row)
-        self.assertDictContainsSubset(user, USER1)
+        self.assertDictEquals(user, USER1)
 
     def test_get_user(self):
         '''
-        Test get_user with id Daniel and John 
+        Test get_user with id user1 and user2
         '''
         print('('+self.test_get_user.__name__+')', \
               self.test_get_user.__doc__)
 
         #Test with an existing user
         user1 = self.connection.get_user(USER1_USERNAME)
-        self.assertDictContainsSubset(user1, USER1)
+        self.assertDictEquals(user1, USER1)
         user2 = self.connection.get_user(USER2_USERNAME)
-        self.assertDictContainsSubset(user2, USER2)
+        self.assertDictEquals(user2, USER2)
 
     def test_get_user_noexistingid(self):
         '''
-        Test get_user with  msg-200 (no-existing)
+        Test get_user with  msg-20 (no-existing)
         '''
         print('('+self.test_get_user_noexistingid.__name__+')', \
               self.test_get_user_noexistingid.__doc__)
@@ -180,39 +193,37 @@ class UserDBAPITestCase(unittest.TestCase):
         #USER2_ID are correct:
         for user in users:
             if user['username'] == USER1_USERNAME:
-                self.assertDictContainsSubset(user, USER1)
+                self.assertDictEqual(user, USER1)
             elif user['username'] == USER2_USERNAME:
-                self.assertDictContainsSubset(user, USER2)
+                self.assertDictEqual(user, USER2)
 
     def test_delete_user(self):
         '''
-        Test that the user Mystery is deleted
+        Test that the user1 is deleted
         '''
         print('('+self.test_delete_user.__name__+')', \
               self.test_delete_user.__doc__)
         resp = self.connection.delete_user(USER1_USERNAME)
         self.assertTrue(resp)
-        #Check that the users has been really deleted throug a get
+        #Check that the users has been really deleted thorough a get
         resp2 = self.connection.get_user(USER1_USERNAME)
         self.assertIsNone(resp2)
-        #Check that the user does not have associated any message
-        resp3 = self.connection.get_messages(nickname=USER1_NICKNAME)
-        self.assertEqual(len(resp3), 0)
+        
 
     def test_delete_user_noexistingnickname(self):
         '''
-        Test delete_user with  Matty (no-existing)
+        Test delete_user with  user11 (no-existing)
         '''
         print('('+self.test_delete_user_noexistingnickname.__name__+')', \
               self.test_delete_user_noexistingnickname.__doc__)
         #Test with an existing user
-        resp = self.connection.delete_user(USER_WRONG_NICKNAME)
+        resp = self.connection.delete_user(USER_WRONG_USERNAME)
         self.assertFalse(resp)
 
 
     def test_not_contains_user(self):
         '''
-        Check if the database does not contain users with id Batty
+        Check if the database does not contain users with id user11
         '''
         print('('+self.test_contains_user.__name__+')', \
               self.test_contains_user.__doc__)
@@ -220,7 +231,7 @@ class UserDBAPITestCase(unittest.TestCase):
 
     def test_contains_user(self):
         '''
-        Check if the database contains users with nickname Mystery and HockeyFan
+        Check if the database contains users with username user1 and user2
         '''
         print('('+self.test_contains_user.__name__+')', \
               self.test_contains_user.__doc__)

@@ -3,8 +3,8 @@ from fablab import database
 
 
 #Path to the database file, different from the deployment db
-DB_PATH = 'db/fablab_test.db'
-ENGINE = database.Engine(DB_PATH)
+DB_PATH = 'db/fablab_test_api.db'
+ENGINE = database.Engine()
 ENGINE.remove_database()
 ENGINE.create_tables()
 ENGINE.populate_tables()

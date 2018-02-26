@@ -1,5 +1,5 @@
 '''
-Database interface for checking the tables are been creating correctly.
+Database interface for checking the tables been created correctly.
 @authors: PWP-20
 Code of Ivan and Mika provided in Programmable Web Project exercise _ University of Oulu
 is been utilized. 
@@ -7,6 +7,7 @@ is been utilized.
 '''
 
 import sqlite3, unittest, collections
+import fablab.database as database
 
 from fablab import database
 
@@ -14,10 +15,21 @@ from fablab import database
 DB_PATH = 'db/forum_test.db'
 ENGINE = database.Engine(DB_PATH)
 
-INITIAL_SIZE = 1
+INITIAL_SIZE_machines = 6
+INITIAL_SIZE_users = 10
+INITIAL_SIZE_machinetypes = 7
+INITIAL_SIZE_messages = 3
+INITIAL_SIZE_reservations = 10
+
+
 
 class TestCaseCreatedTables(unittest.TestCase):
-
+    '''
+    Test cases for the created tables.
+    Setup Test class 
+	'''
+	
+    #INITIATION AND TEARDOWN METHODS
     @classmethod
     def setUpClass(cls):
         ''' Creates the database structure. Removes first any preexisting
@@ -52,8 +64,13 @@ class TestCaseCreatedTables(unittest.TestCase):
         '''
         self.connection.close()
         ENGINE.clear()
+        ''' Setup TestCases '''
 
     def test_machine_table_schema(self):
+        '''
+        Checks that the messages table has the right schema.
+        
+        '''
         con = self.connection.con
         with con:
             c = con.cursor()
@@ -83,7 +100,7 @@ class TestCaseCreatedTables(unittest.TestCase):
   
     def test_machine_table_created(self):
         '''
-        Checks that the table initially contains 1 machines (check
+        Checks that the table initially contains 6 machines (check
         forum_data_dump.sql). 
         
         '''
@@ -104,13 +121,16 @@ class TestCaseCreatedTables(unittest.TestCase):
             cur.execute(query)
             machines = cur.fetchall()
             #Assert
-            self.assertEqual(len(machines), INITIAL_SIZE)
+            self.assertEqual(len(machines), INITIAL_SIZE_machines)
 
     
-            #Assert
-            self.assertEqual(len(users), INITIAL_SIZE)	
+            
 
     def test_machinetypes_table_schema(self):
+		'''
+        Checks that the machinetypes table has the right schema.
+        
+        '''
          
          con = self.connection.con
          with con:
@@ -129,11 +149,12 @@ class TestCaseCreatedTables(unittest.TestCase):
             types=['INTEGER','TEXT','TEXT','TEXT','INTEGER','INTEGER','INTEGER','INTEGER']  
             self.assertEquals(names, names)    
             self.assertEquals(types, types) 
-  
+            
+			
   
     def test_machinetypes_table_created(self):
         '''
-        Checks that the table initially contains 1 machine type (check
+        Checks that the table initially contains 7 machine type (check
         forum_data_dump.sql). 
         '''
         print('('+self.test_user_table_created.__name__+')', \
@@ -152,10 +173,15 @@ class TestCaseCreatedTables(unittest.TestCase):
             #Execute main SQL Statement
             cur.execute(query)
             users = cur.fetchall()
-            #Assert
-            self.assertEqual(len(users), INITIAL_SIZE)
+            
+			#Assert
+            self.assertEqual(len(users), INITIAL_SIZE_machinetypes)
 
     def test_user_table_schema(self):
+	'''
+        Checks that the user table has the right schema.
+        
+        '''
         con = self.connection.con
         with con:
             c = con.cursor()
@@ -173,13 +199,15 @@ class TestCaseCreatedTables(unittest.TestCase):
             types=['INTEGER','TEXT','NUMERIC','TEXT','TEXT','TEXT','INTEGER','INTEGER','INTEGER','INTEGER','INTEGER']  
             self.assertEquals(names, names)    
             self.assertEquals(types, types) 
+			
+			
 
            
 
   
     def test_user_table_created(self):
         '''
-        Checks that the table initially contains 1 user (check
+        Checks that the table initially contains 10 user (check
         forum_data_dump.sql). 
         
         '''
@@ -199,10 +227,17 @@ class TestCaseCreatedTables(unittest.TestCase):
             #Execute main SQL Statement
             cur.execute(query)
             users = cur.fetchall()
+			
+			#Assert
+            self.assertEqual(len(users), INITIAL_SIZE_machinetypes)
 
 
 
     def test_messages_table_schema(self):
+	'''
+        Checks that the messages table has the right schema.
+        
+        '''
 
         con = self.connection.con
         with con:
@@ -232,7 +267,7 @@ class TestCaseCreatedTables(unittest.TestCase):
   
     def test_messages_table_created(self):
         '''
-        Checks that the table initially contains 1 messages (check
+        Checks that the table initially contains 3 messages (check
         forum_data_dump.sql). 
         
         '''
@@ -253,9 +288,13 @@ class TestCaseCreatedTables(unittest.TestCase):
             cur.execute(query)
             users = cur.fetchall()
             #Assert
-            self.assertEqual(len(users), INITIAL_SIZE)	
+            self.assertEqual(len(users), INITIAL_SIZE_messages)	
 
     def test_reservation_table_schema(self):
+	'''
+        Checks that the reservation table has the right schema.
+        
+        '''
         con = self.connection.con
         with con:
             c = con.cursor()
@@ -284,7 +323,7 @@ class TestCaseCreatedTables(unittest.TestCase):
   
     def test_reservation_table_created(self):
         '''
-        Checks that the table initially contains 1 reservations (check
+        Checks that the table initially contains 10 reservations (check
         forum_data_dump.sql). 
         
         '''
@@ -305,10 +344,9 @@ class TestCaseCreatedTables(unittest.TestCase):
             cur.execute(query)
             resevre = cur.fetchall()
             #Assert
-            self.assertEqual(len(resevre), INITIAL_SIZE)
+            self.assertEqual(len(resevre), INITIAL_SIZE_reservations)
 
-    def connection(self)
-           return self.DB_PATH	
+    
     
     
 
