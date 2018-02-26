@@ -83,6 +83,7 @@ class Engine(object):
             cur = con.cursor()
             cur.execute("DELETE FROM users")
             cur.execute("DELETE FROM machinetypes")
+            cur.execute("DELETE FROM messages")
             #NOTE since we have ON DELETE CASCADE BOTH IN messages AND reservations AND
             #machines, WE DO NOT HAVE TO WORRY TO CLEAR THOSE TABLES.
 
