@@ -9,8 +9,8 @@ INSERT INTO `users` VALUES (7,'user7','user7password','user7@fablab.oulu.fi','04
 INSERT INTO `users` VALUES (8,'user8','user8password','user8@fablab.oulu.fi','0414868688','https://wiki.oulu.fi/display/FLOWS/Fab+Lab+Oulu+Wiki+Space',0,1519473918,NULL,8,NULL);
 INSERT INTO `users` VALUES (9,'user9','user9password','user9@fablab.oulu.fi','0414868688','https://wiki.oulu.fi/display/FLOWS/Fab+Lab+Oulu+Wiki+Space',0,1519474018,NULL,9,NULL);
 INSERT INTO `messages` VALUES (1,0,1,'Reservation canceled',1519473330);
-INSERT INTO `messages` VALUES (2,NULL,NULL,NULL,NULL);
-INSERT INTO `messages` VALUES (3,NULL,NULL,NULL,NULL);
+INSERT INTO `messages` VALUES (2,0,1,NULL,NULL);
+INSERT INTO `messages` VALUES (3,0,1,NULL,NULL);
 INSERT INTO `machinetypes` VALUES (1,'3d_printers','3D Printers','http://www.oulu.fi/fablab/projects',1519472330,NULL,0,NULL);
 INSERT INTO `machinetypes` VALUES (2,'laser_cutters','Laser cutters','http://www.oulu.fi/fablab/projects',1519472330,NULL,0,NULL);
 INSERT INTO `machinetypes` VALUES (3,'milling_machines','Precission milling machines','http://www.oulu.fi/fablab/projects',1519472330,NULL,0,NULL);

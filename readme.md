@@ -1,6 +1,41 @@
 # PWP20 - FabLab reservation API
+In this implementation, we followed the example code from Programable web project by Ivan and Mika, University of Oulu
 
-Database fucntions:
+The database is generated from SQLite (https://www.sqlite.org/index.html)
+
+There are two ways to setup and populate the database:
+
+1. Run SQL scripts in /db/*dump.sql 
+
+2. Run API function create_tables and populate_tables
+
+To run the tests of database:
+
+1. Go to the root of the repository
+
+2. To test methods associated to the tables run the following code:
+```python
+python -m test.TEST_MODULE_NAME
+```
+
+For example:
+To test methods associated to the machine table run the following code
+```python
+python -m test.database_api_tests_message
+```
+To test methods associated to the user table run the following code:
+```python
+python -m test.database_api_tests_user
+```
+3. If you want to avoid that one test case is executed, you have to  decorate the corresponding method with the decorator:
+```python
+@unittest.skip("write reason of skip")
+```
+4. If you want to run just one test method isolated from the rest you can use the following code: 
+```python
+python -m unittest test.YOUR_TEST_MODULE.YOUR_TEST_CLASS.YOUR_TEST_METHOD
+```
+# Database functions:
 class Engine(object):
 
     def __init__(self, db_path=None):
