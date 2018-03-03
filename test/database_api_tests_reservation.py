@@ -3,38 +3,34 @@ from fablab import database
 
 
 #Path to the database file, different from the deployment db
-DB_PATH = 'db/fablab_test.db'
-ENGINE = database.Engine(DB_PATH)
-ENGINE.remove_database()
-ENGINE.create_tables()
-ENGINE.populate_tables()
+DB_PATH = 'db/fablab_test_api.db'
+ENGINE = database.Engine()
 
 
-RESERVATION1_ID = 'reservation-001'
-RESERVATION1 = {'reservationID': 1, 'reservationname': 'Stratasys 380mc',
-'typeID': 1, 'tutorial': 'www.google.com',
-'createdAt': 1519472221, 'updatedAt': None,
-'createdBy': 0, 'updateBy': None}
+RES1_ID = 1
+RES1 = {'reservationID': 1,'userID': 1, 'machineID': 1,
+'startTime': 151943330, 'endTime': 151945330,
+'isActive': 1,'createdAt': 1519475698, 'createdBy': 1,
+'updatedAt': None, 'updatedBy': None}
 
-RESERVATION2_ID = 'reservation-002'
-RESERVATION2 = {'reservationID': 2, 'reservationname': 'Formlabs Form 2',
-'typeID': 1, 'tutorial': 'www.google.com',
-'createdAt': 1519472221, 'updatedAt': 1519472221,
-'createdBy': 0, 'updateBy': 1}
+RES2_ID = 2
+RES2 = {'reservationID': 2,'userID': 1, 'machineID': 2,
+'startTime': 151943330, 'endTime': 151944330,
+'isActive': 1,'createdAt': 1519473698, 'createdBy': 1,
+'updatedAt': None, 'updatedBy': None}
 
-RESERVATION1_MODIFIED = {'reservationID': 1, 'reservationname': 'Roland CAMM-1 GS-25',
-'typeID': 5, 'tutorial': 'www.yahoo.com'}
+RES1_MODIFIED = {'reservationID': 1, 'startTime': 151942220,
+'endTime': 151943330}
 
-WRONG_reservationID = 'reservation-10'
-INITIAL_SIZE = 7
+WRONG_resID = 20
+INITIAL_SIZE = 10
 
-class MachineDBAPITestCase(unittest.TestCase):
+class ReservationDBAPITestCase(unittest.TestCase):
     '''
-    Test cases for the Machines related methods.
+    Test cases for the Reservations related methods.
     '''
 
     #Creates a Connection instance to use the API
-    connection = ENGINE.connect()
 
     #INITIATION AND TEARDOWN METHODS
     @classmethod
@@ -74,7 +70,7 @@ class MachineDBAPITestCase(unittest.TestCase):
 
     def test_reservations_table_created(self):
         '''
-        Checks that the table initially contains 5 reservations (check
+        Checks that the table initially contains INITIAL_SIZE reservations (check
         fablab_data_dump.sql). NOTE: Do not use Connection instance but
         call directly SQL.
         '''
@@ -122,7 +118,8 @@ class MachineDBAPITestCase(unittest.TestCase):
             row = cur.fetchone()
         #Test the method
         reservation = self.connection._create_reservation_object(row)
-        self.assertDictContainsSubset(reservation, RESERVATION1)
+        reservation['machineID'] = 1
+        self.assertDictContainsSubset(reservation, RES1)
 
     def test_get_reservation(self):
         '''
@@ -131,94 +128,197 @@ class MachineDBAPITestCase(unittest.TestCase):
         print('('+self.test_get_reservation.__name__+')', \
               self.test_get_reservation.__doc__)
         #Test with an existing reservation
-        reservation = self.connection.get_reservation(RESERVATION1_ID)
-        self.assertDictContainsSubset(reservation, RESERVATION1)
-        reservation = self.connection.get_reservation(RESERVATION2_ID)
-        self.assertDictContainsSubset(reservation, RESERVATION2)
+        reservation = self.connection.get_reservation(RES1_ID)
+        RES1['machineID'] = 'machine-1'
+        self.assertDictContainsSubset(reservation, RES1)
+        reservation = self.connection.get_reservation(RES2_ID)
+        RES2['machineID'] = 'machine-2'
+        self.assertDictContainsSubset(reservation, RES2)
 
     def test_get_reservation_malformedid(self):
         '''
-        Test get_reservation with id mach-1 (malformed)
+        Test get_reservation with id rese-1 (malformed)
         '''
         print('('+self.test_get_reservation_malformedid.__name__+')', \
               self.test_get_reservation_malformedid.__doc__)
         #Test with an existing reservation
         with self.assertRaises(ValueError):
-            self.connection.get_reservation('mach-1')
+            self.connection.get_reservation('rese-1')
 
     def test_get_reservation_noexistingid(self):
         '''
-        Test get_reservation with id 10 (no-existing)
+        Test get_reservation with id WRONG_resID (no-existing)
         '''
         print('('+self.test_get_reservation_noexistingid.__name__+')',\
               self.test_get_reservation_noexistingid.__doc__)
         #Test with an existing reservation
-        reservation = self.connection.get_reservation(WRONG_reservationID)
+        reservation = self.connection.get_reservation(WRONG_resID)
         self.assertIsNone(reservation)
 
-    def test_get_reservations(self):
+    def test_get_reservation_list(self):
         '''
-        Test that get_reservations work correctly
+        Test that get_reservation_list work correctly
         '''
-        print('('+self.test_get_reservations.__name__+')', self.test_get_reservations.__doc__)
-        reservations = self.connection.get_reservations()
+        print('('+self.test_get_reservation_list.__name__+')', self.test_get_reservation_list.__doc__)
+        reservations = self.connection.get_reservation_list()
         #Check that the size is correct
         self.assertEqual(len(reservations), INITIAL_SIZE)
-        #Iterate through reservations and check if the reservations with RESERVATION1_ID and RESERVATION2_ID are correct:
+        #Iterate through reservations and check if the reservations with RES1_ID and RES2_ID are correct:
         for reservation in reservations:
-            if reservation['reservationID'] == RESERVATION1_ID:
-                self.assertEqual(len(reservation), 4)
-                self.assertDictContainsSubset(reservation, RESERVATION1)
-            elif reservation['reservationID'] == RESERVATION2_ID:
-                self.assertEqual(len(reservation), 4)
-                self.assertDictContainsSubset(reservation, RESERVATION2)
+            if reservation['reservationID'] == RES1_ID:
+                self.assertEqual(len(reservation), 6)
+                RES1['machineID'] = 'machine-1'
+                self.assertDictContainsSubset(reservation, RES1)
+            elif reservation['reservationID'] == RES2_ID:
+                self.assertEqual(len(reservation), 6)
+                RES2['machineID'] = 'machine-2'
+                self.assertDictContainsSubset(reservation, RES2)
 
-    def test_get_reservations_specific_type(self):
+    def test_get_reservations_specific_user(self):
         '''
-        Get all reservations of type Stratasys. Check that their ids are 1 and 2.
+        Get all reservations of user 1. Check that their ids are 2,6,10.
         '''
-        #reservations of type '3d_printers' are 1 and 2
+        #reservations of user 1 for machine 2 are 2,6,10
         print('('+self.test_get_reservations_specific_user.__name__+')', \
               self.test_get_reservations_specific_user.__doc__)
-        reservations = self.connection.get_reservations(typeName='3d_printers')
-        self.assertEqual(len(reservations), 2)
-        #reservations id are 1 and 7
+        reservations = self.connection.get_reservation_list(1,'machine-2')
+        self.assertEqual(len(reservations), 3)
+        #reservations id are 2,6,10
         for reservation in reservations:
-            self.assertIn(reservation['reservationid'], ('reservation-1', 'reservation-2'))
-            self.assertNotIn(reservation['reservationid'], ('reservation-3', 'reservation-4',
-                                                    'reservation-5', 'reservation-6'))
+            self.assertIn(reservation['reservationID'], (2,6,10))
+            self.assertNotIn(reservation['reservationID'], (1, 3, 4, 5))
+
+    def test_get_reservations_specific_machine(self):
+        '''
+        Get all reservations of machine 2. Check that their ids are 2, 10.
+        '''
+        #reservations of user 1 for machine 2 are 2,6,10
+        print('('+self.test_get_reservations_specific_user.__name__+')', \
+              self.test_get_reservations_specific_user.__doc__)
+        reservations = self.connection.get_reservation_list(None,'machine-2')
+        self.assertEqual(len(reservations), 3)
+        #reservations id are 2 and 10
+        for reservation in reservations:
+            self.assertIn(reservation['reservationID'], (2,6,10))
+            self.assertNotIn(reservation['reservationID'], (1, 3, 4, 5))
+
+    def test_get_reservations_specific_start_time(self):
+        '''
+        Get all reservations starting after 151911000. Check that their ids are 1-10.
+        '''
+        #all reservations starting after 151911000
+        print('('+self.test_get_reservations_specific_start_time.__name__+')', \
+              self.test_get_reservations_specific_start_time.__doc__)
+        reservations = self.connection.get_reservation_list(None, None, 151911000)
+        self.assertEqual(len(reservations), 10)
+        #reservations id are 1-10
+        for reservation in reservations:
+            self.assertIn(reservation['reservationID'], (1,2,3,4,5,6,7,8,9,10))
+
+    def test_get_reservations_specific_end_time(self):
+        '''
+        Get all reservations ending before 151912005. Check that their ids are 9, 10.
+        '''
+        #reservations ending before 151912005 are 9 and 10
+        print('('+self.test_get_reservations_specific_end_time.__name__+')', \
+              self.test_get_reservations_specific_end_time.__doc__)
+        reservations = self.connection.get_reservation_list(None, None, -1, 151912005)
+        self.assertEqual(len(reservations), 2)
+        #reservations id are 9 and 10
+        for reservation in reservations:
+            self.assertIn(reservation['reservationID'], (9, 10))
+            self.assertNotIn(reservation['reservationID'], (1,2,3,4,5))
+
+    def test_get_reservations_start_end_time(self):
+        '''
+        Get all reservations starting after 151911000 & ending before 151912005. Check that their ids are 9, 10.
+        '''
+        #reservations starting after 151911000 & ending before 151912005 are 9 and 10
+        print('('+self.test_get_reservations_start_end_time.__name__+')', \
+              self.test_get_reservations_start_end_time.__doc__)
+        reservations = self.connection.get_reservation_list(None, None, 151911000, 151912005)
+        self.assertEqual(len(reservations), 2)
+        #reservations id are 9 and 10
+        for reservation in reservations:
+            self.assertIn(reservation['reservationID'], (9, 10))
+            self.assertNotIn(reservation['reservationID'], (1,2,3,4,5))
+
+    def test_get_active_reservations(self):
+        '''
+        Get all active reservations. Check that their ids are 1,2,3,4,5,6,9,10.
+        '''
+        #active reservations are 1,2,3,4,5,6,9,10
+        print('('+self.test_get_active_reservations.__name__+')', \
+              self.test_get_active_reservations.__doc__)
+        reservations = self.connection.get_active_reservation_list()
+        self.assertEqual(len(reservations), 8)
+        #reservations id are 1,2,3,4,5,6,9,10
+        for reservation in reservations:
+            self.assertIn(reservation['reservationID'], (1,2,3,4,5,6,9,10))
+            self.assertNotIn(reservation['reservationID'], (7,8))
+
+    def test_get_inactive_reservations(self):
+        '''
+        Get all inactive reservations. Check that their ids are 7,8.
+        '''
+        #inactive reservations are 7,8
+        print('('+self.test_get_active_reservations.__name__+')', \
+              self.test_get_active_reservations.__doc__)
+        reservations = self.connection.get_active_reservation_list(0)
+        self.assertEqual(len(reservations), 2)
+        #reservations id are 7,8
+        for reservation in reservations:
+            self.assertIn(reservation['reservationID'], (7,8))
+            self.assertNotIn(reservation['reservationID'], (1,2,3,4,5,6,9,10))
+
+    def test_disable_reservation(self):
+        '''
+        Modify the reservation's isActive state
+        '''
+        print('('+self.test_disable_reservation.__name__+')', \
+              self.test_disable_reservation.__doc__)
+        reservations = self.connection.disable_reservation(1)
+        self.assertEqual(reservations, 1)
+
+        #Check that the reservations has been really disabled through a get
+        resp = self.connection.get_active_reservation_list(0)
+        self.assertEqual(len(resp), 3)
+        #reservations id are 7,8
+        for reser in resp:
+            self.assertIn(reser['reservationID'], (1,7,8))
+            self.assertNotIn(reser['reservationID'], (2,3,4,5,6,9,10))
 
     def test_delete_reservation(self):
         '''
-        Test that the reservation reservation-1 is deleted
+        Test that oldest 5 reservations are deleted
         '''
         print('('+self.test_delete_reservation.__name__+')', \
               self.test_delete_reservation.__doc__)
-        resp = self.connection.delete_reservation(RESERVATION1_ID)
+        resp = self.connection.delete_oldest_reservations(5)
         self.assertTrue(resp)
         #Check that the reservation has been really deleted throug a get
-        resp2 = self.connection.get_reservation(RESERVATION1_ID)
+        resp2 = self.connection.get_reservation(RES1_ID)
         self.assertIsNone(resp2)
 
-    def test_delete_reservation_malformedid(self):
-        '''
-        Test that trying to delete reservation wit id ='1' raises an error
-        '''
-        print('('+self.test_delete_reservation_malformedid.__name__+')', \
-              self.test_delete_reservation_malformedid.__doc__)
-        #Test with an existing reservation
-        with self.assertRaises(ValueError):
-            self.connection.delete_reservation('1')
-
-    def test_delete_reservation_noexistingid(self):
-        '''
-        Test delete_reservation with  reservation-10 (no-existing)
-        '''
-        print('('+self.test_delete_reservation_noexistingid.__name__+')', \
-              self.test_delete_reservation_noexistingid.__doc__)
-        #Test with an existing reservation
-        resp = self.connection.delete_reservation(WRONG_reservationID)
-        self.assertFalse(resp)
+    # def test_delete_reservation_malformedid(self):
+    #     '''
+    #     Test that trying to delete reservation wit id ='1' raises an error
+    #     '''
+    #     print('('+self.test_delete_reservation_malformedid.__name__+')', \
+    #           self.test_delete_reservation_malformedid.__doc__)
+    #     #Test with an existing reservation
+    #     with self.assertRaises(ValueError):
+    #         self.connection.delete_reservation('1')
+    #
+    # def test_delete_reservation_noexistingid(self):
+    #     '''
+    #     Test delete_reservation with  reservation-10 (no-existing)
+    #     '''
+    #     print('('+self.test_delete_reservation_noexistingid.__name__+')', \
+    #           self.test_delete_reservation_noexistingid.__doc__)
+    #     #Test with an existing reservation
+    #     resp = self.connection.delete_reservation(WRONG_resID)
+    #     self.assertFalse(resp)
 
     def test_modify_reservation(self):
         '''
@@ -226,12 +326,11 @@ class MachineDBAPITestCase(unittest.TestCase):
         '''
         print('('+self.test_modify_reservation.__name__+')', \
               self.test_modify_reservation.__doc__)
-        resp = self.connection.modify_reservation(RESERVATION1_ID, 'Roland CAMM-1 GS-24',
-                                              "5", "www.yahoo.com")
-        self.assertEqual(resp, RESERVATION1_ID)
+        resp = self.connection.modify_reservation(RES1_ID, 151942220, 151943330)
+        self.assertEqual(resp, RES1_ID)
         #Check that the reservations has been really modified through a get
-        resp2 = self.connection.get_reservation(RESERVATION1_ID)
-        self.assertDictContainsSubset(resp2, RESERVATION1_MODIFIED)
+        resp2 = self.connection.get_reservation(RES1_ID)
+        self.assertDictContainsSubset(RES1_MODIFIED, resp2)
 
     def test_modify_reservation_malformedid(self):
         '''
@@ -241,18 +340,16 @@ class MachineDBAPITestCase(unittest.TestCase):
               self.test_modify_reservation_malformedid.__doc__)
         #Test with an existing reservation
         with self.assertRaises(ValueError):
-            self.connection.modify_reservation('1', 'Roland CAMM-1 GS-24',
-                                                  "5", "www.yahoo.com")
+            self.connection.modify_reservation('1', 151942220, 151943330)
 
     def test_modify_reservation_noexistingid(self):
         '''
-        Test modify_reservation with  reservation-10 (no-existing)
+        Test modify_reservation with WRONG_resID (no-existing)
         '''
         print('('+self.test_modify_reservation_noexistingid.__name__+')',\
               self.test_modify_reservation_noexistingid.__doc__)
         #Test with an existing reservation
-        resp = self.connection.modify_reservation(WRONG_reservationID, 'Roland CAMM-1 GS-24',
-                                              "5", "www.yahoo.com")
+        resp = self.connection.modify_reservation(WRONG_resID, 151942220, 151943330)
         self.assertIsNone(resp)
 
     def test_create_reservation(self):
@@ -261,15 +358,14 @@ class MachineDBAPITestCase(unittest.TestCase):
         '''
         print('('+self.test_create_reservation.__name__+')',\
               self.test_create_reservation.__doc__)
-        reservationid = self.connection.create_reservation('Roland', "5", "www.gmail.com")
+        reservationid = self.connection.create_reservation(5, 5)
         self.assertIsNotNone(reservationid)
         #Get the expected created reservation
         new_reservation = {}
-        new_reservation['reservationname'] = 'Roland CAMM-1 GS-24'
-        new_reservation['typeID'] = '5'
-        new_reservation['tutorial'] = 'www.gmail.com'
+        new_reservation['userID'] = 5
+        new_reservation['machineID'] = 'machine-5'
         #Check that the reservations has been really created through a get
-        resp2 = self.connection.get_reservation('reservation-8')
+        resp2 = self.connection.get_reservation(11)
         self.assertDictContainsSubset(new_reservation, resp2)
         #CHECK NOW NOT REGISTERED USER
         # reservationid = self.connection.create_reservation("new title", "new body",
@@ -286,22 +382,22 @@ class MachineDBAPITestCase(unittest.TestCase):
 
     def test_not_contains_reservation(self):
         '''
-        Check if the database does not contain reservation with id reservation-10
+        Check if the database does not contain reservation with id WRONG_resID
 
         '''
         print('('+self.test_contains_reservation.__name__+')', \
               self.test_contains_reservation.__doc__)
-        self.assertFalse(self.connection.contains_reservation(WRONG_reservationID))
+        self.assertFalse(self.connection.contains_reservation(WRONG_resID))
 
     def test_contains_reservation(self):
         '''
-        Check if the database contains reservations with id reservation-1 and reservation-2
+        Check if the database contains reservations with id 1 and 2
 
         '''
         print('('+self.test_contains_reservation.__name__+')', \
               self.test_contains_reservation.__doc__)
-        self.assertTrue(self.connection.contains_reservation(RESERVATION1_ID))
-        self.assertTrue(self.connection.contains_reservation(RESERVATION2_ID))
+        self.assertTrue(self.connection.contains_reservation(RES1_ID))
+        self.assertTrue(self.connection.contains_reservation(RES2_ID))
 
 if __name__ == '__main__':
     print('Start running reservation tests')

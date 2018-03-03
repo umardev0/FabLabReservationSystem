@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS `reservations` (
 	`createdAt`	INTEGER,
 	`createdBy`	INTEGER,
 	`updatedAt`	INTEGER,
-	`updateBy`	INTEGER,
+	`updatedBy`	INTEGER,
 	FOREIGN KEY(`machineID`) REFERENCES `machines`(`machineID`) ON DELETE CASCADE,
 	FOREIGN KEY(`userID`) REFERENCES `users`(`userID`) ON DELETE CASCADE
 );
