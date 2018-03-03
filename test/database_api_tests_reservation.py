@@ -70,9 +70,7 @@ class ReservationDBAPITestCase(unittest.TestCase):
 
     def test_reservations_table_created(self):
         '''
-        Checks that the table initially contains INITIAL_SIZE reservations (check
-        fablab_data_dump.sql). NOTE: Do not use Connection instance but
-        call directly SQL.
+        Checks that the table initially contains 10 reservations
         '''
         print('('+self.test_reservations_table_created.__name__+')', \
                   self.test_reservations_table_created.__doc__)
@@ -96,8 +94,7 @@ class ReservationDBAPITestCase(unittest.TestCase):
     def test_create_reservation_object(self):
         '''
         Check that the method _create_reservation_object works return adequate
-        values for the first database row. NOTE: Do not use Connection instace
-        to extract data from database but call directly SQL.
+        values for the first database row.
         '''
         print('('+self.test_create_reservation_object.__name__+')', \
               self.test_create_reservation_object.__doc__)
@@ -147,7 +144,7 @@ class ReservationDBAPITestCase(unittest.TestCase):
 
     def test_get_reservation_noexistingid(self):
         '''
-        Test get_reservation with id WRONG_resID (no-existing)
+        Test get_reservation with id 20 (non-existing)
         '''
         print('('+self.test_get_reservation_noexistingid.__name__+')',\
               self.test_get_reservation_noexistingid.__doc__)
@@ -273,7 +270,8 @@ class ReservationDBAPITestCase(unittest.TestCase):
 
     def test_disable_reservation(self):
         '''
-        Modify the reservation's isActive state
+        Set reservation 1's isActive state to 0 (inActive) and test if
+        has been changed
         '''
         print('('+self.test_disable_reservation.__name__+')', \
               self.test_disable_reservation.__doc__)
@@ -322,7 +320,7 @@ class ReservationDBAPITestCase(unittest.TestCase):
 
     def test_modify_reservation(self):
         '''
-        Test that the reservation reservation-1 is modifed
+        Test that the reservation 1 is modifed
         '''
         print('('+self.test_modify_reservation.__name__+')', \
               self.test_modify_reservation.__doc__)
@@ -334,7 +332,7 @@ class ReservationDBAPITestCase(unittest.TestCase):
 
     def test_modify_reservation_malformedid(self):
         '''
-        Test that trying to modify reservation wit id ='1' raises an error
+        Test that trying to modify reservation wit id ='1' (malformed id) raises an error
         '''
         print('('+self.test_modify_reservation_malformedid.__name__+')',\
               self.test_modify_reservation_malformedid.__doc__)
@@ -344,7 +342,7 @@ class ReservationDBAPITestCase(unittest.TestCase):
 
     def test_modify_reservation_noexistingid(self):
         '''
-        Test modify_reservation with WRONG_resID (no-existing)
+        Test modify_reservation with 20 (non-existing)
         '''
         print('('+self.test_modify_reservation_noexistingid.__name__+')',\
               self.test_modify_reservation_noexistingid.__doc__)
@@ -382,7 +380,7 @@ class ReservationDBAPITestCase(unittest.TestCase):
 
     def test_not_contains_reservation(self):
         '''
-        Check if the database does not contain reservation with id WRONG_resID
+        Check if the database does not contain reservation with id 20 (non-existing)
 
         '''
         print('('+self.test_contains_reservation.__name__+')', \
@@ -392,7 +390,6 @@ class ReservationDBAPITestCase(unittest.TestCase):
     def test_contains_reservation(self):
         '''
         Check if the database contains reservations with id 1 and 2
-
         '''
         print('('+self.test_contains_reservation.__name__+')', \
               self.test_contains_reservation.__doc__)
