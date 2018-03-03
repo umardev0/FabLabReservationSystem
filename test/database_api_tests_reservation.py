@@ -190,8 +190,8 @@ class ReservationDBAPITestCase(unittest.TestCase):
         Get all reservations of machine with id 2. Check that their ids are 2, 10.
         '''
         #reservations of user 1 for machine 2 are 2,6,10
-        print('('+self.test_get_reservations_specific_user.__name__+')', \
-              self.test_get_reservations_specific_user.__doc__)
+        print('('+self.test_get_reservations_specific_machine.__name__+')', \
+              self.test_get_reservations_specific_machine.__doc__)
         reservations = self.connection.get_reservation_list(None,'machine-2')
         self.assertEqual(len(reservations), 3)
         #reservations id are 2 and 10
@@ -259,8 +259,8 @@ class ReservationDBAPITestCase(unittest.TestCase):
         Get all inactive reservations. Check that their ids are 7,8.
         '''
         #inactive reservations are 7,8
-        print('('+self.test_get_active_reservations.__name__+')', \
-              self.test_get_active_reservations.__doc__)
+        print('('+self.test_get_inactive_reservations.__name__+')', \
+              self.test_get_inactive_reservations.__doc__)
         reservations = self.connection.get_active_reservation_list(0)
         self.assertEqual(len(reservations), 2)
         #reservations id are 7,8
