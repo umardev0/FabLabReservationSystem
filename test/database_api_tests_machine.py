@@ -96,7 +96,7 @@ class MachineDBAPITestCase(unittest.TestCase):
     def test_create_machine_object(self):
         '''
         Check that the method _create_machine_object works return adequate
-        values for the first database row. NOTE: Do not use Connection instace
+        values for the first database row. NOTE: Do not use Connection instance
         to extract data from database but call directly SQL.
         '''
         print('('+self.test_create_machine_object.__name__+')', \
@@ -147,7 +147,7 @@ class MachineDBAPITestCase(unittest.TestCase):
 
     def test_get_machine_noexistingid(self):
         '''
-        Test get_machine with id 10 (no-existing)
+        Test get_machine with id 10 (non-existing)
         '''
         print('('+self.test_get_machine_noexistingid.__name__+')',\
               self.test_get_machine_noexistingid.__doc__)
@@ -191,7 +191,7 @@ class MachineDBAPITestCase(unittest.TestCase):
 
     def test_delete_machine(self):
         '''
-        Test that the machine machine-1 is deleted
+        Test that the machine with id machine-1 is deleted
         '''
         print('('+self.test_delete_machine.__name__+')', \
               self.test_delete_machine.__doc__)
@@ -203,7 +203,7 @@ class MachineDBAPITestCase(unittest.TestCase):
 
     def test_delete_machine_malformedid(self):
         '''
-        Test that trying to delete machine wit id ='1' raises an error
+        Test that trying to delete machine with id ='1' (malformed) raises an error
         '''
         print('('+self.test_delete_machine_malformedid.__name__+')', \
               self.test_delete_machine_malformedid.__doc__)
@@ -213,7 +213,7 @@ class MachineDBAPITestCase(unittest.TestCase):
 
     def test_delete_machine_noexistingid(self):
         '''
-        Test delete_machine with  machine-10 (no-existing)
+        Test delete_machine with id machine-10 (non-existing)
         '''
         print('('+self.test_delete_machine_noexistingid.__name__+')', \
               self.test_delete_machine_noexistingid.__doc__)
@@ -223,7 +223,7 @@ class MachineDBAPITestCase(unittest.TestCase):
 
     def test_modify_machine(self):
         '''
-        Test that the machine machine-1 is modifed
+        Test that the machine with id machine-1 is modifed
         '''
         print('('+self.test_modify_machine.__name__+')', \
               self.test_modify_machine.__doc__)
@@ -237,7 +237,7 @@ class MachineDBAPITestCase(unittest.TestCase):
 
     def test_modify_machine_malformedid(self):
         '''
-        Test that trying to modify machine wit id ='1' raises an error
+        Test that trying to modify machine with id ='1' (malformed) raises an error
         '''
         print('('+self.test_modify_machine_malformedid.__name__+')',\
               self.test_modify_machine_malformedid.__doc__)
@@ -248,7 +248,7 @@ class MachineDBAPITestCase(unittest.TestCase):
 
     def test_modify_machine_noexistingid(self):
         '''
-        Test modify_machine with  machine-10 (no-existing)
+        Test modify_machine with id machine-10 (non-existing)
         '''
         print('('+self.test_modify_machine_noexistingid.__name__+')',\
               self.test_modify_machine_noexistingid.__doc__)

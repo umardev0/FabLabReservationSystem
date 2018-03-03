@@ -173,7 +173,7 @@ class ReservationDBAPITestCase(unittest.TestCase):
 
     def test_get_reservations_specific_user(self):
         '''
-        Get all reservations of user 1. Check that their ids are 2,6,10.
+        Get all reservations of user with id 1. Check that their ids are 2,6,10.
         '''
         #reservations of user 1 for machine 2 are 2,6,10
         print('('+self.test_get_reservations_specific_user.__name__+')', \
@@ -187,7 +187,7 @@ class ReservationDBAPITestCase(unittest.TestCase):
 
     def test_get_reservations_specific_machine(self):
         '''
-        Get all reservations of machine 2. Check that their ids are 2, 10.
+        Get all reservations of machine with id 2. Check that their ids are 2, 10.
         '''
         #reservations of user 1 for machine 2 are 2,6,10
         print('('+self.test_get_reservations_specific_user.__name__+')', \
@@ -320,7 +320,7 @@ class ReservationDBAPITestCase(unittest.TestCase):
 
     def test_modify_reservation(self):
         '''
-        Test that the reservation 1 is modifed
+        Test that the reservation with id 1 is modifed
         '''
         print('('+self.test_modify_reservation.__name__+')', \
               self.test_modify_reservation.__doc__)
