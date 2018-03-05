@@ -5,23 +5,21 @@ from fablab import database
 #Path to the database file, different from the deployment db
 DB_PATH = 'db/fablab_test_api.db'
 ENGINE = database.Engine()
-ENGINE.remove_database()
-ENGINE.create_tables()
-ENGINE.populate_tables()
 
-MACHINE1_ID = 'machine-001'
+
+MACHINE1_ID = 'machine-1'
 MACHINE1 = {'machineID': 1, 'machinename': 'Stratasys 380mc',
 'typeID': 1, 'tutorial': 'www.google.com',
 'createdAt': 1519472221, 'updatedAt': None,
-'createdBy': 0, 'updateBy': None}
+'createdBy': 0, 'updatedBy': None}
 
-MACHINE2_ID = 'machine-002'
+MACHINE2_ID = 'machine-2'
 MACHINE2 = {'machineID': 2, 'machinename': 'Formlabs Form 2',
 'typeID': 1, 'tutorial': 'www.google.com',
 'createdAt': 1519472221, 'updatedAt': 1519472221,
-'createdBy': 0, 'updateBy': 1}
+'createdBy': 0, 'updatedBy': 1}
 
-MACHINE1_MODIFIED = {'machineID': 1, 'machinename': 'Roland CAMM-1 GS-25',
+MACHINE1_MODIFIED = {'machineID': 1, 'machinename': 'Roland mod',
 'typeID': 5, 'tutorial': 'www.yahoo.com'}
 
 WRONG_machineID = 'machine-10'
@@ -33,7 +31,6 @@ class MachineDBAPITestCase(unittest.TestCase):
     '''
 
     #Creates a Connection instance to use the API
-    connection = ENGINE.connect()
 
     #INITIATION AND TEARDOWN METHODS
     @classmethod
@@ -99,7 +96,7 @@ class MachineDBAPITestCase(unittest.TestCase):
     def test_create_machine_object(self):
         '''
         Check that the method _create_machine_object works return adequate
-        values for the first database row. NOTE: Do not use Connection instace
+        values for the first database row. NOTE: Do not use Connection instance
         to extract data from database but call directly SQL.
         '''
         print('('+self.test_create_machine_object.__name__+')', \
@@ -121,6 +118,7 @@ class MachineDBAPITestCase(unittest.TestCase):
             row = cur.fetchone()
         #Test the method
         machine = self.connection._create_machine_object(row)
+        machine['machineID'] = 1
         self.assertDictContainsSubset(machine, MACHINE1)
 
     def test_get_machine(self):
@@ -131,8 +129,10 @@ class MachineDBAPITestCase(unittest.TestCase):
               self.test_get_machine.__doc__)
         #Test with an existing machine
         machine = self.connection.get_machine(MACHINE1_ID)
+        MACHINE1['machineID'] = 'machine-1'
         self.assertDictContainsSubset(machine, MACHINE1)
         machine = self.connection.get_machine(MACHINE2_ID)
+        MACHINE2['machineID'] = 'machine-2'
         self.assertDictContainsSubset(machine, MACHINE2)
 
     def test_get_machine_malformedid(self):
@@ -147,7 +147,7 @@ class MachineDBAPITestCase(unittest.TestCase):
 
     def test_get_machine_noexistingid(self):
         '''
-        Test get_machine with id 10 (no-existing)
+        Test get_machine with id 10 (non-existing)
         '''
         print('('+self.test_get_machine_noexistingid.__name__+')',\
               self.test_get_machine_noexistingid.__doc__)
@@ -167,9 +167,11 @@ class MachineDBAPITestCase(unittest.TestCase):
         for machine in machines:
             if machine['machineID'] == MACHINE1_ID:
                 self.assertEqual(len(machine), 4)
+                MACHINE1['machineID'] = 'machine-1'
                 self.assertDictContainsSubset(machine, MACHINE1)
             elif machine['machineID'] == MACHINE2_ID:
                 self.assertEqual(len(machine), 4)
+                MACHINE2['machineID'] = 'machine-2'
                 self.assertDictContainsSubset(machine, MACHINE2)
 
     def test_get_machines_specific_type(self):
@@ -177,19 +179,19 @@ class MachineDBAPITestCase(unittest.TestCase):
         Get all machines of type Stratasys. Check that their ids are 1 and 2.
         '''
         #machines of type '3d_printers' are 1 and 2
-        print('('+self.test_get_machines_specific_user.__name__+')', \
-              self.test_get_machines_specific_user.__doc__)
+        print('('+self.test_get_machines_specific_type.__name__+')', \
+              self.test_get_machines_specific_type.__doc__)
         machines = self.connection.get_machines(typeName='3d_printers')
         self.assertEqual(len(machines), 2)
         #machines id are 1 and 7
         for machine in machines:
-            self.assertIn(machine['machineid'], ('machine-1', 'machine-2'))
-            self.assertNotIn(machine['machineid'], ('machine-3', 'machine-4',
+            self.assertIn(machine['machineID'], ('machine-1', 'machine-2'))
+            self.assertNotIn(machine['machineID'], ('machine-3', 'machine-4',
                                                     'machine-5', 'machine-6'))
 
     def test_delete_machine(self):
         '''
-        Test that the machine machine-1 is deleted
+        Test that the machine with id machine-1 is deleted
         '''
         print('('+self.test_delete_machine.__name__+')', \
               self.test_delete_machine.__doc__)
@@ -201,7 +203,7 @@ class MachineDBAPITestCase(unittest.TestCase):
 
     def test_delete_machine_malformedid(self):
         '''
-        Test that trying to delete machine wit id ='1' raises an error
+        Test that trying to delete machine with id ='1' (malformed) raises an error
         '''
         print('('+self.test_delete_machine_malformedid.__name__+')', \
               self.test_delete_machine_malformedid.__doc__)
@@ -211,7 +213,7 @@ class MachineDBAPITestCase(unittest.TestCase):
 
     def test_delete_machine_noexistingid(self):
         '''
-        Test delete_machine with  machine-10 (no-existing)
+        Test delete_machine with id machine-10 (non-existing)
         '''
         print('('+self.test_delete_machine_noexistingid.__name__+')', \
               self.test_delete_machine_noexistingid.__doc__)
@@ -221,20 +223,21 @@ class MachineDBAPITestCase(unittest.TestCase):
 
     def test_modify_machine(self):
         '''
-        Test that the machine machine-1 is modifed
+        Test that the machine with id machine-1 is modifed
         '''
         print('('+self.test_modify_machine.__name__+')', \
               self.test_modify_machine.__doc__)
-        resp = self.connection.modify_machine(MACHINE1_ID, 'Roland CAMM-1 GS-24',
+        resp = self.connection.modify_machine(MACHINE1_ID, 'Roland mod',
                                               "5", "www.yahoo.com")
         self.assertEqual(resp, MACHINE1_ID)
         #Check that the machines has been really modified through a get
         resp2 = self.connection.get_machine(MACHINE1_ID)
-        self.assertDictContainsSubset(resp2, MACHINE1_MODIFIED)
+        MACHINE1_MODIFIED['machineID'] = 'machine-1'
+        self.assertDictContainsSubset(MACHINE1_MODIFIED, resp2)
 
     def test_modify_machine_malformedid(self):
         '''
-        Test that trying to modify machine wit id ='1' raises an error
+        Test that trying to modify machine with id ='1' (malformed) raises an error
         '''
         print('('+self.test_modify_machine_malformedid.__name__+')',\
               self.test_modify_machine_malformedid.__doc__)
@@ -245,7 +248,7 @@ class MachineDBAPITestCase(unittest.TestCase):
 
     def test_modify_machine_noexistingid(self):
         '''
-        Test modify_machine with  machine-10 (no-existing)
+        Test modify_machine with id machine-10 (non-existing)
         '''
         print('('+self.test_modify_machine_noexistingid.__name__+')',\
               self.test_modify_machine_noexistingid.__doc__)
@@ -264,8 +267,8 @@ class MachineDBAPITestCase(unittest.TestCase):
         self.assertIsNotNone(machineid)
         #Get the expected created machine
         new_machine = {}
-        new_machine['machinename'] = 'Roland CAMM-1 GS-24'
-        new_machine['typeID'] = '5'
+        new_machine['machinename'] = 'Roland'
+        new_machine['typeID'] = 5
         new_machine['tutorial'] = 'www.gmail.com'
         #Check that the machines has been really created through a get
         resp2 = self.connection.get_machine('machine-8')

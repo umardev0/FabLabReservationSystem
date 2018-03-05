@@ -40,6 +40,13 @@ USER1 = {'userID': USER1_ID ,
          'isAdmin': '1',
          'createdAt': 1519472333,
          'updatedAt': 1519474333 
+		 }
+M_USER1= {'username': USER1_USERNAME,'passwrod': 'muser1password',
+         'email': 'muser1@fablab.oulu.fi','mobile': '0449518991',
+         'website': 'https://wiki.oulu.fi/display/FLOWS/Fab+Lab+Oulu+Wiki+Space',
+         'isAdmin': '1','createdAt': '0',
+         'UpdatedAt': '4', 'createdBy': '3', 
+         'updatedBy`': '0'
          }
 USER1_listobject = {'userID': USER1_ID ,
                     'username': USER1_USERNAME}
@@ -71,6 +78,12 @@ NEW_USER = {'userID': NEW_USERID ,
             'email':'user10@fablab.oulu.fi','mobile': '012345678',
             'website': 'https://wiki.oulu.fi/display/FLOWS/Fab+Lab+Oulu+Wiki+Space',
             'isAdmin': '0', 'createdBy': 1, 
+           }
+NEW_USER_USERNAME = 'user10'
+NEW_USER = {'username': NEW_USER_USERNAME, 'passwrod': '23459',
+            'email':'adcd@gmail.com','mobile': '012345678',
+            'website': 'https://wiki.oulu.fi/display/FLOWS/Fab+Lab+Oulu+Wiki+Space',
+            'isAdmin': '1', 'createdBy':  '2', 
             }
 USER_WRONG_USERNAME = 'user11'
 INITIAL_SIZE = 10
@@ -78,7 +91,6 @@ INITIAL_SIZE = 10
 
 
 class UserDBAPITestCase(unittest.TestCase):
-
     '''
     Test cases for the Users related methods.
     '''

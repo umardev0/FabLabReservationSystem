@@ -1140,10 +1140,12 @@ class Connection(object):
     def get_reservation_list(self, userID = None, machineID = None, startTime=-1, endTime=-1):
         #Create the SQL Statement build the string depending on the existence
         #of userID, machineID, startTime and endTime arguments.
-        match = re.match(r'machine-(\d{1,3})', machineID)
-        if match is None:
-            raise ValueError("The machineID is malformed")
-        machineID = int(match.group(1))
+
+        if machineID is not None:
+            match = re.match(r'machine-(\d{1,3})', machineID)
+            if match is None:
+                raise ValueError("The machineID is malformed")
+            machineID = int(match.group(1))
 
         query = 'SELECT * FROM reservations'
           #userID restriction
@@ -1163,7 +1165,7 @@ class Connection(object):
             query += " startTime > %s" % str(startTime)
           #endTime restriction
         if endTime != -1:
-            if nickname is not None or machineID is not None or startTime != -1:
+            if userID is not None or machineID is not None or startTime != -1:
                 query += ' AND'
             query += " endTime < %s" % str(endTime)
           #Order of results
@@ -1187,16 +1189,23 @@ class Connection(object):
             reservations.append(reservation)
         return reservations
 
-    def get_active_reservation_list(self, userID = None, machineID = None, startTime=-1, endTime=-1):
+    def get_active_reservation_list(self, active = 1, userID = None, machineID = None, startTime=-1, endTime=-1):
         #Create the SQL Statement build the string depending on the existence
         #of userID, machineID, startTime and endTime arguments.
-        match = re.match(r'machine-(\d{1,3})', machineID)
-        if match is None:
-            raise ValueError("The machineID is malformed")
-        machineID = int(match.group(1))
+        if machineID is not None:
+            match = re.match(r'machine-(\d{1,3})', machineID)
+            if match is None:
+                raise ValueError("The machineID is malformed")
+            machineID = int(match.group(1))
 
-        query = 'SELECT * FROM reservations WHERE isActive = 1'
-          #userID restriction
+        query = 'SELECT * FROM reservations'
+
+        if active == 1:
+            query += ' WHERE isActive = 1'
+        else:
+            query += ' WHERE isActive = 0'
+
+        #userID restriction
         if userID is not None or machineID is not None or startTime != -1 or endTime != -1:
             query += ' AND'
         if userID is not None:
@@ -1246,6 +1255,9 @@ class Connection(object):
             :py:meth:`_create_reservation_object` or None if the reservation with target
             id does not exist.
         '''
+        if isinstance(reservationID, int) == False:
+            raise ValueError("The reservationID is malformed")
+
         #Activate foreign key support
         self.set_foreign_keys_support()
         #Create the SQL Query
@@ -1275,9 +1287,12 @@ class Connection(object):
               not found.
 
         '''
+        if isinstance(reservationID, int) == False:
+            raise ValueError("The reservationID is malformed")
+
         #Extracts the int which is the id for a machine in the database
         #Create the SQL statment
-        stmnt = 'UPDATE reservations SET startTime=:startTime , endTime=:endTime,  \
+        stmnt = 'UPDATE reservations SET startTime=:startTime , endTime=:endTime  \
                  WHERE reservationID =:reservationID'
         #Activate foreign key support
         self.set_foreign_keys_support()
@@ -1298,6 +1313,15 @@ class Connection(object):
                 return None
         return reservationID
 
+    def contains_reservation(self, reservationID):
+        '''
+        Checks if a reservation is in the database.
+
+        :param str reservationID: Id of the reservation to search. Note that reservationID is an integer.
+        :return: True if the reservation is in the database. False otherwise.
+        '''
+        return self.get_reservation(reservationID) is not None
+
     def disable_reservation (self, reservationID, updatedBy = '0'):
         '''
         Modify the reservation's isActive state
@@ -1310,7 +1334,7 @@ class Connection(object):
         '''
         #Extracts the int which is the id for a machine in the database
         #Create the SQL statment
-        stmnt = 'UPDATE reservations SET isActive=0 , updatedBy=:updatedBy,  \
+        stmnt = 'UPDATE reservations SET isActive = 0 , updatedBy =:updatedBy  \
                  WHERE reservationID =:reservationID'
         #Activate foreign key support
         self.set_foreign_keys_support()
@@ -1330,14 +1354,16 @@ class Connection(object):
                 return None
         return reservationID
 
-    def delete_500_oldest_reservations (self):
-        stmnt = 'DELETE FROM reservations WHERE reservationID IN (SELECT reservationID FROM reservations ORDER BY reservationID ASC LIMIT 500)'
+    def delete_oldest_reservations (self, limit = 500):
+        stmnt = 'DELETE FROM reservations WHERE reservationID IN (SELECT reservationID FROM reservations ORDER BY reservationID ASC LIMIT '
+        stmnt += str(limit) + ')'
+        cur = self.con.cursor()
         try:
             cur.execute(stmnt)
             self.con.commit()
         except sqlite3.Error as e:
             print ("Error %s:" % (e.args[0]))
-        return None
+        return bool(cur.rowcount)
 
     def create_reservation(self, userID, machineID, startTime=None, endTime=None, createdBy = '0'):
         '''

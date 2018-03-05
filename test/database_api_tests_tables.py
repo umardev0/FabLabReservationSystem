@@ -7,7 +7,6 @@ is been utilized.
 '''
 
 import sqlite3, unittest, collections
-import fablab.database as database
 
 from fablab import database
 
