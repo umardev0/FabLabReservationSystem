@@ -83,6 +83,7 @@ class Engine(object):
             cur = con.cursor()
             cur.execute("DELETE FROM users")
             cur.execute("DELETE FROM machinetypes")
+            cur.execute("DELETE FROM messages")
             #NOTE since we have ON DELETE CASCADE BOTH IN messages AND reservations AND
             #machines, WE DO NOT HAVE TO WORRY TO CLEAR THOSE TABLES.
 
@@ -170,7 +171,7 @@ class Connection(object):
         if self.con and not self._isclosed:
             self.con.commit()
             self.con.close()
-            self._isclosed = True
+            self._isclosed = True 
 
     #FOREIGN KEY STATUS
     def check_foreign_keys_status(self):
@@ -1464,7 +1465,7 @@ class Connection(object):
         #Cursor and row initialization
         self.con.row_factory = sqlite3.Row
         cur = self.con.cursor()
-        #Execute SQL Statement to retrieve the id given a nickname
+        #Execute SQL Statement to retrieve the id given a username
         pvalue = (username,password,email, mobile, website, isAdmin, createdBy, timestamp)
         #execute the statement
         cur.execute(stmnt, pvalue)
@@ -1473,9 +1474,9 @@ class Connection(object):
         #Extract the id of the added message
         lid = cur.lastrowid
         #Return the id in
-        return str(lid) if lid is not None else None
+        return lid if lid is not None else None
 
-    def delete_user(self, nickname):
+    def delete_user(self, username):
         '''
         Remove all user information of the user with the nickname passed in as
         argument.
@@ -1487,14 +1488,14 @@ class Connection(object):
         '''
         #Create the SQL Statements
           #SQL Statement for deleting the user information
-        query = 'DELETE FROM users WHERE nickname = ?'
+        query = 'DELETE FROM users WHERE username = ?'
         #Activate foreign key support
         self.set_foreign_keys_support()
         #Cursor and row initialization
         self.con.row_factory = sqlite3.Row
         cur = self.con.cursor()
         #Execute the statement to delete
-        pvalue = (nickname,)
+        pvalue = (username,)
         cur.execute(query, pvalue)
         self.con.commit()
         #Check that it has been deleted

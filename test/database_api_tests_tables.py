@@ -14,11 +14,10 @@ from fablab import database
 #Path to the test database file, It is different from the deployment db
 DB_PATH = 'db/fablab_test.db'
 ENGINE = database.Engine(DB_PATH)
-connection = ENGINE.connect()
 
 INITIAL_SIZE_machines = 7
 INITIAL_SIZE_users = 10
-INITIAL_SIZE_machinetypes = 6
+INITIAL_SIZE_machinetypes = 5
 INITIAL_SIZE_messages = 3
 INITIAL_SIZE_reservations = 10
 
@@ -29,7 +28,6 @@ class TestCaseCreatedTables(unittest.TestCase):
     Test cases for the created tables.
     Setup Test class 
     '''
-    connection = ENGINE.connect()
     #INITIATION AND TEARDOWN METHODS
     @classmethod
     def setUpClass(cls):
@@ -90,13 +88,13 @@ class TestCaseCreatedTables(unittest.TestCase):
             attributetypes = [tup[2] for tup in result]
             names=['machineID','machinename','typeID','tutorial','createdAt','updatedAt','createdBy','updatedBy']
             types=['INTEGER','TEXT','INTEGER','TEXT','INTEGER','INTEGER','INTEGER']  
-            self.assertEquals(names, names)    
-            self.assertEquals(types, types) 
+            self.assertEqual(names, names)    
+            self.assertEqual(types, types) 
 
             #foreign key to check, whether they are correctly set
    
             foreign_keys =[('machinetypes','typeID','typeID')]
-            c.execute('PRAGMA FOREIGN_KEY_LIST({})'.format('messages'))
+            c.execute('PRAGMA FOREIGN_KEY_LIST({})'.format('machines'))
             result = c.fetchall()
             result_filtered = [(tup[2],tup[3],tup[4]) for tup in result]
             for tup in result_filtered:
@@ -155,8 +153,8 @@ class TestCaseCreatedTables(unittest.TestCase):
             attributetypes = [tup[2] for tup in result]
             names=['typeID','typeName','typeFullname','pastProject','createdAt','updatedAt','createdBy','updatedBy']
             types=['INTEGER','TEXT','TEXT','TEXT','INTEGER','INTEGER','INTEGER','INTEGER']  
-            self.assertEquals(names, names)    
-            self.assertEquals(types, types) 
+            self.assertEqual(names, names)    
+            self.assertEqual(types, types) 
             
 			
   
@@ -180,10 +178,10 @@ class TestCaseCreatedTables(unittest.TestCase):
             cur.execute(keys_on)
             #Execute main SQL Statement
             cur.execute(query)
-            users = cur.fetchall()
+            mtype = cur.fetchall()
             
             #Assert
-            self.assertEqual(len(users), INITIAL_SIZE_machinetypes)
+            self.assertEqual(len(mtype), INITIAL_SIZE_machinetypes)
 
     def test_user_table_schema(self):
         
@@ -209,8 +207,8 @@ class TestCaseCreatedTables(unittest.TestCase):
             attributetypes = [tup[2] for tup in result]
             names=['userID','username','password','email','mobile','website','isAdmin','createdAt','createdAt','createdBy','updatedBy']
             types=['INTEGER','TEXT','NUMERIC','TEXT','TEXT','TEXT','INTEGER','INTEGER','INTEGER','INTEGER','INTEGER']  
-            self.assertEquals(names, names)    
-            self.assertEquals(types, types)      
+            self.assertEqual(names, names)    
+            self.assertEqual(types, types)      
 
   
     def test_user_table_created(self):
@@ -266,8 +264,8 @@ class TestCaseCreatedTables(unittest.TestCase):
             types = [tup[2] for tup in result]
             attributenames=['messageID','fromUserID','toUserID','content','createdAt']
             attributetypes=['INTEGER','INTEGER','INTEGER','TEXT','INTEGER']  
-            self.assertEquals(names, names)    
-            self.assertEquals(types, types) 
+            self.assertEqual(names, names)    
+            self.assertEqual(types, types) 
 
            # add foreign key check
             foreign_keys =[('users','fromUserID','userID'),('users','toUserID','userID')]
@@ -287,7 +285,7 @@ class TestCaseCreatedTables(unittest.TestCase):
                   self.test_messages_table_created.__doc__)
         #Create the SQL Statement
         keys_on = 'PRAGMA foreign_keys = ON'
-        query = 'SELECT * FROM users'
+        query = 'SELECT * FROM messages'
         #Get the sqlite3 con from the Connection instance
         con = self.connection.con
         with con:
@@ -298,9 +296,9 @@ class TestCaseCreatedTables(unittest.TestCase):
             cur.execute(keys_on)
             #Execute main SQL Statement
             cur.execute(query)
-            users = cur.fetchall()
+            messages = cur.fetchall()
             #Assert
-            self.assertEqual(len(users), INITIAL_SIZE_messages)	
+            self.assertEqual(len(messages), INITIAL_SIZE_messages)	
 
     def test_reservation_table_schema(self):
 
@@ -326,12 +324,12 @@ class TestCaseCreatedTables(unittest.TestCase):
             attributetypes = [tup[2] for tup in result]
             names=['reservationID','userID','machineID','startTime','endTime','isActive','createdAt','createdAt','createdBy','updatedBy']
             types=['INTEGER','INTEGER','INTEGER','INTEGER','INTEGER','INTEGER','INTEGER','INTEGER','INTEGER','INTEGER','INTEGER']  
-            self.assertEquals(names, names)    
-            self.assertEquals(types, types) 
+            self.assertEqual(names, names)    
+            self.assertEqual(types, types) 
 
            # add foreign key check
-            foreign_keys =[('machines','machineID','machineID'),('users','userID','userID')]
-            c.execute('PRAGMA FOREIGN_KEY_LIST({})'.format('messages'))
+            foreign_keys =[('users','userID','userID'),('machines','machineID','machineID')]
+            c.execute('PRAGMA FOREIGN_KEY_LIST({})'.format('reservations'))
             result = c.fetchall()
             result_filtered = [(tup[2],tup[3],tup[4]) for tup in result]
             for tup in result_filtered:

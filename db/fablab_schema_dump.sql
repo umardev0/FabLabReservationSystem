@@ -3,7 +3,7 @@ BEGIN TRANSACTION;
 CREATE TABLE IF NOT EXISTS `users` (
 	`userID`	INTEGER PRIMARY KEY AUTOINCREMENT,
 	`username`	TEXT NOT NULL UNIQUE,
-	`password`	NUMERIC NOT NULL,
+	`password`	TEXT NOT NULL,
 	`email`	TEXT,
 	`mobile`	TEXT,
 	`website`	TEXT,
