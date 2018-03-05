@@ -80,11 +80,6 @@ NEW_USER = {'userID': NEW_USERID ,
             'isAdmin': '0', 'createdBy': 1, 
            }
 NEW_USER_USERNAME = 'user10'
-NEW_USER = {'username': NEW_USER_USERNAME, 'passwrod': '23459',
-            'email':'adcd@gmail.com','mobile': '012345678',
-            'website': 'https://wiki.oulu.fi/display/FLOWS/Fab+Lab+Oulu+Wiki+Space',
-            'isAdmin': '1', 'createdBy':  '2', 
-            }
 USER_WRONG_USERNAME = 'user11'
 INITIAL_SIZE = 10
 
