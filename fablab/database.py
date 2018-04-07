@@ -766,6 +766,17 @@ class Connection(object):
         '''
         return self.get_machine(machineID) is not None
 
+    def contains_type(self, typeID):
+        '''
+        Checks if a machine is in the database.
+
+        :param str machineID: Id of the machine to search. Note that machineID
+            is a string with the format machine-\d{1,3}.
+        :return: True if the machine is in the database. False otherwise.
+
+        '''
+        return self.get_type(typeID) is not None
+
     def get_machines(self, typeName=None):
         '''
         Return a list of all the machines in the database filtered by the
@@ -964,7 +975,7 @@ class Connection(object):
 
 
     #TYPE API
-    def get_type(self, typeName):
+    def get_type(self, typeID):
         '''
         Extracts a machine type from the database.
 
@@ -978,12 +989,12 @@ class Connection(object):
         #Activate foreign key support
         self.set_foreign_keys_support()
         #Create the SQL Query
-        query = 'SELECT * FROM machinetypes WHERE typeName = ?'
+        query = 'SELECT * FROM machinetypes WHERE typeID = ?'
         #Cursor and row initialization
         self.con.row_factory = sqlite3.Row
         cur = self.con.cursor()
         #Execute main SQL Statement
-        pvalue = (typeName,)
+        pvalue = (typeID,)
         cur.execute(query, pvalue)
         #Process the response.
         #Just one row is expected
@@ -1029,7 +1040,7 @@ class Connection(object):
 
         return types
 
-    def delete_type(self, typeName):
+    def delete_type(self, typeID):
         '''
         Delete the typeID with id given as parameter.
 
@@ -1040,13 +1051,13 @@ class Connection(object):
 
         '''
         #Create the SQL statment
-        stmnt = 'DELETE FROM machinetypes WHERE typeName = ?'
+        stmnt = 'DELETE FROM machinetypes WHERE typeID = ?'
         #Activate foreign key support
         self.set_foreign_keys_support()
         #Cursor and row initialization
         self.con.row_factory = sqlite3.Row
         cur = self.con.cursor()
-        pvalue = (typeName,)
+        pvalue = (typeID,)
         try:
             cur.execute(stmnt, pvalue)
             #Commit the message
@@ -1071,7 +1082,7 @@ class Connection(object):
         '''
         #Extracts the int which is the id for a machine in the database
         #Create the SQL statment
-        stmnt = 'UPDATE machinetypes SET typeName=:typeName , typeFullname=:typeFullname pastProject=:pastProject, updatedAt=:timestamp, updatedBy=:updatedBy \
+        stmnt = 'UPDATE machinetypes SET typeName=:typeName , typeFullname=:typeFullname, pastProject=:pastProject, updatedAt=:timestamp, updatedBy=:updatedBy \
                  WHERE typeID =:typeID'
         #Activate foreign key support
         self.set_foreign_keys_support()
@@ -1255,8 +1266,6 @@ class Connection(object):
             :py:meth:`_create_reservation_object` or None if the reservation with target
             id does not exist.
         '''
-        if isinstance(reservationID, int) == False:
-            raise ValueError("The reservationID is malformed")
 
         #Activate foreign key support
         self.set_foreign_keys_support()
@@ -1334,7 +1343,7 @@ class Connection(object):
         '''
         #Extracts the int which is the id for a machine in the database
         #Create the SQL statment
-        stmnt = 'UPDATE reservations SET isActive = 0 , updatedBy =:updatedBy  \
+        stmnt = 'UPDATE reservations SET isActive = 0 , updatedBy =:updatedBy , updatedAt =:updatedAt \
                  WHERE reservationID =:reservationID'
         #Activate foreign key support
         self.set_foreign_keys_support()
@@ -1342,8 +1351,11 @@ class Connection(object):
         self.con.row_factory = sqlite3.Row
         cur = self.con.cursor()
         #Execute main SQL Statement
+        timestamp = time.mktime(datetime.now().timetuple())
+
         pvalue = {"updatedBy": updatedBy,
-                  "reservationID": reservationID}
+                  "reservationID": reservationID,
+				  "updatedAt": timestamp}
         try:
             cur.execute(stmnt, pvalue)
             self.con.commit()

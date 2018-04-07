@@ -3,8 +3,6 @@ engine = database.Engine()
 engine.clear()
 engine.populate_tables()
 
-#message = con.get_machine("machine-1")
-#print(message)
-
-
-#print(messages)
+con = engine.connect()
+test = con.get_reservation(1)
+println(test)
