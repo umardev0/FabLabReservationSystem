@@ -232,7 +232,173 @@ class MachineTypesTestCase (ResourcesAPITestCase):
                                )
         self.assertTrue(resp.status_code == 415)
 
-                          
+
+class MachineTypeTestCase (ResourcesAPITestCase):
+
+    #ATTENTION: json.loads return unicode
+    message_req_1 = {
+        "typeName": "3d_printers",
+        "typeFullname": "New 3D Printers",
+        "pastProject": "http://www.oulu.fi/fablab/projects",
+        "updatedBy": 1
+    }
+
+    message_moq_req_1 = {
+        "typeFullname": "New 3D Printers",
+        "pastProject": "http://www.oulu.fi/fablab/projects",
+        "updatedBy": 1
+    }
+
+    message_wrong_req_1 = {
+        "typeFullname": "New 3D Printers",
+        "pastProject": "http://www.oulu.fi/fablab/projects",
+        "updatedBy": 1
+    }
+
+    message_wrong_req_2 = {
+        "articleBody": "Do not try to fix what others broke",
+    }
+    url_main = "/fablab/api/machines/"
+    def setUp(self):
+        super(MachineTypeTestCase, self).setUp()
+        self.url = resources.api.url_for(resources.MachineType,
+                                         typeID="1",
+                                         _external=False)
+        self.url_wrong = resources.api.url_for(resources.MachineType,
+                                               typeID="100",
+                                               _external=False)
+
+    def test_url(self):
+        """
+        Checks that the URL points to the right resource
+        """
+        #NOTE: self.shortDescription() shuould work.
+        _url = "/fablab/api/machinetypes/1/"
+        print("("+self.test_url.__name__+")", self.test_url.__doc__)
+        with resources.app.test_request_context(_url):
+            rule = flask.request.url_rule
+            view_point = resources.app.view_functions[rule.endpoint].view_class
+            self.assertEqual(view_point, resources.MachineType)
+
+    def test_wrong_url(self):
+        """
+        Checks that GET Message return correct status code if given a
+        wrong message
+        """
+        print("("+self.test_wrong_url.__name__+")", self.test_wrong_url.__doc__)
+        resp = self.client.get(self.url_wrong)
+        self.assertEqual(resp.status_code, 404)
+
+
+    def test_get_machine_type(self):
+        """
+        Checks that GET Message return correct status code and data format
+        """
+        print("("+self.test_get_machine_type.__name__+")", self.test_get_machine_type.__doc__)
+        with resources.app.test_client() as client:
+            resp = client.get(self.url)
+            self.assertEqual(resp.status_code, 200)
+            data = json.loads(resp.data.decode("utf-8"))
+
+
+            controls = data["@controls"]
+            self.assertIn("self", controls)
+            self.assertIn("profile", controls)
+            self.assertIn("collection", controls)
+            self.assertIn("edit", controls)
+            self.assertIn("delete", controls)
+            self.assertIn("fablab:machines-all", controls)
+            self.assertIn("fablab:users-all", controls)
+            
+            edit_ctrl = controls["edit"]
+            self.assertIn("title", edit_ctrl)
+            self.assertIn("href", edit_ctrl)
+            self.assertEqual(edit_ctrl["href"], self.url)
+            self.assertIn("encoding", edit_ctrl)
+            self.assertEqual(edit_ctrl["encoding"], "json")        
+            self.assertIn("method", edit_ctrl)
+            self.assertEqual(edit_ctrl["method"], "PUT")
+            self.assertIn("schema", edit_ctrl)
+            
+            reply_ctrl = controls["fablab:machines-all"]
+            self.assertIn("title", reply_ctrl)
+            self.assertIn("href", reply_ctrl)
+            self.assertEqual(reply_ctrl["href"], self.url_main)
+            
+            #Check rest attributes
+            self.assertIn("typeID", data)
+            self.assertIn("typeName", data)
+            self.assertIn("typeFullname", data)
+            self.assertIn("pastProject", data)
+
+    def test_get_machine_type_mimetype(self):
+        """
+        Checks that GET Messages return correct status code and data format
+        """
+        print("("+self.test_get_machine_type_mimetype.__name__+")", self.test_get_machine_type_mimetype.__doc__)
+
+        #Check that I receive status code 200
+        resp = self.client.get(self.url)
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.headers.get("Content-Type",None),
+                          "{};{}".format(MASONJSON, FABLAB_MACHINE_TYPE_PROFILE))
+
+    def test_modify_unexisting_machine_type(self):
+        """
+        Try to modify an unexisting type
+        """
+        print("("+self.test_modify_unexisting_machine_type.__name__+")", self.test_modify_unexisting_machine_type.__doc__)
+
+        #Check that I receive status code 404
+        resp = self.client.put(self.url_wrong,
+                                data=json.dumps(self.message_req_1),
+                                headers={"Content-Type": JSON})
+        self.assertEqual(resp.status_code, 404)
+
+    def test_modify_machine_type(self):
+        """
+        Try to modify a created type
+        """
+        print("("+self.test_modify_machine_type.__name__+")", self.test_modify_machine_type.__doc__)
+
+        #Check that I receive status code 204
+        resp = self.client.put(self.url,
+                                data=json.dumps(self.message_req_1),
+                                headers={"Content-Type": JSON})
+        self.assertEqual(resp.status_code, 204)
+
+    def test_modify_machine_type_wrong_format(self):
+        """
+        Try to modify a created type
+        """
+        print("("+self.test_modify_machine_type.__name__+")", self.test_modify_machine_type.__doc__)
+
+        #Check that I receive status code 204
+        resp = self.client.put(self.url,
+                                data=json.dumps(self.message_wrong_req_1),
+                                headers={"Content-Type": JSON})
+        self.assertEqual(resp.status_code, 400)
+        
+    def test_delete_unexisting_machine_type(self):
+        """
+        Try to modify a created type
+        """
+        print("("+self.test_modify_machine_type.__name__+")", self.test_modify_machine_type.__doc__)
+
+        #Check that I receive status code 204
+        resp = self.client.delete(self.url_wrong)
+        self.assertEqual(resp.status_code, 404)
+
+    def test_delete_machine_type(self):
+        """
+        Try to modify a created type
+        """
+        print("("+self.test_modify_machine_type.__name__+")", self.test_modify_machine_type.__doc__)
+
+        #Check that I receive status code 204
+        resp = self.client.delete(self.url)
+        self.assertEqual(resp.status_code, 204)
+        
 if __name__ == "__main__":
     print("Start running tests")
     unittest.main()
