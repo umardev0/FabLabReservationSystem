@@ -574,7 +574,7 @@ class MachineTypes(Resource):
         items = envelope["items"] = []
 
         for type in types_db:             
-            item = FablabObject(id=type["typeName"], typeFullname=type["typeFullname"])
+            item = FablabObject(id=type["typeID"], typeName=type["typeName"], typeFullname=type["typeFullname"])
             item.add_control("self", href=api.url_for(MachineType, typeID=type["typeID"]))
             item.add_control("profile", href=FABLAB_MACHINE_TYPE_PROFILE)
             items.append(item)
@@ -636,7 +636,7 @@ class MachineTypes(Resource):
                                          "Cannot access the database")
 
         #Create the Location header with the id of the new machine type created
-        url = api.url_for(MachineType, typeID=typeID)
+        url = api.url_for(MachineTypes)
 
         #RENDER
         #Return the response

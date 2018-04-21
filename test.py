@@ -1,8 +1,8 @@
 import fablab.database as database
 engine = database.Engine()
-engine.clear()
+engine.create_tables()
 engine.populate_tables()
 
 con = engine.connect()
 test = con.get_reservation(1)
-println(test)
+print(test)

@@ -1,0 +1,31 @@
+{
+    "type": "object",
+    "properties": {
+        "address": {
+            "title": "typeName",
+            "description": "Short name of the type",
+            "type": "object",
+        },
+        "typeFullname": {
+            "title": "typeFullname",
+            "description": "Full name of the type",
+            "type": "string"
+        },
+        "pastProject": {
+            "title": "pastProject",
+            "description": "Previous projects made by this type",
+            "type": "string"
+        },
+        "createdBy": {
+            "title": "createdBy",
+            "description": "Creator of the type",
+            "type": "string"
+        },
+        "updateBy": {
+            "title": "updateBy",
+            "description": "User modified the type",
+            "type": "string"
+        }
+   },
+    "required": ["typeName", "typeFullname"]
+}

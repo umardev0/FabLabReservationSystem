@@ -132,16 +132,6 @@ class ReservationDBAPITestCase(unittest.TestCase):
         RES2['machineID'] = 'machine-2'
         self.assertDictContainsSubset(reservation, RES2)
 
-    def test_get_reservation_malformedid(self):
-        '''
-        Test get_reservation with id rese-1 (malformed)
-        '''
-        print('('+self.test_get_reservation_malformedid.__name__+')', \
-              self.test_get_reservation_malformedid.__doc__)
-        #Test with an existing reservation
-        with self.assertRaises(ValueError):
-            self.connection.get_reservation('rese-1')
-
     def test_get_reservation_noexistingid(self):
         '''
         Test get_reservation with id 20 (non-existing)
