@@ -97,7 +97,7 @@ class MasonObject(dict):
         The allowed properties can be found from here
         https://github.com/JornWildt/Mason/blob/master/Documentation/Mason-draft-2.md
 
-        : param str ctrl_name: name of the control (including namespace if any)        
+        : param str ctrl_name: name of the control (including namespace if any)
         """
 
         if "@controls" not in self:
@@ -105,24 +105,24 @@ class MasonObject(dict):
 
         self["@controls"][ctrl_name] = kwargs
 
-class FablabObject(MasonObject):    
+class FablabObject(MasonObject):
     """
-    A convenience subclass of MasonObject that defines a bunch of shorthand 
+    A convenience subclass of MasonObject that defines a bunch of shorthand
     methods for inserting application specific objects into the document. This
     class is particularly useful for adding control objects that are largely
-    context independent, and defining them in the resource methods would add a 
+    context independent, and defining them in the resource methods would add a
     lot of noise to our code - not to mention making inconsistencies much more
     likely!
 
-    In the forum code this object should always be used for root document as 
-    well as any items in a collection type resource. 
+    In the forum code this object should always be used for root document as
+    well as any items in a collection type resource.
     """
 
     def __init__(self, **kwargs):
         """
         Calls dictionary init method with any received keyword arguments. Adds
-        the controls key afterwards because hypermedia without controls is not 
-        hypermedia. 
+        the controls key afterwards because hypermedia without controls is not
+        hypermedia.
         """
 
         super(FablabObject, self).__init__(**kwargs)
@@ -140,7 +140,7 @@ class FablabObject(MasonObject):
 
     def add_control_users_all(self):
         """
-        This adds the users-all link to an object. Intended for the document object.  
+        This adds the users-all link to an object. Intended for the document object.
         """
 
         self["@controls"]["fablab:users-all"] = {
@@ -150,7 +150,7 @@ class FablabObject(MasonObject):
 
     def add_control_machines_all(self):
         """
-        This adds the users-all link to an object. Intended for the document object.  
+        This adds the users-all link to an object. Intended for the document object.
         """
 
         self["@controls"]["fablab:machines-all"] = {
@@ -160,7 +160,7 @@ class FablabObject(MasonObject):
 
     def add_control_reservations_all(self):
         """
-        This adds the users-all link to an object. Intended for the document object.  
+        This adds the users-all link to an object. Intended for the document object.
         """
 
         self["@controls"]["fablab:reservations-all"] = {
@@ -170,7 +170,7 @@ class FablabObject(MasonObject):
 
     def add_control_add_user(self):
         """
-        This adds the add-user control to an object. Intended ffor the 
+        This adds the add-user control to an object. Intended ffor the
         document object. Instead of adding a schema dictionary we are pointing
         to a schema url instead for two reasons: 1) to demonstrate both options;
         2) the user schema is relatively large.
@@ -186,7 +186,7 @@ class FablabObject(MasonObject):
 
     def add_control_add_machinetype(self):
         """
-        This adds the add-user control to an object. Intended ffor the 
+        This adds the add-user control to an object. Intended ffor the
         document object. Instead of adding a schema dictionary we are pointing
         to a schema url instead for two reasons: 1) to demonstrate both options;
         2) the user schema is relatively large.
@@ -202,7 +202,7 @@ class FablabObject(MasonObject):
 
     def add_control_add_machine(self):
         """
-        This adds the add-user control to an object. Intended ffor the 
+        This adds the add-user control to an object. Intended ffor the
         document object. Instead of adding a schema dictionary we are pointing
         to a schema url instead for two reasons: 1) to demonstrate both options;
         2) the user schema is relatively large.
@@ -218,7 +218,7 @@ class FablabObject(MasonObject):
 
     def add_control_add_reservation(self):
         """
-        This adds the add-user control to an object. Intended ffor the 
+        This adds the add-user control to an object. Intended ffor the
         document object. Instead of adding a schema dictionary we are pointing
         to a schema url instead for two reasons: 1) to demonstrate both options;
         2) the user schema is relatively large.
@@ -232,7 +232,7 @@ class FablabObject(MasonObject):
             "schemaUrl": "/fablab/schema/reservation/"
         }
 
-    def add_control_edit_user(self, nickname):
+    def add_control_edit_user(self, username):
         """
         Adds a the edit control to a message object. For the schema we need
         the one that's intended for editing (it has editor instead of author).
@@ -241,13 +241,26 @@ class FablabObject(MasonObject):
         """
 
         self["@controls"]["edit"] = {
-            "href": api.url_for(User, nickname=nickname),
+            "href": api.url_for(User, username=username),
             "title": "Edit this user",
             "encoding": "json",
             "method": "PUT",
             "schema": self._user_schema()
         }
 
+    def add_control_delete_user(self, username):
+        """
+        Adds the delete control to an object. This is intended for any
+        object that represents a user.
+
+        : param str username: The username of the user to remove
+        """
+
+        self["@controls"]["forum:delete"] = {
+            "href": api.url_for(User, username=username),
+            "title": "Delete this user",
+            "method": "DELETE"
+        }
 
     def add_control_edit_machinetype(self, typeID):
         """
@@ -299,39 +312,39 @@ class FablabObject(MasonObject):
 
     def add_control_delete_machinetype(self, typeID):
         """
-        Adds the delete control to an object. This is intended for any 
+        Adds the delete control to an object. This is intended for any
         object that represents a user.
 
-        : param str nickname: The nickname of the user to remove
+        : param str username: The username of the user to remove
         """
 
         self["@controls"]["delete"] = {
-            "href": api.url_for(MachineType, typeID=typeID),  
+            "href": api.url_for(MachineType, typeID=typeID),
             "title": "Delete this machine type",
             "method": "DELETE"
         }
 
     def add_control_delete_machine(self, machineID):
         """
-        Adds the delete control to an object. This is intended for any 
+        Adds the delete control to an object. This is intended for any
         object that represents a user.
 
-        : param str nickname: The nickname of the user to remove
+        : param str username: The username of the user to remove
         """
 
         self["@controls"]["delete"] = {
-            "href": api.url_for(Machine, machineID=machineID),  
+            "href": api.url_for(Machine, machineID=machineID),
             "title": "Delete this machine",
             "method": "DELETE"
         }
 
     def add_control_machine_history(self, machineID):
         """
-        This adds the messages history control to a user which defines a href 
-        template for making queries. In Mason query parameters are defined with 
+        This adds the messages history control to a user which defines a href
+        template for making queries. In Mason query parameters are defined with
         a schema just like forms.
 
-        : param str user: nickname of the user
+        : param str user: username of the user
         """
 
         self["@controls"]["forum:history-reservations"] = {
@@ -343,24 +356,44 @@ class FablabObject(MasonObject):
 
     def _user_schema(self):
         """
-        Creates a schema dictionary for editing public profiles of users. 
-        
+        Creates a schema dictionary for editing public profiles of users.
+
         :rtype:: dict
         """
-        
+
         schema = {
             "type": "object",
             "properties": {},
-            "required": ["password"]
+            "required": ["username", "password"]
         }
-        
+
         props = schema["properties"]
         props["password"] = {
             "description": "User's new password",
-            "title": "Password",
+            "title": "password",
             "type": "string"
         }
-        
+        props["email"] = {
+            "description": "User's new email",
+            "title": "email",
+            "type": "string"
+        }
+        props["mobile"] = {
+            "description": "User's new mobile",
+            "title": "mobile",
+            "type": "string"
+        }
+        props["website"] = {
+            "description": "User's new website",
+            "title": "website",
+            "type": "string"
+        }
+        props["updatedBy"] = {
+            "description": "User who updated this record ",
+            "title": "updatedBy",
+            "type": "integer"
+        }
+
         return schema
 
     def _machine_type_schema(self):
@@ -369,7 +402,7 @@ class FablabObject(MasonObject):
         the editor field should be set. If the message is new, the author field
         should be set instead. This is controlled by the edit flag.
 
-        This schema can also be accessed from the urls /forum/schema/edit-msg/ and 
+        This schema can also be accessed from the urls /forum/schema/edit-msg/ and
         /forum/schema/add-msg/.
 
         : param bool edit: is this schema for an edit form
@@ -396,7 +429,7 @@ class FablabObject(MasonObject):
         the editor field should be set. If the message is new, the author field
         should be set instead. This is controlled by the edit flag.
 
-        This schema can also be accessed from the urls /forum/schema/edit-msg/ and 
+        This schema can also be accessed from the urls /forum/schema/edit-msg/ and
         /forum/schema/add-msg/.
 
         : param bool edit: is this schema for an edit form
@@ -423,7 +456,7 @@ class FablabObject(MasonObject):
         the editor field should be set. If the message is new, the author field
         should be set instead. This is controlled by the edit flag.
 
-        This schema can also be accessed from the urls /forum/schema/edit-msg/ and 
+        This schema can also be accessed from the urls /forum/schema/edit-msg/ and
         /forum/schema/add-msg/.
 
         : param bool edit: is this schema for an edit form
@@ -463,7 +496,7 @@ class FablabObject(MasonObject):
         props["length"] = {
             "description": "Maximum number of reservations returned",
             "type": "integer"
-        }        
+        }
         props["before"] = {
             "description": "Find reservations before (timestamp as seconds)",
             "type": "integer"
@@ -478,7 +511,7 @@ class FablabObject(MasonObject):
 #ERROR HANDLERS
 
 def create_error_response(status_code, title, message=None):
-    """ 
+    """
     Creates a: py: class:`flask.Response` instance when sending back an
     HTTP error response
 
@@ -532,7 +565,7 @@ def connect_db():
 #HOOKS
 @app.teardown_request
 def close_connection(exc):
-    """ 
+    """
     Closes the database connection
     Check if the connection is created. It migth be exception appear before
     the connection is created.
@@ -573,7 +606,7 @@ class MachineTypes(Resource):
 
         items = envelope["items"] = []
 
-        for type in types_db:             
+        for type in types_db:
             item = FablabObject(id=type["typeID"], typeName=type["typeName"], typeFullname=type["typeFullname"])
             item.add_control("self", href=api.url_for(MachineType, typeID=type["typeID"]))
             item.add_control("profile", href=FABLAB_MACHINE_TYPE_PROFILE)
@@ -618,8 +651,8 @@ class MachineTypes(Resource):
         request_body = request.get_json(force=True)
          #It throws a BadRequest exception, and hence a 400 code if the JSON is
         #not wellformed
-        try:            
-            typeName = request_body["typeName"]            
+        try:
+            typeName = request_body["typeName"]
             typeFullname = request_body["typeFullname"]
             pastProject = request_body.get("pastProject", "")
             createdBy = request_body.get("createdBy", "")
@@ -685,7 +718,7 @@ class MachineType(Resource):
             createdAt=message_db["createdAt"],
             updatedAt=message_db["updatedAt"],
             createdBy=message_db["createdBy"],
-            updatedBy=message_db["updatedBy"]            
+            updatedBy=message_db["updatedBy"]
         )
 
         envelope.add_namespace("fablab", LINK_RELATIONS_URL)
@@ -696,7 +729,7 @@ class MachineType(Resource):
         envelope.add_control_edit_machinetype(typeID)
         envelope.add_control_delete_machinetype(typeID)
         envelope.add_control_users_all()
-        envelope.add_control("profile", href=FABLAB_MACHINE_TYPE_PROFILE)        
+        envelope.add_control("profile", href=FABLAB_MACHINE_TYPE_PROFILE)
         envelope.add_control("collection", href=api.url_for(MachineTypes))
         envelope.add_control("self", href=api.url_for(MachineType, typeID=typeID))
 
@@ -731,7 +764,7 @@ class MachineType(Resource):
 
         INPUT PARAMETERS:
        : param str typeiD: The id of the Machine Type to be modified
-        
+
         REQUEST ENTITY BODY:
         * Media type: JSON
 
@@ -769,7 +802,7 @@ class MachineType(Resource):
         request_body = request.get_json(force=True)
          #It throws a BadRequest exception, and hence a 400 code if the JSON is
         #not wellformed
-        try:            
+        try:
             typeName = request_body["typeName"]
             typeFullname = request_body["typeFullname"]
             pastProject = request_body.get("pastProject", "")
@@ -779,7 +812,7 @@ class MachineType(Resource):
             #This is launched if either title or body does not exist or if
             # the template.data array does not exist.
             return create_error_response(400, "Wrong request format",
-                                         "Be sure you include typeName and typeFullname")                                          
+                                         "Be sure you include typeName and typeFullname")
         else:
             #Modify the Machine Type in the database
             if not g.con.modify_type(typeID, typeName, typeFullname, pastProject, updatedBy):
@@ -787,11 +820,6 @@ class MachineType(Resource):
                                          "Type information for %s cannot be updated" % typeName
                                         )
             return "", 204
-
-
-class Machines(Resource):
-    def post(self):
-        return Response(status=201, headers={"Location": url})
 
 class Reservations(Resource):
     """
@@ -826,7 +854,7 @@ class Reservations(Resource):
 
         items = envelope["items"] = []
 
-        for type in reservation_db:             
+        for type in reservation_db:
             item = FablabObject(reservationID=type["reservationID"], userID=type["userID"], machineID=type["machineID"])
             item.add_control("self", href=api.url_for(Reservation, reservationID=type["reservationID"]))
             item.add_control("profile", href=FABLAB_RESERVATION_PROFILE)
@@ -870,8 +898,8 @@ class Reservations(Resource):
         request_body = request.get_json(force=True)
          #It throws a BadRequest exception, and hence a 400 code if the JSON is
         #not wellformed
-        try:            
-            userID = request_body["userID"]            
+        try:
+            userID = request_body["userID"]
             machineID = request_body["machineID"]
             startTime = request_body["startTime"]
             endTime = request_body["endTime"]
@@ -946,7 +974,7 @@ class Reservation(Resource):
 #---DANIEL : NEED TO ADD SOME LINK FOR USER & MACHINE HERE---
         envelope.add_control_edit_reservation(reservationID)
         envelope.add_control_users_all()
-        envelope.add_control("profile", href=FABLAB_RESERVATION_PROFILE)        
+        envelope.add_control("profile", href=FABLAB_RESERVATION_PROFILE)
         envelope.add_control("collection", href=api.url_for(Reservations))
         envelope.add_control("self", href=api.url_for(Reservation, reservationID=reservationID))
 
@@ -960,7 +988,7 @@ class Reservation(Resource):
 
         INPUT PARAMETERS:
        : param str reservationID: The id of the reservation to be disable
-        
+
         REQUEST ENTITY BODY:
         * Media type: JSON
 
@@ -1015,9 +1043,278 @@ class Reservation(Resource):
 
 
 class Users(Resource):
+
+    def get(self):
+        """
+        Gets a list of all the users in the database.
+
+        It returns always status code 200.
+
+        RESPONSE ENTITITY BODY:
+
+         OUTPUT:
+            * Media type: application/vnd.mason+json
+                https://github.com/JornWildt/Mason
+            * Profile: Fablab_User
+                /profiles/user-profile
+
+        Link relations used in items:
+
+        Semantic descriptions used in items: username and UserID
+
+        Link relations used in links: add_user, reservations_all, machines_all
+
+        Semantic descriptors used in template: userID, username, email, mobile, website, isAdmin
+
+        NOTE:
+         * The attributes match one-to-one with column names in the
+           database.
+        """
+        #PERFORM OPERATIONS
+        #Create the users list
+        users_db = g.con.get_users()
+
+        #FILTER AND GENERATE THE RESPONSE
+       #Create the envelope
+        envelope = FablabObject()
+
+        envelope.add_namespace("fablab", LINK_RELATIONS_URL)
+
+        envelope.add_control_add_user()
+        envelope.add_control_reservations_all()
+        envelope.add_control_machines_all()
+        envelope.add_control("self", href=api.url_for(Users))
+
+        items = envelope["items"] = []
+
+        for user in users_db:
+            item = FablabObject(
+                username=user["username"],
+                userID=user["userID"]
+            )
+            item.add_control("self", href=api.url_for(User, username=user["username"]))
+            item.add_control("profile", href=FABLAB_USER_PROFILE)
+            items.append(item)
+
+        #RENDER
+        return Response(json.dumps(envelope), 200, mimetype=MASON+";" + FABLAB_USER_PROFILE)
+
+    def post(self):
+        """
+        Adds a new user in the database.
+
+        REQUEST ENTITY BODY:
+         * Media type: JSON
+         * Profile: Fablab_User
+
+
+        Semantic descriptors used in template: username(mandatory),
+        password(mandatory), email(optional),mobile(optional),
+        website(optional), isAdmin(optional), createdBy(optional).
+
+        RESPONSE STATUS CODE:
+         * Returns 201 + the url of the new resource in the Location header
+         * Return 409 Conflict if there is another user with the same username
+         * Return 400 if the body is not well formed
+         * Return 415 if it receives a media type != application/json
+
+        NOTE:
+         * The attributes match one-to-one with column names in the
+           database.
+
+        NOTE:
+        The: py: method:`Connection.create_user()` receives as a parameter a
+        dictionary with the following format.
+        {"username":"", "password":"", "email":"", "mobile":"",
+        "website":"", "isAdmin":"", "createdBy":""}
+
+        """
+
+        if JSON != request.headers.get("Content-Type", ""):
+            abort(415)
+        #PARSE THE REQUEST:
+        request_body = request.get_json(force=True)
+        if not request_body:
+            return create_error_response(415, "Unsupported Media Type",
+                                         "Use a JSON compatible format",
+                                         )
+        #Get the request body and serialize it to object
+        #We should check that the format of the request body is correct. Check
+        #That mandatory attributes are there.
+
+        # pick up username so we can check for conflicts
+        try:
+            username = request_body["username"]
+        except KeyError:
+            return create_error_response(400, "Wrong request format", "User's username was missing from the request")
+
+        #Conflict if user already exist
+        if g.con.contains_user(username):
+            return create_error_response(409, "Wrong username",
+                                         "There is already a user with same"
+                                         "username:%s." % username)
+
+        # pick up rest of the mandatory fields
+        try:
+            password = request_body["password"]
+            email = request_body["email"]
+            mobile = request_body["mobile"]
+            website = request_body["website"]
+            isAdmin = request_body["isAdmin"]
+            createdBy = request_body["createdBy"]
+        except KeyError:
+            return create_error_response(400, "Wrong request format", "Be sure to include all mandatory properties")
+
+        try:
+            username = g.con.create_user(username, password, email, mobile, website, createdBy)
+        except ValueError:
+            return create_error_response(400, "Wrong request format",
+                                         "Be sure you include all"
+                                         " mandatory properties"
+                                        )
+
+        #CREATE RESPONSE AND RENDER
+        return Response(status=201,
+            headers={"Location": api.url_for(User, username=username)})
+
+class User(Resource):
+    """
+    User Resource.
+    """
+
+    def get(self, username):
+        """
+        Get basic information of a user:
+
+        INPUT PARAMETER:
+       : param str username: Username of the required user.
+
+        OUTPUT:
+         * Return 200 if the username exists.
+         * Return 404 if the username is not stored in the system.
+
+        RESPONSE ENTITY BODY:
+
+        * Media type recommended: application/vnd.mason+json
+        * Profile recommended: application/vnd.mason+json
+
+        Link relations used:
+
+        Semantic descriptors used: username and userID
+
+        NOTE:
+        The: py: method:`Connection.get_user()` returns a dictionary with the
+        the following format.
+
+        {'userID': user_id,
+        'username': user_name,
+        'password': user_password,
+        'email': user_email,
+        'mobile': user_mobile,
+        'website': user_website,
+        'isAdmin': user_isAdmin,
+        'createdAt': user_createdAt,
+        'updatedAt': user_updatedAt}
+        """
+
+        #PERFORM OPERATIONS
+        user_db = g.con.get_user(username)
+        if not user_db:
+            return create_error_response(404, "Unknown user",
+                                         "There is no a user with username %s"
+                                         % username)
+        #FILTER AND GENERATE RESPONSE
+        #Create the envelope:
+        envelope = FablabObject(
+            username=username,
+            userID= user_db["userID"],
+            email = user_db["email"],
+            mobile = user_db["mobile"],
+            website = user_db["website"],
+            isAdmin = user_db["isAdmin"],
+            createdAt = user_db["createdAt"],
+            updatedAt = user_db["updatedAt"]
+        )
+
+        envelope.add_namespace("forum", LINK_RELATIONS_URL)
+        envelope.add_control("self", href=api.url_for(User, username=username))
+        envelope.add_control("profile", href=FABLAB_USER_PROFILE)
+        envelope.add_control_delete_user(username)
+        envelope.add_control_edit_user(username)
+
+        return Response(json.dumps(envelope), 200, mimetype=MASON+";" + FABLAB_USER_PROFILE)
+
+    def delete(self, username):
+        """
+        Delete a user in the system.
+
+       : param str username: Username of the required user.
+
+        RESPONSE STATUS CODE:
+         * If the user is deleted returns 204.
+         * If the username does not exist return 404
+        """
+
+        #PEROFRM OPERATIONS
+        #Try to delete the user. If it could not be deleted, the database
+        #returns None.
+        if g.con.delete_user(username):
+            #RENDER RESPONSE
+            return '', 204
+        else:
+            #GENERATE ERROR RESPONSE
+            return create_error_response(404, "Unknown user",
+                                         "There is no a user with username %s"
+                                         % username)
+
+    def put(self, username):
+        """
+        Modify a user.
+
+        REQUEST ENTITY BODY:
+        * Media type: JSON
+
+        NOTE:
+        The: py: method:`Connection.modify_user()` receives as a parameter a
+        dictionary with the following format.
+        {"username":"", "password":"", "email":"", "mobile":"",
+        "website":"", "isAdmin":"", "updatedBy":""}
+
+        """
+
+        if not g.con.contains_user(username):
+            return create_error_response(404, "Unknown user", "There is no user with username {}".format(username))
+
+        request_body = request.get_json()
+        if not request_body:
+            return create_error_response(415, "Unsupported Media Type", "Use a JSON compatible format")
+
+        try:
+            password = request_body["password"]
+            email = request_body["email"]
+            mobile = request_body["mobile"]
+            website = request_body["website"]
+            isAdmin = request_body["isAdmin"]
+            updateBy = request_body["updateBy"]
+        except KeyError:
+            return create_error_response(400, "Wrong request format", "Be sure to include all mandatory properties")
+
+        if not g.con.modify_user(username, password, email, mobile, website, updateBy):
+            return create_error_response(404, "Unknown user", "There is no user with username {}".format(username))
+
+        return "", 204
+
+class Machines(Resource):
     def post(self):
         return Response(status=201, headers={"Location": url})
 
+class Machine(Resource):
+    def post(self):
+        return Response(status=201, headers={"Location": url})
+
+class History(Resource):
+    def post(self):
+        return Response(status=201, headers={"Location": url})
 
 #Add the Regex Converter so we can use regex expressions when we define the
 #routes
@@ -1029,14 +1326,20 @@ api.add_resource(MachineTypes, "/fablab/api/machinetypes/",
                  endpoint="machinetypes")
 api.add_resource(MachineType, "/fablab/api/machinetypes/<typeID>/",
                  endpoint="machinetype")
-api.add_resource(Machines, "/fablab/api/machines/",
-                 endpoint="machines")
 api.add_resource(Reservations, "/fablab/api/reservations/",
                  endpoint="reservations")
 api.add_resource(Reservation, "/fablab/api/reservations/<reservationID>/",
                  endpoint="reservation")
 api.add_resource(Users, "/fablab/api/users/",
                  endpoint="users")
+api.add_resource(User, "/fablab/api/users/<username>/",
+                 endpoint="user")
+api.add_resource(Machines, "/fablab/api/machines/",
+                 endpoint="machines")
+api.add_resource(Machine, "/fablab/api/machines/<machineID>/",
+                 endpoint="machine")
+api.add_resource(History, "/fablab/api/machines/<machineID>/history/",
+                 endpoint="history")
 
 #Redirect profile
 @app.route("/profiles/<profile_name>/")
@@ -1059,4 +1362,3 @@ def send_json_schema(schema_name):
 if __name__ == '__main__':
     #Debug true activates automatic code reloading and improved error messages
     app.run(debug=True)
-
