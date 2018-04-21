@@ -35,7 +35,6 @@ resources.app.config.update({"Engine": ENGINE})
 
 #Other database parameters.
 initial_types = 5
-initial_reservations = 5
 
 
 class ResourcesAPITestCase(unittest.TestCase):
@@ -76,7 +75,7 @@ class ResourcesAPITestCase(unittest.TestCase):
 
 class MachineTypesTestCase (ResourcesAPITestCase):
 
-    #Anonymous user
+    #Anonymous type
     machine_type_new_request = {
       "typeName" : "new_test_type",
       "typeFullname" : "new full name type",
@@ -84,31 +83,19 @@ class MachineTypesTestCase (ResourcesAPITestCase):
       "createdBy" : "1"
     }   
 
-    #Existing user
+    #Existing type
     machine_type_error_request = {
       "typeFullname" : "new full name type",
       "pastProject" : "http://www.fablab.oulu.fi/"
     }   
 
-    #Non exsiting user
+    #Non exsiting type
     message_3_request = {
       "typeName" : "new_test_type",
       "typeFullname" : "new full name type",
       "pastProject" : "http://www.fablab.oulu.fi/",
       "createdBy" : "1"
     }   
-
-    #Missing the headline
-    message_4_wrong = {
-        "articleBody": "Do you know any good online hypermedia course?",
-        "author": "Onethatwashere"
-    }
-
-    #Missing the articleBody
-    message_5_wrong = {
-        "articleBody": "Do you know any good online hypermedia course?",
-        "author": "Onethatwashere"
-    }
 
     url = "/fablab/api/machinetypes/"
 
@@ -255,9 +242,6 @@ class MachineTypeTestCase (ResourcesAPITestCase):
         "updatedBy": 1
     }
 
-    message_wrong_req_2 = {
-        "articleBody": "Do not try to fix what others broke",
-    }
     url_main = "/fablab/api/machines/"
     def setUp(self):
         super(MachineTypeTestCase, self).setUp()
@@ -371,7 +355,7 @@ class MachineTypeTestCase (ResourcesAPITestCase):
         """
         Try to modify a created type
         """
-        print("("+self.test_modify_machine_type.__name__+")", self.test_modify_machine_type.__doc__)
+        print("("+self.test_modify_machine_type_wrong_format.__name__+")", self.test_modify_machine_type_wrong_format.__doc__)
 
         #Check that I receive status code 204
         resp = self.client.put(self.url,
@@ -383,7 +367,7 @@ class MachineTypeTestCase (ResourcesAPITestCase):
         """
         Try to modify a created type
         """
-        print("("+self.test_modify_machine_type.__name__+")", self.test_modify_machine_type.__doc__)
+        print("("+self.test_delete_unexisting_machine_type.__name__+")", self.test_delete_unexisting_machine_type.__doc__)
 
         #Check that I receive status code 204
         resp = self.client.delete(self.url_wrong)
@@ -393,12 +377,12 @@ class MachineTypeTestCase (ResourcesAPITestCase):
         """
         Try to modify a created type
         """
-        print("("+self.test_modify_machine_type.__name__+")", self.test_modify_machine_type.__doc__)
+        print("("+self.test_delete_machine_type.__name__+")", self.test_delete_machine_type.__doc__)
 
         #Check that I receive status code 204
         resp = self.client.delete(self.url)
         self.assertEqual(resp.status_code, 204)
-        
+
 if __name__ == "__main__":
     print("Start running tests")
     unittest.main()
