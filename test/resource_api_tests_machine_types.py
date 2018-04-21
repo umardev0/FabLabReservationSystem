@@ -89,14 +89,6 @@ class MachineTypesTestCase (ResourcesAPITestCase):
       "pastProject" : "http://www.fablab.oulu.fi/"
     }   
 
-    #Non exsiting type
-    message_3_request = {
-      "typeName" : "new_test_type",
-      "typeFullname" : "new full name type",
-      "pastProject" : "http://www.fablab.oulu.fi/",
-      "createdBy" : "1"
-    }   
-
     url = "/fablab/api/machinetypes/"
 
     def test_url(self):
@@ -112,7 +104,7 @@ class MachineTypesTestCase (ResourcesAPITestCase):
 
     def test_get_machinetypes(self):
         """
-        Checks that GET Messages return correct status code and data format
+        Checks that GET types return correct status code and data format
         """
         print("("+self.test_get_machinetypes.__name__+")", self.test_get_machinetypes.__doc__)
 
@@ -132,21 +124,21 @@ class MachineTypesTestCase (ResourcesAPITestCase):
         self.assertEqual(controls["self"]["href"], self.url)
 
         # Check that users-all control is correct
-        users_ctrl = controls["fablab:machines-all"]
-        self.assertIn("title", users_ctrl)
-        self.assertIn("href", users_ctrl)
-        self.assertEqual(users_ctrl["href"], "/fablab/api/machines/")
+        machines_all = controls["fablab:machines-all"]
+        self.assertIn("title", machines_all)
+        self.assertIn("href", machines_all)
+        self.assertEqual(machines_all["href"], "/fablab/api/machines/")
 
         #Check that add-message control is correct
-        msg_ctrl = controls["fablab:add-machinetype"]
-        self.assertIn("title", msg_ctrl)
-        self.assertIn("href", msg_ctrl)
-        self.assertEqual(msg_ctrl["href"], "/fablab/api/machinetypes/")
-        self.assertIn("encoding", msg_ctrl)
-        self.assertEqual(msg_ctrl["encoding"], "json")        
-        self.assertIn("method", msg_ctrl)
-        self.assertEqual(msg_ctrl["method"], "POST")
-        self.assertIn("schemaUrl", msg_ctrl)
+        add_type = controls["fablab:add-machinetype"]
+        self.assertIn("title", add_type)
+        self.assertIn("href", add_type)
+        self.assertEqual(add_type["href"], "/fablab/api/machinetypes/")
+        self.assertIn("encoding", add_type)
+        self.assertEqual(add_type["encoding"], "json")        
+        self.assertIn("method", add_type)
+        self.assertEqual(add_type["method"], "POST")
+        self.assertIn("schemaUrl", add_type)
 
         #Check that items are correct.
         items = data["items"]
@@ -223,20 +215,20 @@ class MachineTypesTestCase (ResourcesAPITestCase):
 class MachineTypeTestCase (ResourcesAPITestCase):
 
     #ATTENTION: json.loads return unicode
-    message_req_1 = {
+    type_req_1 = {
         "typeName": "3d_printers",
         "typeFullname": "New 3D Printers",
         "pastProject": "http://www.oulu.fi/fablab/projects",
         "updatedBy": 1
     }
 
-    message_moq_req_1 = {
+    type_moq_req_1 = {
         "typeFullname": "New 3D Printers",
         "pastProject": "http://www.oulu.fi/fablab/projects",
         "updatedBy": 1
     }
 
-    message_wrong_req_1 = {
+    type_wrong_req_1 = {
         "typeFullname": "New 3D Printers",
         "pastProject": "http://www.oulu.fi/fablab/projects",
         "updatedBy": 1
@@ -266,8 +258,8 @@ class MachineTypeTestCase (ResourcesAPITestCase):
 
     def test_wrong_url(self):
         """
-        Checks that GET Message return correct status code if given a
-        wrong message
+        Checks that GET type return correct status code if given a
+        wrong type
         """
         print("("+self.test_wrong_url.__name__+")", self.test_wrong_url.__doc__)
         resp = self.client.get(self.url_wrong)
@@ -276,7 +268,7 @@ class MachineTypeTestCase (ResourcesAPITestCase):
 
     def test_get_machine_type(self):
         """
-        Checks that GET Message return correct status code and data format
+        Checks that GET type return correct status code and data format
         """
         print("("+self.test_get_machine_type.__name__+")", self.test_get_machine_type.__doc__)
         with resources.app.test_client() as client:
@@ -317,7 +309,7 @@ class MachineTypeTestCase (ResourcesAPITestCase):
 
     def test_get_machine_type_mimetype(self):
         """
-        Checks that GET Messages return correct status code and data format
+        Checks that GET type return correct status code and data format
         """
         print("("+self.test_get_machine_type_mimetype.__name__+")", self.test_get_machine_type_mimetype.__doc__)
 
@@ -335,7 +327,7 @@ class MachineTypeTestCase (ResourcesAPITestCase):
 
         #Check that I receive status code 404
         resp = self.client.put(self.url_wrong,
-                                data=json.dumps(self.message_req_1),
+                                data=json.dumps(self.type_req_1),
                                 headers={"Content-Type": JSON})
         self.assertEqual(resp.status_code, 404)
 
@@ -347,25 +339,25 @@ class MachineTypeTestCase (ResourcesAPITestCase):
 
         #Check that I receive status code 204
         resp = self.client.put(self.url,
-                                data=json.dumps(self.message_req_1),
+                                data=json.dumps(self.type_moq_req_1),
                                 headers={"Content-Type": JSON})
         self.assertEqual(resp.status_code, 204)
 
     def test_modify_machine_type_wrong_format(self):
         """
-        Try to modify a created type
+        Try to modify a created type in wrong format
         """
         print("("+self.test_modify_machine_type_wrong_format.__name__+")", self.test_modify_machine_type_wrong_format.__doc__)
 
         #Check that I receive status code 204
         resp = self.client.put(self.url,
-                                data=json.dumps(self.message_wrong_req_1),
+                                data=json.dumps(self.type_wrong_req_1),
                                 headers={"Content-Type": JSON})
         self.assertEqual(resp.status_code, 400)
         
     def test_delete_unexisting_machine_type(self):
         """
-        Try to modify a created type
+        Try to delete an unexisting type
         """
         print("("+self.test_delete_unexisting_machine_type.__name__+")", self.test_delete_unexisting_machine_type.__doc__)
 
@@ -375,7 +367,7 @@ class MachineTypeTestCase (ResourcesAPITestCase):
 
     def test_delete_machine_type(self):
         """
-        Try to modify a created type
+        Try to delete a created type
         """
         print("("+self.test_delete_machine_type.__name__+")", self.test_delete_machine_type.__doc__)
 
