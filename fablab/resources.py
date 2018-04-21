@@ -364,14 +364,34 @@ class FablabObject(MasonObject):
         schema = {
             "type": "object",
             "properties": {},
-            "required": ["password"]
+            "required": ["username", "password"]
         }
 
         props = schema["properties"]
         props["password"] = {
             "description": "User's new password",
-            "title": "Password",
+            "title": "password",
             "type": "string"
+        }
+        props["email"] = {
+            "description": "User's new email",
+            "title": "email",
+            "type": "string"
+        }
+        props["mobile"] = {
+            "description": "User's new mobile",
+            "title": "mobile",
+            "type": "string"
+        }
+        props["website"] = {
+            "description": "User's new website",
+            "title": "website",
+            "type": "string"
+        }
+        props["updatedBy"] = {
+            "description": "User who updated this record ",
+            "title": "updatedBy",
+            "type": "integer"
         }
 
         return schema
@@ -1212,9 +1232,7 @@ class User(Resource):
             mobile = user_db["mobile"],
             website = user_db["website"],
             isAdmin = user_db["isAdmin"],
-            createdBy = user_db["createdBy"],
             createdAt = user_db["createdAt"],
-            updateBy = user_db["updateBy"],
             updatedAt = user_db["updatedAt"]
         )
 
