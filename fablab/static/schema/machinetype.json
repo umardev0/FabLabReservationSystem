@@ -1,10 +1,10 @@
 {
     "type": "object",
     "properties": {
-        "address": {
+        "typeName": {
             "title": "typeName",
             "description": "Short name of the type",
-            "type": "object",
+            "type": "string",
         },
         "typeFullname": {
             "title": "typeFullname",
@@ -19,12 +19,12 @@
         "createdBy": {
             "title": "createdBy",
             "description": "Creator of the type",
-            "type": "string"
+            "type": "integer"
         },
-        "updateBy": {
-            "title": "updateBy",
+        "updatedBy": {
+            "title": "updatedBy",
             "description": "User modified the type",
-            "type": "string"
+            "type": "integer"
         }
    },
     "required": ["typeName", "typeFullname"]
