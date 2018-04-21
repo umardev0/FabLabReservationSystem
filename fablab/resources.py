@@ -379,15 +379,31 @@ class FablabObject(MasonObject):
         schema = {
             "type": "object",
             "properties": {},
-            "required": []
+            "required": ["typeName", "typeFullname","pastProject"]
         }
 
         props = schema["properties"]
-        props["typeFullname"] = {
+        props["typeName"] = {
             "title": "Type Name",
             "description": "The type of machine",
             "type": "string"
         }
+        props["typeFullname"] = {
+            "title": "Type Full Name",
+            "description": "The full name of machine type",
+            "type": "string"
+        }
+        props["pastProject"] = {
+            "title": "Past Projects",
+            "description": "Previous projects made by this type",
+            "type": "string"
+        }
+        props["updatedBy"] = {
+            "title": "Updated By",
+            "description": "UserID whom modified the type",
+            "type": "integer"
+        }
+
         return schema
 
     def _machine_schema(self):
@@ -433,14 +449,19 @@ class FablabObject(MasonObject):
         schema = {
             "type": "object",
             "properties": {},
-            "required": ["reservationID"]
+            "required": ["reservationID","updatedBy"]
         }
 
         props = schema["properties"]
         props["reservationID"] = {
             "title": "Reservation ID",
             "description": "The ID of reservation to be disable",
-            "type": "string"
+            "type": "integer"
+        }
+        props["updatedBy"] = {
+            "title": "Reservation ID",
+            "description": "UserID whom disable the reservation",
+            "type": "integer"
         }
         return schema
 
