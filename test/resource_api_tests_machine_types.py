@@ -123,13 +123,13 @@ class MachineTypesTestCase (ResourcesAPITestCase):
         self.assertIn("href", controls["self"])
         self.assertEqual(controls["self"]["href"], self.url)
 
-        # Check that users-all control is correct
+        # Check that machines-all control is correct
         machines_all = controls["fablab:machines-all"]
         self.assertIn("title", machines_all)
         self.assertIn("href", machines_all)
         self.assertEqual(machines_all["href"], "/fablab/api/machines/")
 
-        #Check that add-message control is correct
+        #Check that add-machinetype control is correct
         add_type = controls["fablab:add-machinetype"]
         self.assertIn("title", add_type)
         self.assertIn("href", add_type)
@@ -248,7 +248,6 @@ class MachineTypeTestCase (ResourcesAPITestCase):
         """
         Checks that the URL points to the right resource
         """
-        #NOTE: self.shortDescription() shuould work.
         _url = "/fablab/api/machinetypes/1/"
         print("("+self.test_url.__name__+")", self.test_url.__doc__)
         with resources.app.test_request_context(_url):
@@ -349,7 +348,7 @@ class MachineTypeTestCase (ResourcesAPITestCase):
         """
         print("("+self.test_modify_machine_type_wrong_format.__name__+")", self.test_modify_machine_type_wrong_format.__doc__)
 
-        #Check that I receive status code 204
+        #Check that I receive status code 400
         resp = self.client.put(self.url,
                                 data=json.dumps(self.type_wrong_req_1),
                                 headers={"Content-Type": JSON})
@@ -361,7 +360,7 @@ class MachineTypeTestCase (ResourcesAPITestCase):
         """
         print("("+self.test_delete_unexisting_machine_type.__name__+")", self.test_delete_unexisting_machine_type.__doc__)
 
-        #Check that I receive status code 204
+        #Check that I receive status code 404
         resp = self.client.delete(self.url_wrong)
         self.assertEqual(resp.status_code, 404)
 
