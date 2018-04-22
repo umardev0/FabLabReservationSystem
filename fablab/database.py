@@ -1181,7 +1181,6 @@ class Connection(object):
             query += " endTime < %s" % str(endTime)
           #Order of results
         query += ' ORDER BY startTime DESC'
-        print(query)
         #Activate foreign key support
         self.set_foreign_keys_support()
         #Cursor and row initialization
@@ -1238,7 +1237,6 @@ class Connection(object):
             query += " endTime < %s" % str(endTime)
           #Order of results
         query += ' ORDER BY startTime DESC'
-        print(query)
         #Activate foreign key support
         self.set_foreign_keys_support()
         #Cursor and row initialization
