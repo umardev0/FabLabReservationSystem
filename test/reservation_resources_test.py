@@ -63,9 +63,16 @@ class ResourcesAPITestCase(unittest.TestCase):
         """
         ENGINE.clear()
         self.app_context.pop()
-		
+
 class ReservationsTestCase (ResourcesAPITestCase):
 
+    #Anonymous reservation
+    machine_type_new_request = {
+      "typeName" : "new_test_type",
+      "typeFullname" : "new full name type",
+      "pastProject" : "http://www.fablab.oulu.fi/",
+      "createdBy" : "1"
+    }   
     url = "/fablab/api/reservations/"
 
     def test_url(self):
