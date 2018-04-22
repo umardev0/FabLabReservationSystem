@@ -171,7 +171,7 @@ class Connection(object):
         if self.con and not self._isclosed:
             self.con.commit()
             self.con.close()
-            self._isclosed = True 
+            self._isclosed = True
 
     #FOREIGN KEY STATUS
     def check_foreign_keys_status(self):
@@ -1618,3 +1618,12 @@ class Connection(object):
         if cur.rowcount < 1:
             return None
         return username
+
+    def contains_user(self, username):
+        '''
+        Checks if a user is in the database.
+
+        :param str username: Id of the user to search. Note that username is a string.
+        :return: True if the user is in the database. False otherwise.
+        '''
+        return self.get_user(username) is not None
