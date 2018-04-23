@@ -219,15 +219,15 @@ class MachineTypeTestCase (ResourcesAPITestCase):
         "typeName": "3d_printers",
         "typeFullname": "New 3D Printers",
         "pastProject": "http://www.oulu.fi/fablab/projects",
-        "updatedBy": 1
+        "createdBy": 1
     }
 
     type_moq_req_1 = {
+        "typeName": "3d_printers",
         "typeFullname": "New 3D Printers",
         "pastProject": "http://www.oulu.fi/fablab/projects",
         "updatedBy": 1
     }
-
     type_wrong_req_1 = {
         "typeFullname": "New 3D Printers",
         "pastProject": "http://www.oulu.fi/fablab/projects",
@@ -294,11 +294,27 @@ class MachineTypeTestCase (ResourcesAPITestCase):
             self.assertIn("method", edit_ctrl)
             self.assertEqual(edit_ctrl["method"], "PUT")
             self.assertIn("schema", edit_ctrl)
+        
+            schema_data = edit_ctrl["schema"]
+            self.assertIn("type", schema_data)
+            self.assertIn("properties", schema_data)
+            self.assertIn("required", schema_data)
             
-            reply_ctrl = controls["fablab:machines-all"]
-            self.assertIn("title", reply_ctrl)
-            self.assertIn("href", reply_ctrl)
-            self.assertEqual(reply_ctrl["href"], self.url_main)
+            props = schema_data["properties"]
+            self.assertIn("typeName", props)
+            self.assertIn("typeFullname", props)
+            self.assertIn("pastProject", props)
+            self.assertIn("updatedBy", props)
+            
+            req = schema_data["required"]
+            self.assertIn("typeName", req)
+            self.assertIn("typeFullname", req)
+            self.assertIn("pastProject", req)
+            
+            machines_all_ctrl = controls["fablab:machines-all"]
+            self.assertIn("title", machines_all_ctrl)
+            self.assertIn("href", machines_all_ctrl)
+            self.assertEqual(machines_all_ctrl["href"], self.url_main)
             
             #Check rest attributes
             self.assertIn("typeID", data)

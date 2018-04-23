@@ -492,7 +492,7 @@ class FablabObject(MasonObject):
             "type": "integer"
         }
         props["updatedBy"] = {
-            "title": "Reservation ID",
+            "title": "Updated By",
             "description": "UserID whom disable the reservation",
             "type": "integer"
         }
