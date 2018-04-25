@@ -530,11 +530,12 @@ class Connection(object):
             ``createdAt``
 
         '''
-        return {'reservationID': row['reservationID'], 'userID': row['userID'],
-               'machineID': 'machine-' + str(row['machineID']),
-               'startTime': row['startTime'],
-               'endTime': row['endTime'],
-               'isActive': row['isActive']}
+        return {'reservationID': row['reservationID'],
+                'userID': row['userID'],
+                'machineID': 'machine-' + str(row['machineID']),
+                'startTime': row['startTime'],
+                'endTime': row['endTime'],
+                'isActive': row['isActive']}
 
     #API ITSELF
     #Message Table API.
@@ -1254,6 +1255,77 @@ class Connection(object):
             reservation = self._create_reservation_list_object(row)
             reservations.append(reservation)
         return reservations
+
+    def get_reservation_list_new(self, machineID, number_of_results=-1, startTime=-1, endTime=-1, active = -1):
+
+        '''
+        Return a list of all the reservations for a particular machine in the database filtered by the
+        conditions provided in the parameters.
+
+        :param machineID: Search reservations of a machine with the given
+            machineID.
+        :type machineID: str
+        :param number_of_results: default -1. Sets the maximum number of
+            reservations returning in the list. If set to -1, there is no limit.
+        :type number_of_results: int
+        :param before: All timestamps > ``before`` (UNIX timestamp) are removed.
+            If set to -1, this condition is not applied.
+        :type before: long
+        :param after: All timestamps < ``after`` (UNIX timestamp) are removed.
+            If set to -1, this condition is not applied.
+        :type after: long
+        :param active: used to filter active and inactive reservations. If 1 then returns active reservations and if 0 then returns inactive reservations. If set to -1, this condition is not applied.
+        :type active: int
+
+        :return: A list of reservations
+
+        '''
+
+        match = re.match(r'machine-(\d{1,3})', machineID)
+        if match is None:
+            raise ValueError("The machineID is malformed")
+        machineID = int(match.group(1))
+
+        query = 'SELECT * FROM reservations WHERE machineID = ' + str(machineID)
+
+        if active != -1:
+            if active == 1:
+                query += ' AND isActive = 1'
+            elif active == 0:
+                query += ' AND isActive = 0'
+
+
+        #startTime restriction
+        if startTime != -1:
+            query += " AND startTime > %s" % str(startTime)
+
+        #endTime restriction
+        if endTime != -1:
+            query += " AND endTime < %s" % str(endTime)
+
+        #Limit the number of results return
+        if number_of_results > -1:
+          query += ' LIMIT ' + str(number_of_results)
+
+        #Order of results
+        query += ' ORDER BY startTime DESC'
+        #Activate foreign key support
+        self.set_foreign_keys_support()
+        #Cursor and row initialization
+        self.con.row_factory = sqlite3.Row
+        cur = self.con.cursor()
+        #Execute main SQL Statement
+        cur.execute(query)
+        #Get results
+        rows = cur.fetchall()
+        if rows is None:
+            return None
+        #Build the return object
+        reservations = []
+        for row in rows:
+            reservation = self._create_reservation_list_object(row)
+            reservations.append(reservation)
+        return reservation
 
     def get_reservation (self, reservationID):
         '''

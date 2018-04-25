@@ -16,6 +16,7 @@ FABLAB_USER_PROFILE = "/profiles/user-profile/"
 FABLAB_MACHINE_TYPE_PROFILE = "/profiles/machine-type-profile/"
 FABLAB_MACHINE_PROFILE = "/profiles/machine-profile/"
 FABLAB_RESERVATION_PROFILE = "/profiles/reservation-profile/"
+FABLAB_HISTORY_PROFILE = "/profiles/history-profile/"
 ERROR_PROFILE = "/profiles/error-profile"
 
 ATOM_THREAD_PROFILE = "https://tools.ietf.org/html/rfc4685"
@@ -209,8 +210,8 @@ class FablabObject(MasonObject):
         """
 
         self["@controls"]["fablab:add-machine"] = {
-            "href": api.url_for(Users),
-            "title": "Create user",
+            "href": api.url_for(Machines),
+            "title": "Create machine",
             "encoding": "json",
             "method": "POST",
             "schemaUrl": "/fablab/schema/machine/"
@@ -340,15 +341,15 @@ class FablabObject(MasonObject):
 
     def add_control_machine_history(self, machineID):
         """
-        This adds the messages history control to a user which defines a href
+        This adds the reservations history control to a machine which defines a href
         template for making queries. In Mason query parameters are defined with
         a schema just like forms.
 
-        : param str user: username of the user
+        : param str machineID: machineID of the machine
         """
 
         self["@controls"]["forum:history-reservations"] = {
-            "href": api.url_for(History, machineID=machineID).rstrip("/") + "{?length,before,after}",
+            "href": api.url_for(History, machineID=machineID).rstrip("/") + "{?length,before,after,active}",
             "title": "Reservation history",
             "isHrefTemplate": True,
             "schema": self._history_schema()
@@ -500,7 +501,7 @@ class FablabObject(MasonObject):
 
     def _history_schema(self):
         """
-        Creates a schema dicionary for the messages history query parameters.
+        Creates a schema dicionary for the reservations history query parameters.
 
         This schema can also be accessed from /forum/schema/history-query/
 
@@ -524,6 +525,10 @@ class FablabObject(MasonObject):
         }
         props["after"] = {
             "description": "Find reservations after (timestamp as seconds)",
+            "type": "integer"
+        }
+        props["active"] = {
+            "description": "Find reservations based on active state. 1 for active, 0 for inactive, default -1 for all",
             "type": "integer"
         }
 
@@ -1326,16 +1331,334 @@ class User(Resource):
         return "", 204
 
 class Machines(Resource):
+    """
+    Resource Machines implementation
+    """
+
+    def get(self):
+        """
+        Get all machines.
+
+        INPUT parameters:
+          None
+
+        RESPONSE ENTITY BODY:
+        * Media type: Mason
+          https://github.com/JornWildt/Mason
+         * Profile: Machine Profile
+          /profiles/machine_profile
+
+        """
+
+        machines_db = g.con.get_machines()
+
+        envelope = FablabObject()
+        envelope.add_namespace("fablab", LINK_RELATIONS_URL)
+
+        envelope.add_control("self", href=api.url_for(Machines))
+        envelope.add_control_add_machine()
+        envelope.add_control_machinetypes_all()
+
+        items = envelope["items"] = []
+
+        for machine in machines_db:
+            item = FablabObject(
+                machineID=machine["machineID"],
+                machinename=machine["machinename"],
+                typeID=machine["typeID"],
+                tutorial=machine["tutorial"]
+            )
+            item.add_control("self", href=api.url_for(Machine, machineID=machine["machineID"]))
+            item.add_control("profile", href=FABLAB_MACHINE_PROFILE)
+            items.append(item)
+
+        #RENDER
+        return Response(json.dumps(envelope), 200, mimetype=MASON+";" + FABLAB_MACHINE_PROFILE)
+
     def post(self):
+        """
+        Adds a new machine.
+
+        REQUEST ENTITY BODY:
+         * Media type: JSON:
+         * Profile: Machine Profile
+          /profiles/machine_profile
+
+
+        The body should be a JSON document that matches the schema for new machine
+        If createdBy is not there consider it  "0" i.e Admin.
+
+        RESPONSE STATUS CODE:
+         * Returns 201 if the new machine has been added correctly.
+           The Location header contains the path of the new machine
+         * Returns 400 if the new machine is not well formed or the entity body is empty.
+         * Returns 415 if the format of the response is not json
+         * Returns 500 if the new machine could not be added to database.
+
+         {"machinename":"", "typeID":"", "tutorial":"", "createdBy":""}
+
+        """
+
+        #Extract the request body. In general would be request.data
+        #Since the request is JSON I use request.get_json
+        #get_json returns a python dictionary after serializing the request body
+        #get_json returns None if the body of the request is not formatted
+        # using JSON. We use force=True since the input media type is not
+        # application/json.
+
+        if JSON != request.headers.get("Content-Type", ""):
+            abort(415)
+        #PARSE THE REQUEST:
+        request_body = request.get_json(force=True)
+        if not request_body:
+            return create_error_response(415, "Unsupported Media Type",
+                                         "Use a JSON compatible format",
+                                         )
+         #It throws a BadRequest exception, and hence a 400 code if the JSON is
+        #not wellformed
+        try:
+            machinename = request_body["machinename"]
+            typeID = request_body["typeID"]
+            tutorial = request_body["tutorial"]
+            createdBy = request_body.get("createdBy", "")
+
+        except KeyError:
+            #This is launched if machinename, typeID or tutorial does not exist or if
+            # the template.data array does not exist.
+            return create_error_response(400, "Wrong request format",
+                                         "Be sure you include machinename, typeID and tutorial")
+        #Create the new machine and build the response code"
+        newMachine = g.con.create_machine(machinename, typeID, tutorial, createdBy)
+        if not newMachine:
+            return create_error_response(500, "Problem with the database",
+                                         "Cannot access the database")
+
+        #Create the Location header with the id of the new machine created
+        url = api.url_for(Machines)
+
+        #RENDER
+        #Return the response
         return Response(status=201, headers={"Location": url})
 
 class Machine(Resource):
-    def post(self):
-        return Response(status=201, headers={"Location": url})
+    def get(self, machineID):
+        """
+        Get name and information of a specific Machine.
+
+        Returns status code 404 if the machineID does not exist in the database.
+
+        INPUT PARAMETER
+       : param str typeID: The id of the Machine Type to be retrieved from the system
+
+        RESPONSE ENTITY BODY:
+         * Media type: application/vnd.mason+json:
+             https://github.com/JornWildt/Mason
+         * Profile: Machine Profile
+          /profiles/machine_profile
+
+        RESPONSE STATUS CODE
+         * Return status code 200 if everything OK.
+         * Return status code 404 if the Machine was not found in the database.
+
+        """
+
+        #PEFORM OPERATIONS INITIAL CHECKS
+        #Get the machine from db
+        machine_db = g.con.get_machine(machineID)
+        if not machine_db:
+            abort(404, message="There is no machine with id %s" % machineID,
+                       resource_type="Machine",
+                       resource_url=request.path,
+                       resource_id=machineID)
+
+        #FILTER AND GENERATE RESPONSE
+        #Create the envelope:
+        envelope = FablabObject(
+            machineID=machine_db["machineID"],
+            machinename=machine_db["machinename"],
+            typeID=machine_db["typeID"],
+            tutorial=machine_db["tutorial"],
+            createdAt=machine_db["createdAt"],
+            createdBy=machine_db["createdBy"],
+            updatedAt=machine_db["updatedAt"],
+            updatedBy=machine_db["updatedBy"]
+        )
+
+        envelope.add_namespace("fablab", LINK_RELATIONS_URL)
+        envelope.add_namespace("atom-thread", ATOM_THREAD_PROFILE)
+
+        envelope.add_control_edit_machine(machineID)
+        envelope.add_control_delete_machine(machineID)
+        envelope.add_control_machine_history(machineID)
+        envelope.add_control_machines_all()
+        envelope.add_control_users_all()
+        envelope.add_control("profile", href=FABLAB_MACHINE_PROFILE)
+        envelope.add_control("collection", href=api.url_for(Machines))
+        envelope.add_control("self", href=api.url_for(Machine, machineID=machineID))
+
+        #RENDER
+        return Response(json.dumps(envelope), 200, mimetype=MASON+";" + FABLAB_MACHINE_PROFILE)
+
+
+    def delete(self, machineID):
+        """
+        Deletes a Machine from the FabLab API.
+
+        INPUT PARAMETERS:
+       : param str machineID: The id of the Machine to be deleted
+
+        RESPONSE STATUS CODE
+         * Returns 204 if the Machine was deleted
+         * Returns 404 if the machineID is not associated to any machine.
+        """
+
+        #PERFORM DELETE OPERATIONS
+        if g.con.delete_machine(machineID):
+            return "", 204
+        else:
+            #Send error message
+            return create_error_response(404, "Unknown id",
+                                         "There is no a machine with id %s" % machineID
+                                        )
+
+    def put(self, machineID):
+        """
+        Modifies information of specific Machine.
+
+        INPUT PARAMETERS:
+       : param str machineID: The id of the Machine to be modified
+
+        REQUEST ENTITY BODY:
+        * Media type: JSON
+
+         * Profile: Machine Profile
+          /profiles/machine_profile
+
+        RESPONSE ENTITY BODY:
+        * Media type: Mason
+          https://github.com/JornWildt/Mason
+         * Profile: Machine Profile
+          /profiles/machine_profile
+
+        The body should be a JSON document that matches the schema for editing machines
+        If editor is not there consider it  "0" i.e. Admin.
+
+        OUTPUT:
+         * Returns 204 if the Machine is modified correctly
+         * Returns 400 if the body of the request is not well formed or it is
+           empty.
+         * Returns 404 if there is no Machine with machineID
+         * Returns 415 if the input is not JSON.
+         * Returns 500 if the database cannot be modified
+
+        """
+
+        #CHECK THAT MACHINE EXISTS
+        if not g.con.contains_machine(machineID):
+            return create_error_response(404, "Machine not found",
+                                         "There is no machine with ID %s" % machineID
+                                        )
+
+        if JSON != request.headers.get("Content-Type",""):
+            return create_error_response(415, "UnsupportedMediaType",
+                                         "Use a JSON compatible format")
+        request_body = request.get_json(force=True)
+         #It throws a BadRequest exception, and hence a 400 code if the JSON is
+        #not wellformed
+        try:
+            machinename = request_body["machinename"]
+            typeID = request_body["typeID"]
+            tutorial = request_body["tutorial"]
+            updatedBy = request_body.get("updatedBy", "")
+
+        except KeyError:
+            #This is launched if machinename, typeID or tutorial does not exist or if
+            # the template.data array does not exist.
+            return create_error_response(400, "Wrong request format",
+                                         "Be sure you include machinename, typeID and tutorial")
+        else:
+            #Modify the Machine in the database
+            if not g.con.modify_machine(machineID, machinename, typeID, tutorial, updatedBy):
+                return create_error_response(500, "Internal error",
+                                         "Machine information for %s cannot be updated" % machinename
+                                        )
+            return "", 204
 
 class History(Resource):
-    def post(self):
-        return Response(status=201, headers={"Location": url})
+    def get (self, machineID):
+        """
+            This method returns a list of reservations for a particular machine
+
+            INPUT:
+            The query parameters are:
+             * length: the number of reservations to return
+             * after: the reservations returned must have been modified after
+                      the time provided in this parameter.
+                      Time is UNIX timestamp
+             * before: the reservations returned must have been modified before the
+                       time provided in this parameter. Time is UNIX timestamp
+            * active: returns reservations according to active status
+
+            RESPONSE STATUS CODE:
+             * Returns 200 if the list can be generated and it is not empty
+             * Returns 404 if no reservations meets the requirement
+
+            RESPONSE ENTITY BODY:
+            * Media type recommended: application/vnd.mason+json
+            * Profile recommended: FABLAB_HISTORY_PROFILE
+                /profiles/history-profile
+
+            Link relations used in items: None
+
+            Semantic descriptions used in items: headline
+
+            Link relations used in links: messages-all, author
+
+            Semantic descriptors used in queries: after, before, length, active
+        """
+
+        #INTIAL CHECKING
+        #Extract query parameters
+        parameters = request.args
+        length = int(parameters.get('length', -1))
+        before = int(parameters.get('before', -1))
+        after = int(parameters.get('after', -1))
+        active = int(parameters.get('after', -1))
+        #PERFORM OPERATIONS
+        #Get the messages. This method return None if there is
+        #not user with nickname = nickname
+        # results_db = g.con.get_reservation_list(machineID, length, before, after, active)
+        results_db = g.con.get_reservation_list(None, machineID, before, after)
+        if results_db is None or not results_db:
+            return create_error_response(404, "Empty list",
+                                         "Cannot find any reservations with the"
+                                         " provided restrictions")
+        envelope = FablabObject()
+
+        envelope.add_namespace("fablab", LINK_RELATIONS_URL)
+        envelope.add_control("self", href=api.url_for(History, machineID=machineID))
+        envelope.add_control_add_reservation()
+        envelope.add_control_machines_all()
+        envelope.add_control_users_all()
+
+        items = envelope["items"] = []
+
+        for result in results_db:
+            item = FablabObject(
+                reservationID=result['reservationID'],
+                userID=result["userID"],
+                machineID=result["machineID"],
+                startTime=result["startTime"],
+                endTime=result["endTime"],
+                isActive=result["isActive"]
+            )
+            item.add_control("self", href=api.url_for(Reservation, reservationID=result["reservationID"]))
+            item.add_control("profile", href=FABLAB_RESERVATION_PROFILE)
+            items.append(item)
+
+        #RENDER
+        return Response(json.dumps(envelope), 200, mimetype=MASON+";" + FABLAB_HISTORY_PROFILE)
+        #return None
 
 #Add the Regex Converter so we can use regex expressions when we define the
 #routes
