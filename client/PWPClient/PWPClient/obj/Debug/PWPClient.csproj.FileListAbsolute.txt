@@ -1,0 +1,10 @@
+C:\Workspace\fablab-reservation-api\client\PWPClient\PWPClient\bin\Debug\PWPClient.exe.config
+C:\Workspace\fablab-reservation-api\client\PWPClient\PWPClient\bin\Debug\PWPClient.exe
+C:\Workspace\fablab-reservation-api\client\PWPClient\PWPClient\bin\Debug\PWPClient.pdb
+C:\Workspace\fablab-reservation-api\client\PWPClient\PWPClient\obj\Debug\PWPClient.csprojResolveAssemblyReference.cache
+C:\Workspace\fablab-reservation-api\client\PWPClient\PWPClient\obj\Debug\PWPClient.Form1.resources
+C:\Workspace\fablab-reservation-api\client\PWPClient\PWPClient\obj\Debug\PWPClient.Properties.Resources.resources
+C:\Workspace\fablab-reservation-api\client\PWPClient\PWPClient\obj\Debug\PWPClient.csproj.GenerateResource.cache
+C:\Workspace\fablab-reservation-api\client\PWPClient\PWPClient\obj\Debug\PWPClient.csproj.CoreCompileInputs.cache
+C:\Workspace\fablab-reservation-api\client\PWPClient\PWPClient\obj\Debug\PWPClient.exe
+C:\Workspace\fablab-reservation-api\client\PWPClient\PWPClient\obj\Debug\PWPClient.pdb
