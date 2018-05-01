@@ -347,6 +347,8 @@ class Connection(object):
         user_isAdmin = str(row['isAdmin'])
         user_createdAt = row['createdAt']
         user_updatedAt = row['updatedAt']
+        user_createdBy = row['createdBy']
+        user_updatedBy = row['updatedBy']        
         return {'userID': user_id,
                'username': user_name,
                'password': user_password,
@@ -355,7 +357,9 @@ class Connection(object):
                'website': user_website,
                'isAdmin': user_isAdmin,
                'createdAt': user_createdAt,
-               'updatedAt': user_updatedAt}
+               'updatedAt': user_updatedAt,
+               'createdBy': user_createdBy,
+               'updatedBy': user_updatedBy}
 
     def _create_user_list_object(self, row):
         '''
