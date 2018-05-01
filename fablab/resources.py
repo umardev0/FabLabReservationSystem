@@ -348,7 +348,7 @@ class FablabObject(MasonObject):
         : param str machineID: machineID of the machine
         """
 
-        self["@controls"]["forum:history-reservations"] = {
+        self["@controls"]["fablab:history-reservations"] = {
             "href": api.url_for(History, machineID=machineID).rstrip("/") + "{?length,before,after,active}",
             "title": "Reservation history",
             "isHrefTemplate": True,
@@ -976,7 +976,7 @@ class Reservation(Resource):
         #Get the message from db
         message_db = g.con.get_reservation(reservationID)
         if not message_db:
-            abort(404, message="There is no Reservation with id %s" % typeID,
+            abort(404, message="There is no Reservation with id %s" % reservationID,
                        resource_type="Reservation",
                        resource_url=request.path,
                        resource_id=reservationID)
@@ -1037,7 +1037,7 @@ class Reservation(Resource):
 
         """
 
-        #CHECK THAT MESSAGE EXISTS
+        #CHECK THAT RESERVATION EXISTS
         if not g.con.contains_reservation(reservationID):
             return create_error_response(404, "Type not found",
                                          "There is no reservation with ID %s" % reservationID
@@ -1051,7 +1051,7 @@ class Reservation(Resource):
         #not wellformed
 
         try:
-            updatedBy = request_body.get("updatedBy", "0")
+            updatedBy = request_body["updatedBy"]
 
         except KeyError:
             #This is launched if either title or body does not exist or if
