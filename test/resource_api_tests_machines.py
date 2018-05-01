@@ -203,7 +203,7 @@ class MachinesTestCase (ResourcesAPITestCase):
 
     def test_add_machine_wrong_media(self):
         """
-        Test adding machine with a media different than json
+        Test POST adding machine with a media different than json
         """
         print("("+self.test_add_machine_wrong_media.__name__+")", self.test_add_machine_wrong_media.__doc__)
         resp = self.client.post(resources.api.url_for(resources.Machines),
@@ -260,7 +260,7 @@ class MachineTestCase (ResourcesAPITestCase):
     def test_wrong_url(self):
         """
         Checks that GET machine return correct status code if given a
-        wrong type
+        wrong URL
         """
         print("("+self.test_wrong_url.__name__+")", self.test_wrong_url.__doc__)
         resp = self.client.get(self.url_wrong)

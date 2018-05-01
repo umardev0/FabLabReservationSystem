@@ -231,7 +231,7 @@ class ReservationsTestCase (ResourcesAPITestCase):
 
     def test_add_reservation_wrong_media(self):
         """
-        Test adding reservation with a media different than json
+        Test POST adding reservation with a media different than json
         """
         print("(" + self.test_add_reservation_wrong_media.__name__ + ")",
               self.test_add_reservation_wrong_media.__doc__)
