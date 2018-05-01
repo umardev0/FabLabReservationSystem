@@ -1254,12 +1254,15 @@ class User(Resource):
         envelope = FablabObject(
             username=username,
             userID= user_db["userID"],
+            password= user_db["password"],
             email = user_db["email"],
             mobile = user_db["mobile"],
             website = user_db["website"],
             isAdmin = user_db["isAdmin"],
             createdAt = user_db["createdAt"],
-            updatedAt = user_db["updatedAt"]
+            updatedAt = user_db["updatedAt"],
+            createdBy = user_db["createdBy"],
+            updatedBy = user_db["updatedBy"]            
         )
 
         envelope.add_namespace("forum", LINK_RELATIONS_URL)
