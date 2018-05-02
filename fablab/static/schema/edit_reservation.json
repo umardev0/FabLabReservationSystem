@@ -1,0 +1,16 @@
+{
+    "type": "object",
+    "properties": {
+        "reservationID": {
+            "title": "reservationID",
+            "description": "reservationID refers to specific reservation",
+            "type": "integer"
+        },
+         "updatedBy": {
+             "tittle": "updatedBy",
+             "description": "User modified the reservation",
+             "type": "integer"
+         }
+   },
+    "required": ["reservationID", "updatedBy"]
+}

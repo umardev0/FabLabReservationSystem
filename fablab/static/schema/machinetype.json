@@ -27,5 +27,5 @@
             "type": "integer"
         }
    },
-    "required": ["typeName", "typeFullname"]
+    "required": ["typeName", "typeFullname", "pastProject"]
 }
