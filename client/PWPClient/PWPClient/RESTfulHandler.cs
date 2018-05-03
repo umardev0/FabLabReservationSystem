@@ -41,31 +41,70 @@ namespace PWPClient
             return resp;
         }
 
-        public void HTTPPut(String URI, String JSON)
+        public void HTTPPut(String URI, JObject JSONData)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URI);
             request.Method = "PUT";
             request.ContentType = "application/json";
-            JObject newdata = new JObject(
-                                new JProperty("password", "Newton-King"),
-                                new JProperty("email", "test@yahoo.com"),
-                                new JProperty("mobile", "0414868688"),
-                                new JProperty("website", "asdasdsad.asdasd.com"),
-                                new JProperty("isAdmin", "1"),
-                                new JProperty("updatedBy", "3")
-                                
-                                );
-            Console.WriteLine(newdata.ToString());
+            
+            byte[] byteArray = Encoding.UTF8.GetBytes(JSONData.ToString());
+            try
+            {
+                request.ContentLength = byteArray.Length;
+                Stream streamRequest = request.GetRequestStream();
+                streamRequest.Write(byteArray, 0, byteArray.Length);
+                streamRequest.Close();
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                MessageBox.Show("Status Code: " + (int)response.StatusCode);
+            }
+            catch (WebException e)
+            {
+                MessageBox.Show("WebException:" +e.Status+ "With response:" +e.Message);
 
-            using (var streamWriter = new StreamWriter(request.GetRequestStream()))
-            {
             }
-            var httpResponse = (HttpWebResponse)request.GetResponse();
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+
+        }
+        public void HTTPPost(String URI, JObject JSONData)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URI);
+            byte[] byteArray = Encoding.UTF8.GetBytes(JSONData.ToString());
+
+            request.Method = "POST";
+            request.ContentType = "application/json";
+            request.ContentLength = byteArray.Length;
+            Console.WriteLine(JSONData.ToString());
+            try
             {
-                var responseText = streamReader.ReadToEnd();
-                MessageBox.Show(responseText.ToString());
+                Stream streamRequest = request.GetRequestStream();
+                streamRequest.Write(byteArray, 0, byteArray.Length);
+                streamRequest.Close();
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                MessageBox.Show("Status Code: " + (int)response.StatusCode);
             }
+            catch (WebException e)
+            {
+                MessageBox.Show("WebException:" + e.Status + "With response:" + e.Message);
+
+            }
+        }
+
+        public void HTTPDelete(String URI)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URI);
+            request.Method = "DELETE";
+            request.ContentType = "application/json";
+
+            try
+            {
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                MessageBox.Show("Status Code: " + (int)response.StatusCode);
+            }
+            catch (WebException e)
+            {
+                MessageBox.Show("WebException:" + e.Status + "With response:" + e.Message);
+
+            }
+
         }
     }
 }

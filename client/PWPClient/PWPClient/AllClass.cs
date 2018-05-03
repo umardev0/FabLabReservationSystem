@@ -37,7 +37,32 @@
 
 public class fablabMachineType
 {
+    public string typeID;
+    public string typeName;
+    public string typeFullname;
+    public string pastProject;
+    public string createdAt;
+    public string updatedAt;
+    public string createdBy;
+    public string updatedBy;
 
+    public fablabMachineType(string typeID, string typeName, string typeFullname, string pastProject, string createdAt, string updatedAt, string createdBy, string updatedBy)
+    {
+        this.typeID = typeID;
+        this.typeName = typeName;
+        this.typeFullname = typeFullname;
+        this.pastProject = pastProject;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.createdBy = createdBy;
+        this.updatedBy = updatedBy;
+    }
+
+    public fablabMachineType(string typeID, string typeFullname)
+    {
+        this.typeID = typeID;
+        this.typeFullname = typeFullname;
+    }
 }
 
 public class fablabMachine

@@ -31,14 +31,38 @@
             this.reservations = new System.Windows.Forms.TabPage();
             this.machines = new System.Windows.Forms.TabPage();
             this.machineTypes = new System.Windows.Forms.TabPage();
+            this.buttonClearTypeForm = new System.Windows.Forms.Button();
+            this.tableLayoutPanelTypes = new System.Windows.Forms.TableLayoutPanel();
+            this.buttonAddType = new System.Windows.Forms.Button();
+            this.buttonDeleteType = new System.Windows.Forms.Button();
+            this.textBoxTypePastProjects = new System.Windows.Forms.TextBox();
+            this.textBoxTypeFullName = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.buttonModifyType = new System.Windows.Forms.Button();
+            this.textBoxTypeName = new System.Windows.Forms.TextBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.textBoxTypeID = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.textBoxTypeCreatedBy = new System.Windows.Forms.TextBox();
+            this.textBoxTypeCreatedAt = new System.Windows.Forms.TextBox();
+            this.textBoxTypeUpdatedAt = new System.Windows.Forms.TextBox();
+            this.textBoxTypeUpdatedBy = new System.Windows.Forms.TextBox();
+            this.listViewMachineTypes = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.users = new System.Windows.Forms.TabPage();
             this.tableLayoutPanelUser = new System.Windows.Forms.TableLayoutPanel();
-            this.buttonDelete = new System.Windows.Forms.Button();
-            this.textBoxUpdatedBy = new System.Windows.Forms.TextBox();
-            this.textBoxCreatedBy = new System.Windows.Forms.TextBox();
-            this.textBoxUpdatedAt = new System.Windows.Forms.TextBox();
-            this.textBoxCreatedAt = new System.Windows.Forms.TextBox();
-            this.textBoxRole = new System.Windows.Forms.TextBox();
+            this.buttonAddUser = new System.Windows.Forms.Button();
+            this.buttonDeleteUser = new System.Windows.Forms.Button();
+            this.textBoxUserUpdatedBy = new System.Windows.Forms.TextBox();
+            this.textBoxUserCreatedBy = new System.Windows.Forms.TextBox();
+            this.textBoxUserUpdatedAt = new System.Windows.Forms.TextBox();
+            this.textBoxUserCreatedAt = new System.Windows.Forms.TextBox();
             this.textBoxWebsite = new System.Windows.Forms.TextBox();
             this.textBoxMobile = new System.Windows.Forms.TextBox();
             this.textBoxEmail = new System.Windows.Forms.TextBox();
@@ -51,11 +75,12 @@
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.buttonModify = new System.Windows.Forms.Button();
+            this.buttonModifyUser = new System.Windows.Forms.Button();
             this.textBoxUsername = new System.Windows.Forms.TextBox();
             this.textBoxPassword = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.buttonAddNewUser = new System.Windows.Forms.Button();
+            this.checkBoxAdmin = new System.Windows.Forms.CheckBox();
+            this.buttonClearUserForm = new System.Windows.Forms.Button();
             this.listViewUsers = new System.Windows.Forms.ListView();
             this.userID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.userName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -63,6 +88,8 @@
             this.textBoxServerIPPort = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.buttonConnectServer = new System.Windows.Forms.Button();
+            this.machineTypes.SuspendLayout();
+            this.tableLayoutPanelTypes.SuspendLayout();
             this.users.SuspendLayout();
             this.tableLayoutPanelUser.SuspendLayout();
             this.tabControl.SuspendLayout();
@@ -88,6 +115,9 @@
             // 
             // machineTypes
             // 
+            this.machineTypes.Controls.Add(this.buttonClearTypeForm);
+            this.machineTypes.Controls.Add(this.tableLayoutPanelTypes);
+            this.machineTypes.Controls.Add(this.listViewMachineTypes);
             this.machineTypes.Location = new System.Drawing.Point(4, 22);
             this.machineTypes.Name = "machineTypes";
             this.machineTypes.Padding = new System.Windows.Forms.Padding(3);
@@ -96,10 +126,269 @@
             this.machineTypes.Text = "MachineTypes";
             this.machineTypes.UseVisualStyleBackColor = true;
             // 
+            // buttonClearTypeForm
+            // 
+            this.buttonClearTypeForm.Location = new System.Drawing.Point(3, 354);
+            this.buttonClearTypeForm.Name = "buttonClearTypeForm";
+            this.buttonClearTypeForm.Size = new System.Drawing.Size(190, 23);
+            this.buttonClearTypeForm.TabIndex = 4;
+            this.buttonClearTypeForm.Text = "Add New Type";
+            this.buttonClearTypeForm.UseVisualStyleBackColor = true;
+            this.buttonClearTypeForm.Click += new System.EventHandler(this.buttonClearTypeForm_Click);
+            // 
+            // tableLayoutPanelTypes
+            // 
+            this.tableLayoutPanelTypes.ColumnCount = 3;
+            this.tableLayoutPanelTypes.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanelTypes.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanelTypes.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tableLayoutPanelTypes.Controls.Add(this.buttonAddType, 2, 2);
+            this.tableLayoutPanelTypes.Controls.Add(this.buttonDeleteType, 2, 1);
+            this.tableLayoutPanelTypes.Controls.Add(this.textBoxTypePastProjects, 1, 3);
+            this.tableLayoutPanelTypes.Controls.Add(this.textBoxTypeFullName, 1, 2);
+            this.tableLayoutPanelTypes.Controls.Add(this.label12, 0, 2);
+            this.tableLayoutPanelTypes.Controls.Add(this.label13, 0, 3);
+            this.tableLayoutPanelTypes.Controls.Add(this.label20, 0, 0);
+            this.tableLayoutPanelTypes.Controls.Add(this.buttonModifyType, 2, 0);
+            this.tableLayoutPanelTypes.Controls.Add(this.textBoxTypeName, 1, 1);
+            this.tableLayoutPanelTypes.Controls.Add(this.label21, 0, 1);
+            this.tableLayoutPanelTypes.Controls.Add(this.textBoxTypeID, 1, 0);
+            this.tableLayoutPanelTypes.Controls.Add(this.label16, 0, 4);
+            this.tableLayoutPanelTypes.Controls.Add(this.label17, 0, 5);
+            this.tableLayoutPanelTypes.Controls.Add(this.label18, 0, 6);
+            this.tableLayoutPanelTypes.Controls.Add(this.label19, 0, 7);
+            this.tableLayoutPanelTypes.Controls.Add(this.textBoxTypeCreatedBy, 1, 6);
+            this.tableLayoutPanelTypes.Controls.Add(this.textBoxTypeCreatedAt, 1, 4);
+            this.tableLayoutPanelTypes.Controls.Add(this.textBoxTypeUpdatedAt, 1, 5);
+            this.tableLayoutPanelTypes.Controls.Add(this.textBoxTypeUpdatedBy, 1, 7);
+            this.tableLayoutPanelTypes.Location = new System.Drawing.Point(199, 3);
+            this.tableLayoutPanelTypes.Name = "tableLayoutPanelTypes";
+            this.tableLayoutPanelTypes.RowCount = 8;
+            this.tableLayoutPanelTypes.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanelTypes.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanelTypes.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanelTypes.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanelTypes.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanelTypes.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanelTypes.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanelTypes.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanelTypes.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanelTypes.Size = new System.Drawing.Size(566, 368);
+            this.tableLayoutPanelTypes.TabIndex = 3;
+            // 
+            // buttonAddType
+            // 
+            this.buttonAddType.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.buttonAddType.Location = new System.Drawing.Point(399, 103);
+            this.buttonAddType.Name = "buttonAddType";
+            this.buttonAddType.Size = new System.Drawing.Size(164, 23);
+            this.buttonAddType.TabIndex = 32;
+            this.buttonAddType.Text = "Create Type";
+            this.buttonAddType.UseVisualStyleBackColor = true;
+            this.buttonAddType.Visible = false;
+            this.buttonAddType.Click += new System.EventHandler(this.buttonAddType_Click);
+            // 
+            // buttonDeleteType
+            // 
+            this.buttonDeleteType.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.buttonDeleteType.Location = new System.Drawing.Point(399, 57);
+            this.buttonDeleteType.Name = "buttonDeleteType";
+            this.buttonDeleteType.Size = new System.Drawing.Size(164, 23);
+            this.buttonDeleteType.TabIndex = 30;
+            this.buttonDeleteType.Text = "Delete";
+            this.buttonDeleteType.UseVisualStyleBackColor = true;
+            this.buttonDeleteType.Click += new System.EventHandler(this.buttonDeleteType_Click);
+            // 
+            // textBoxTypePastProjects
+            // 
+            this.textBoxTypePastProjects.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxTypePastProjects.Location = new System.Drawing.Point(116, 151);
+            this.textBoxTypePastProjects.Name = "textBoxTypePastProjects";
+            this.textBoxTypePastProjects.Size = new System.Drawing.Size(277, 20);
+            this.textBoxTypePastProjects.TabIndex = 16;
+            // 
+            // textBoxTypeFullName
+            // 
+            this.textBoxTypeFullName.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxTypeFullName.Location = new System.Drawing.Point(116, 105);
+            this.textBoxTypeFullName.Name = "textBoxTypeFullName";
+            this.textBoxTypeFullName.Size = new System.Drawing.Size(277, 20);
+            this.textBoxTypeFullName.TabIndex = 14;
+            // 
+            // label12
+            // 
+            this.label12.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(3, 108);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(87, 13);
+            this.label12.TabIndex = 2;
+            this.label12.Text = "Type Description";
+            // 
+            // label13
+            // 
+            this.label13.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(3, 154);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(89, 13);
+            this.label13.TabIndex = 3;
+            this.label13.Text = "Previous Projects";
+            // 
+            // label20
+            // 
+            this.label20.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(3, 16);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(45, 13);
+            this.label20.TabIndex = 0;
+            this.label20.Text = "Type ID";
+            // 
+            // buttonModifyType
+            // 
+            this.buttonModifyType.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.buttonModifyType.Location = new System.Drawing.Point(399, 11);
+            this.buttonModifyType.Name = "buttonModifyType";
+            this.buttonModifyType.Size = new System.Drawing.Size(164, 23);
+            this.buttonModifyType.TabIndex = 29;
+            this.buttonModifyType.Text = "Update";
+            this.buttonModifyType.UseVisualStyleBackColor = true;
+            this.buttonModifyType.Click += new System.EventHandler(this.buttonModifyType_Click);
+            // 
+            // textBoxTypeName
+            // 
+            this.textBoxTypeName.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxTypeName.Location = new System.Drawing.Point(116, 59);
+            this.textBoxTypeName.Name = "textBoxTypeName";
+            this.textBoxTypeName.Size = new System.Drawing.Size(277, 20);
+            this.textBoxTypeName.TabIndex = 12;
+            // 
+            // label21
+            // 
+            this.label21.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(3, 62);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(90, 13);
+            this.label21.TabIndex = 0;
+            this.label21.Text = "Type Short Name";
+            // 
+            // textBoxTypeID
+            // 
+            this.textBoxTypeID.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxTypeID.Enabled = false;
+            this.textBoxTypeID.Location = new System.Drawing.Point(116, 13);
+            this.textBoxTypeID.Name = "textBoxTypeID";
+            this.textBoxTypeID.Size = new System.Drawing.Size(277, 20);
+            this.textBoxTypeID.TabIndex = 12;
+            // 
+            // label16
+            // 
+            this.label16.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(3, 200);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(53, 13);
+            this.label16.TabIndex = 6;
+            this.label16.Text = "createdAt";
+            // 
+            // label17
+            // 
+            this.label17.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(3, 246);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(56, 13);
+            this.label17.TabIndex = 7;
+            this.label17.Text = "updatedAt";
+            // 
+            // label18
+            // 
+            this.label18.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(3, 292);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(55, 13);
+            this.label18.TabIndex = 8;
+            this.label18.Text = "createdBy";
+            // 
+            // label19
+            // 
+            this.label19.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(3, 338);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(58, 13);
+            this.label19.TabIndex = 9;
+            this.label19.Text = "updatedBy";
+            // 
+            // textBoxTypeCreatedBy
+            // 
+            this.textBoxTypeCreatedBy.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxTypeCreatedBy.Location = new System.Drawing.Point(116, 289);
+            this.textBoxTypeCreatedBy.Name = "textBoxTypeCreatedBy";
+            this.textBoxTypeCreatedBy.Size = new System.Drawing.Size(277, 20);
+            this.textBoxTypeCreatedBy.TabIndex = 18;
+            // 
+            // textBoxTypeCreatedAt
+            // 
+            this.textBoxTypeCreatedAt.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxTypeCreatedAt.Enabled = false;
+            this.textBoxTypeCreatedAt.Location = new System.Drawing.Point(116, 197);
+            this.textBoxTypeCreatedAt.Name = "textBoxTypeCreatedAt";
+            this.textBoxTypeCreatedAt.Size = new System.Drawing.Size(277, 20);
+            this.textBoxTypeCreatedAt.TabIndex = 22;
+            // 
+            // textBoxTypeUpdatedAt
+            // 
+            this.textBoxTypeUpdatedAt.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxTypeUpdatedAt.Enabled = false;
+            this.textBoxTypeUpdatedAt.Location = new System.Drawing.Point(116, 243);
+            this.textBoxTypeUpdatedAt.Name = "textBoxTypeUpdatedAt";
+            this.textBoxTypeUpdatedAt.Size = new System.Drawing.Size(277, 20);
+            this.textBoxTypeUpdatedAt.TabIndex = 24;
+            // 
+            // textBoxTypeUpdatedBy
+            // 
+            this.textBoxTypeUpdatedBy.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxTypeUpdatedBy.Location = new System.Drawing.Point(116, 335);
+            this.textBoxTypeUpdatedBy.Name = "textBoxTypeUpdatedBy";
+            this.textBoxTypeUpdatedBy.Size = new System.Drawing.Size(277, 20);
+            this.textBoxTypeUpdatedBy.TabIndex = 26;
+            // 
+            // listViewMachineTypes
+            // 
+            this.listViewMachineTypes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listViewMachineTypes.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2});
+            this.listViewMachineTypes.FullRowSelect = true;
+            this.listViewMachineTypes.GridLines = true;
+            this.listViewMachineTypes.Location = new System.Drawing.Point(3, 3);
+            this.listViewMachineTypes.MultiSelect = false;
+            this.listViewMachineTypes.Name = "listViewMachineTypes";
+            this.listViewMachineTypes.Size = new System.Drawing.Size(191, 347);
+            this.listViewMachineTypes.TabIndex = 1;
+            this.listViewMachineTypes.UseCompatibleStateImageBehavior = false;
+            this.listViewMachineTypes.View = System.Windows.Forms.View.Details;
+            this.listViewMachineTypes.ItemActivate += new System.EventHandler(this.listViewMachineTypes_ItemActivate);
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Type ID";
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Type Name";
+            this.columnHeader2.Width = 127;
+            // 
             // users
             // 
             this.users.Controls.Add(this.tableLayoutPanelUser);
-            this.users.Controls.Add(this.buttonAddNewUser);
+            this.users.Controls.Add(this.buttonClearUserForm);
             this.users.Controls.Add(this.listViewUsers);
             this.users.Location = new System.Drawing.Point(4, 22);
             this.users.Name = "users";
@@ -115,12 +404,12 @@
             this.tableLayoutPanelUser.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanelUser.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanelUser.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
-            this.tableLayoutPanelUser.Controls.Add(this.buttonDelete, 2, 1);
-            this.tableLayoutPanelUser.Controls.Add(this.textBoxUpdatedBy, 1, 9);
-            this.tableLayoutPanelUser.Controls.Add(this.textBoxCreatedBy, 1, 8);
-            this.tableLayoutPanelUser.Controls.Add(this.textBoxUpdatedAt, 1, 7);
-            this.tableLayoutPanelUser.Controls.Add(this.textBoxCreatedAt, 1, 6);
-            this.tableLayoutPanelUser.Controls.Add(this.textBoxRole, 1, 5);
+            this.tableLayoutPanelUser.Controls.Add(this.buttonAddUser, 2, 2);
+            this.tableLayoutPanelUser.Controls.Add(this.buttonDeleteUser, 2, 1);
+            this.tableLayoutPanelUser.Controls.Add(this.textBoxUserUpdatedBy, 1, 9);
+            this.tableLayoutPanelUser.Controls.Add(this.textBoxUserCreatedBy, 1, 8);
+            this.tableLayoutPanelUser.Controls.Add(this.textBoxUserUpdatedAt, 1, 7);
+            this.tableLayoutPanelUser.Controls.Add(this.textBoxUserCreatedAt, 1, 6);
             this.tableLayoutPanelUser.Controls.Add(this.textBoxWebsite, 1, 4);
             this.tableLayoutPanelUser.Controls.Add(this.textBoxMobile, 1, 3);
             this.tableLayoutPanelUser.Controls.Add(this.textBoxEmail, 1, 2);
@@ -133,10 +422,11 @@
             this.tableLayoutPanelUser.Controls.Add(this.label10, 0, 8);
             this.tableLayoutPanelUser.Controls.Add(this.label11, 0, 9);
             this.tableLayoutPanelUser.Controls.Add(this.label2, 0, 0);
-            this.tableLayoutPanelUser.Controls.Add(this.buttonModify, 2, 0);
+            this.tableLayoutPanelUser.Controls.Add(this.buttonModifyUser, 2, 0);
             this.tableLayoutPanelUser.Controls.Add(this.textBoxUsername, 1, 0);
             this.tableLayoutPanelUser.Controls.Add(this.textBoxPassword, 1, 1);
             this.tableLayoutPanelUser.Controls.Add(this.label3, 0, 1);
+            this.tableLayoutPanelUser.Controls.Add(this.checkBoxAdmin, 1, 5);
             this.tableLayoutPanelUser.Location = new System.Drawing.Point(196, 6);
             this.tableLayoutPanelUser.Name = "tableLayoutPanelUser";
             this.tableLayoutPanelUser.RowCount = 10;
@@ -154,55 +444,62 @@
             this.tableLayoutPanelUser.Size = new System.Drawing.Size(566, 368);
             this.tableLayoutPanelUser.TabIndex = 2;
             // 
-            // buttonDelete
+            // buttonAddUser
             // 
-            this.buttonDelete.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.buttonDelete.Location = new System.Drawing.Point(399, 42);
-            this.buttonDelete.Name = "buttonDelete";
-            this.buttonDelete.Size = new System.Drawing.Size(164, 23);
-            this.buttonDelete.TabIndex = 30;
-            this.buttonDelete.Text = "Delete";
-            this.buttonDelete.UseVisualStyleBackColor = true;
+            this.buttonAddUser.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.buttonAddUser.Location = new System.Drawing.Point(399, 78);
+            this.buttonAddUser.Name = "buttonAddUser";
+            this.buttonAddUser.Size = new System.Drawing.Size(164, 23);
+            this.buttonAddUser.TabIndex = 32;
+            this.buttonAddUser.Text = "Create User";
+            this.buttonAddUser.UseVisualStyleBackColor = true;
+            this.buttonAddUser.Visible = false;
+            this.buttonAddUser.Click += new System.EventHandler(this.buttonAdd_Click);
             // 
-            // textBoxUpdatedBy
+            // buttonDeleteUser
             // 
-            this.textBoxUpdatedBy.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.textBoxUpdatedBy.Location = new System.Drawing.Point(116, 336);
-            this.textBoxUpdatedBy.Name = "textBoxUpdatedBy";
-            this.textBoxUpdatedBy.Size = new System.Drawing.Size(277, 20);
-            this.textBoxUpdatedBy.TabIndex = 28;
+            this.buttonDeleteUser.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.buttonDeleteUser.Location = new System.Drawing.Point(399, 42);
+            this.buttonDeleteUser.Name = "buttonDeleteUser";
+            this.buttonDeleteUser.Size = new System.Drawing.Size(164, 23);
+            this.buttonDeleteUser.TabIndex = 30;
+            this.buttonDeleteUser.Text = "Delete";
+            this.buttonDeleteUser.UseVisualStyleBackColor = true;
+            this.buttonDeleteUser.Click += new System.EventHandler(this.buttonDelete_Click);
             // 
-            // textBoxCreatedBy
+            // textBoxUserUpdatedBy
             // 
-            this.textBoxCreatedBy.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.textBoxCreatedBy.Location = new System.Drawing.Point(116, 296);
-            this.textBoxCreatedBy.Name = "textBoxCreatedBy";
-            this.textBoxCreatedBy.Size = new System.Drawing.Size(277, 20);
-            this.textBoxCreatedBy.TabIndex = 26;
+            this.textBoxUserUpdatedBy.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxUserUpdatedBy.Location = new System.Drawing.Point(116, 336);
+            this.textBoxUserUpdatedBy.Name = "textBoxUserUpdatedBy";
+            this.textBoxUserUpdatedBy.Size = new System.Drawing.Size(277, 20);
+            this.textBoxUserUpdatedBy.TabIndex = 28;
             // 
-            // textBoxUpdatedAt
+            // textBoxUserCreatedBy
             // 
-            this.textBoxUpdatedAt.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.textBoxUpdatedAt.Location = new System.Drawing.Point(116, 260);
-            this.textBoxUpdatedAt.Name = "textBoxUpdatedAt";
-            this.textBoxUpdatedAt.Size = new System.Drawing.Size(277, 20);
-            this.textBoxUpdatedAt.TabIndex = 24;
+            this.textBoxUserCreatedBy.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxUserCreatedBy.Location = new System.Drawing.Point(116, 296);
+            this.textBoxUserCreatedBy.Name = "textBoxUserCreatedBy";
+            this.textBoxUserCreatedBy.Size = new System.Drawing.Size(277, 20);
+            this.textBoxUserCreatedBy.TabIndex = 26;
             // 
-            // textBoxCreatedAt
+            // textBoxUserUpdatedAt
             // 
-            this.textBoxCreatedAt.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.textBoxCreatedAt.Location = new System.Drawing.Point(116, 224);
-            this.textBoxCreatedAt.Name = "textBoxCreatedAt";
-            this.textBoxCreatedAt.Size = new System.Drawing.Size(277, 20);
-            this.textBoxCreatedAt.TabIndex = 22;
+            this.textBoxUserUpdatedAt.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxUserUpdatedAt.Enabled = false;
+            this.textBoxUserUpdatedAt.Location = new System.Drawing.Point(116, 260);
+            this.textBoxUserUpdatedAt.Name = "textBoxUserUpdatedAt";
+            this.textBoxUserUpdatedAt.Size = new System.Drawing.Size(277, 20);
+            this.textBoxUserUpdatedAt.TabIndex = 24;
             // 
-            // textBoxRole
+            // textBoxUserCreatedAt
             // 
-            this.textBoxRole.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.textBoxRole.Location = new System.Drawing.Point(116, 188);
-            this.textBoxRole.Name = "textBoxRole";
-            this.textBoxRole.Size = new System.Drawing.Size(277, 20);
-            this.textBoxRole.TabIndex = 20;
+            this.textBoxUserCreatedAt.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxUserCreatedAt.Enabled = false;
+            this.textBoxUserCreatedAt.Location = new System.Drawing.Point(116, 224);
+            this.textBoxUserCreatedAt.Name = "textBoxUserCreatedAt";
+            this.textBoxUserCreatedAt.Size = new System.Drawing.Size(277, 20);
+            this.textBoxUserCreatedAt.TabIndex = 22;
             // 
             // textBoxWebsite
             // 
@@ -264,9 +561,9 @@
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(3, 191);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(29, 13);
+            this.label7.Size = new System.Drawing.Size(67, 13);
             this.label7.TabIndex = 5;
-            this.label7.Text = "Role";
+            this.label7.Text = "Administrator";
             // 
             // label8
             // 
@@ -318,16 +615,16 @@
             this.label2.TabIndex = 0;
             this.label2.Text = "Username";
             // 
-            // buttonModify
+            // buttonModifyUser
             // 
-            this.buttonModify.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.buttonModify.Location = new System.Drawing.Point(399, 6);
-            this.buttonModify.Name = "buttonModify";
-            this.buttonModify.Size = new System.Drawing.Size(164, 23);
-            this.buttonModify.TabIndex = 29;
-            this.buttonModify.Text = "Update";
-            this.buttonModify.UseVisualStyleBackColor = true;
-            this.buttonModify.Click += new System.EventHandler(this.buttonModify_Click);
+            this.buttonModifyUser.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.buttonModifyUser.Location = new System.Drawing.Point(399, 6);
+            this.buttonModifyUser.Name = "buttonModifyUser";
+            this.buttonModifyUser.Size = new System.Drawing.Size(164, 23);
+            this.buttonModifyUser.TabIndex = 29;
+            this.buttonModifyUser.Text = "Update";
+            this.buttonModifyUser.UseVisualStyleBackColor = true;
+            this.buttonModifyUser.Click += new System.EventHandler(this.buttonModify_Click);
             // 
             // textBoxUsername
             // 
@@ -356,14 +653,27 @@
             this.label3.TabIndex = 0;
             this.label3.Text = "Password";
             // 
-            // buttonAddNewUser
+            // checkBoxAdmin
             // 
-            this.buttonAddNewUser.Location = new System.Drawing.Point(0, 353);
-            this.buttonAddNewUser.Name = "buttonAddNewUser";
-            this.buttonAddNewUser.Size = new System.Drawing.Size(190, 23);
-            this.buttonAddNewUser.TabIndex = 1;
-            this.buttonAddNewUser.Text = "Add New User";
-            this.buttonAddNewUser.UseVisualStyleBackColor = true;
+            this.checkBoxAdmin.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.checkBoxAdmin.AutoSize = true;
+            this.checkBoxAdmin.Location = new System.Drawing.Point(116, 189);
+            this.checkBoxAdmin.Name = "checkBoxAdmin";
+            this.checkBoxAdmin.Size = new System.Drawing.Size(88, 17);
+            this.checkBoxAdmin.TabIndex = 31;
+            this.checkBoxAdmin.Text = "Regular User";
+            this.checkBoxAdmin.UseVisualStyleBackColor = true;
+            this.checkBoxAdmin.CheckedChanged += new System.EventHandler(this.checkBoxAdmin_CheckedChanged);
+            // 
+            // buttonClearUserForm
+            // 
+            this.buttonClearUserForm.Location = new System.Drawing.Point(0, 353);
+            this.buttonClearUserForm.Name = "buttonClearUserForm";
+            this.buttonClearUserForm.Size = new System.Drawing.Size(190, 23);
+            this.buttonClearUserForm.TabIndex = 1;
+            this.buttonClearUserForm.Text = "Add New User";
+            this.buttonClearUserForm.UseVisualStyleBackColor = true;
+            this.buttonClearUserForm.Click += new System.EventHandler(this.buttonAddNewUser_Click);
             // 
             // listViewUsers
             // 
@@ -447,6 +757,9 @@
             this.Controls.Add(this.tabControl);
             this.Name = "Form1";
             this.Text = "PWP Client";
+            this.machineTypes.ResumeLayout(false);
+            this.tableLayoutPanelTypes.ResumeLayout(false);
+            this.tableLayoutPanelTypes.PerformLayout();
             this.users.ResumeLayout(false);
             this.tableLayoutPanelUser.ResumeLayout(false);
             this.tableLayoutPanelUser.PerformLayout();
@@ -470,12 +783,11 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button buttonConnectServer;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelUser;
-        private System.Windows.Forms.Button buttonDelete;
-        private System.Windows.Forms.TextBox textBoxUpdatedBy;
-        private System.Windows.Forms.TextBox textBoxCreatedBy;
-        private System.Windows.Forms.TextBox textBoxUpdatedAt;
-        private System.Windows.Forms.TextBox textBoxCreatedAt;
-        private System.Windows.Forms.TextBox textBoxRole;
+        private System.Windows.Forms.Button buttonDeleteUser;
+        private System.Windows.Forms.TextBox textBoxUserUpdatedBy;
+        private System.Windows.Forms.TextBox textBoxUserCreatedBy;
+        private System.Windows.Forms.TextBox textBoxUserUpdatedAt;
+        private System.Windows.Forms.TextBox textBoxUserCreatedAt;
         private System.Windows.Forms.TextBox textBoxWebsite;
         private System.Windows.Forms.TextBox textBoxMobile;
         private System.Windows.Forms.TextBox textBoxEmail;
@@ -489,10 +801,36 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button buttonModify;
-        private System.Windows.Forms.Button buttonAddNewUser;
+        private System.Windows.Forms.Button buttonModifyUser;
+        private System.Windows.Forms.Button buttonClearUserForm;
         private System.Windows.Forms.TextBox textBoxPassword;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.CheckBox checkBoxAdmin;
+        private System.Windows.Forms.Button buttonAddUser;
+        private System.Windows.Forms.ListView listViewMachineTypes;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.Button buttonClearTypeForm;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanelTypes;
+        private System.Windows.Forms.Button buttonAddType;
+        private System.Windows.Forms.Button buttonDeleteType;
+        private System.Windows.Forms.TextBox textBoxTypePastProjects;
+        private System.Windows.Forms.TextBox textBoxTypeFullName;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Button buttonModifyType;
+        private System.Windows.Forms.TextBox textBoxTypeName;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.TextBox textBoxTypeID;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.TextBox textBoxTypeCreatedBy;
+        private System.Windows.Forms.TextBox textBoxTypeCreatedAt;
+        private System.Windows.Forms.TextBox textBoxTypeUpdatedAt;
+        private System.Windows.Forms.TextBox textBoxTypeUpdatedBy;
     }
 }
 

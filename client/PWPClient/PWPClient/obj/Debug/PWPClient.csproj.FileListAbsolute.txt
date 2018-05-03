@@ -11,3 +11,15 @@ C:\Workspace\fablab-reservation-api\client\PWPClient\PWPClient\obj\Debug\PWPClie
 C:\Workspace\fablab-reservation-api\client\PWPClient\PWPClient\bin\Debug\Newtonsoft.Json.dll
 C:\Workspace\fablab-reservation-api\client\PWPClient\PWPClient\bin\Debug\Newtonsoft.Json.xml
 C:\Workspace\fablab-reservation-api\client\PWPClient\PWPClient\obj\Debug\PWPClient.csproj.CopyComplete
+D:\Workspace\PWP\fablab-reservation-api\client\PWPClient\PWPClient\obj\Debug\PWPClient.csprojResolveAssemblyReference.cache
+D:\Workspace\PWP\fablab-reservation-api\client\PWPClient\PWPClient\obj\Debug\PWPClient.Form1.resources
+D:\Workspace\PWP\fablab-reservation-api\client\PWPClient\PWPClient\obj\Debug\PWPClient.Properties.Resources.resources
+D:\Workspace\PWP\fablab-reservation-api\client\PWPClient\PWPClient\obj\Debug\PWPClient.csproj.GenerateResource.Cache
+D:\Workspace\PWP\fablab-reservation-api\client\PWPClient\PWPClient\obj\Debug\PWPClient.csproj.CoreCompileInputs.cache
+D:\Workspace\PWP\fablab-reservation-api\client\PWPClient\PWPClient\obj\Debug\PWPClient.exe
+D:\Workspace\PWP\fablab-reservation-api\client\PWPClient\PWPClient\obj\Debug\PWPClient.pdb
+D:\Workspace\PWP\fablab-reservation-api\client\PWPClient\PWPClient\bin\Debug\PWPClient.exe.config
+D:\Workspace\PWP\fablab-reservation-api\client\PWPClient\PWPClient\bin\Debug\PWPClient.exe
+D:\Workspace\PWP\fablab-reservation-api\client\PWPClient\PWPClient\bin\Debug\PWPClient.pdb
+D:\Workspace\PWP\fablab-reservation-api\client\PWPClient\PWPClient\bin\Debug\Newtonsoft.Json.dll
+D:\Workspace\PWP\fablab-reservation-api\client\PWPClient\PWPClient\bin\Debug\Newtonsoft.Json.xml
