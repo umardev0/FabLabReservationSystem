@@ -8,6 +8,7 @@ namespace PWPClient
     public partial class Form1 : Form
     {
         private RESTfulHandler handler = new RESTfulHandler();
+        private TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById("FLE Standard Time");
 
         public Form1()
         {
@@ -59,8 +60,8 @@ namespace PWPClient
             textBoxWebsite.Text = user.website;
             checkBoxAdmin.Text = ((user.isAdmin)?"Administrator":"Regular User");
             checkBoxAdmin.Checked = ((user.isAdmin) ?  true : false);
-            textBoxUserCreatedAt.Text = user.createdAt;
-            textBoxUserUpdatedAt.Text = user.updatedAt;
+            textBoxUserCreatedAt.Text = DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(user.createdAt)).ToOffset(new TimeSpan(+3, 0, 0)).ToString("dd/MMM/yyyy HH:mm:ss");
+            textBoxUserUpdatedAt.Text = (user.updatedAt != null) ? DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(user.updatedAt)).ToOffset(new TimeSpan(+3, 0, 0)).ToString("dd/MMM/yyyy HH:mm:ss") : "";
             textBoxUserCreatedBy.Text = user.createdBy;
             textBoxUserUpdatedBy.Text = user.updatedBy;
         }
@@ -83,10 +84,34 @@ namespace PWPClient
             textBoxTypeName.Text = type.typeName;
             textBoxTypeFullName.Text = type.typeFullname;
             textBoxTypePastProjects.Text = type.pastProject;
-            textBoxTypeCreatedAt.Text = type.createdAt;
-            textBoxTypeUpdatedAt.Text = type.updatedAt;
+            textBoxTypeCreatedAt.Text = DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(type.createdAt)).ToOffset(new TimeSpan(+3, 0, 0)).ToString("dd/MMM/yyyy HH:mm:ss");
+            textBoxTypeUpdatedAt.Text = (type.updatedAt!= null) ? DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(type.updatedAt)).ToOffset(new TimeSpan(+3, 0, 0)).ToString("dd/MMM/yyyy HH:mm:ss"): "";
             textBoxTypeCreatedBy.Text = type.createdBy;
             textBoxTypeUpdatedBy.Text = type.updatedBy;
+        }
+
+        private void machinePanelClear()
+        {
+            textBoxMachineID.Clear();
+            textBoxMachineName.Clear();
+            textBoxMachineTypeID.Clear();
+            textBoxMachineTutorial.Clear();
+            textBoxMachineCreatedAt.Clear();
+            textBoxMachineUpdatedAt.Clear();
+            textBoxMachineCreatedBy.Clear();
+            textBoxMachineUpdatedBy.Clear();
+        }
+
+        private void machinePanelUpdate(fablabMachine machine)
+        {
+            textBoxMachineID.Text = machine.machineID;
+            textBoxMachineName.Text = machine.machineName;
+            textBoxMachineTypeID.Text = machine.typeID;
+            textBoxMachineTutorial.Text = machine.tutorial;
+            textBoxMachineCreatedAt.Text = DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(machine.createdAt)).ToOffset(new TimeSpan(+3, 0, 0)).ToString("dd/MMM/yyyy HH:mm:ss");
+            textBoxMachineUpdatedAt.Text = (machine.updatedAt != null) ? DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(machine.updatedAt)).ToOffset(new TimeSpan(+3, 0, 0)).ToString("dd/MMM/yyyy HH:mm:ss") : "";
+            textBoxMachineCreatedBy.Text = machine.createdBy;
+            textBoxMachineUpdatedBy.Text = machine.updatedBy;
         }
         //---------------------Utility functions----------------------
         private List<fablabUser> parseUsers (String input)
@@ -133,6 +158,26 @@ namespace PWPClient
 
         }
 
+        private List<fablabMachine> parseMachines(String input)
+        {
+            List<fablabMachine> res = new List<fablabMachine>();
+            JObject obj = JObject.Parse(input);
+            JArray machineList = (JArray)obj["items"];
+            foreach (JObject item in machineList)
+            {
+                fablabMachine tmp = new fablabMachine((string)item["machineID"], (string)item["machinename"], (string)item["typeID"]);
+                res.Add(tmp);
+            }
+            return res;
+        }
+
+        private fablabMachine parseMachine(String input)
+        {
+            JObject obj = JObject.Parse(input);
+            fablabMachine tmp = new fablabMachine((string)obj["machineID"], (string)obj["machinename"], (string)obj["typeID"], (string)obj["tutorial"], (string)obj["createdAt"], (string)obj["updatedAt"], (string)obj["createdBy"], (string)obj["updatedBy"]);
+            return tmp;
+
+        }
         private void updateListUser()
         {
             listViewUsers.Items.Clear();
@@ -154,6 +199,11 @@ namespace PWPClient
                 string[] row = { type.typeID, type.typeFullname };
                 listViewMachineTypes.Items.Add(new ListViewItem(row));
             }
+        }
+
+        private void updateListMachine()
+        {
+
         }
         //------------------
         private void listViewUsers_ItemActivate(object sender, EventArgs e)
@@ -304,6 +354,11 @@ namespace PWPClient
                 tableLayoutPanelTypes.Visible = true;
             }
             updateListMachineTypes();
+        }
+
+        private void listViewMachine_ItemActivate(object sender, EventArgs e)
+        {
+
         }
     }
 }

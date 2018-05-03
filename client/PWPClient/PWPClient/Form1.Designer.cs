@@ -30,6 +30,31 @@
         {
             this.reservations = new System.Windows.Forms.TabPage();
             this.machines = new System.Windows.Forms.TabPage();
+            this.tableLayoutPanelMachine = new System.Windows.Forms.TableLayoutPanel();
+            this.buttonAddMachine = new System.Windows.Forms.Button();
+            this.buttonDeleteMachine = new System.Windows.Forms.Button();
+            this.textBoxMachineTutorial = new System.Windows.Forms.TextBox();
+            this.textBoxMachineTypeID = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.buttonUpdateMachine = new System.Windows.Forms.Button();
+            this.textBoxMachineName = new System.Windows.Forms.TextBox();
+            this.label23 = new System.Windows.Forms.Label();
+            this.textBoxMachineID = new System.Windows.Forms.TextBox();
+            this.label24 = new System.Windows.Forms.Label();
+            this.label25 = new System.Windows.Forms.Label();
+            this.label26 = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
+            this.textBoxMachineCreatedBy = new System.Windows.Forms.TextBox();
+            this.textBoxMachineCreatedAt = new System.Windows.Forms.TextBox();
+            this.textBoxMachineUpdatedAt = new System.Windows.Forms.TextBox();
+            this.textBoxMachineUpdatedBy = new System.Windows.Forms.TextBox();
+            this.buttonClearMachineForm = new System.Windows.Forms.Button();
+            this.listViewMachine = new System.Windows.Forms.ListView();
+            this.machineID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.machineName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.machineType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.machineTypes = new System.Windows.Forms.TabPage();
             this.buttonClearTypeForm = new System.Windows.Forms.Button();
             this.tableLayoutPanelTypes = new System.Windows.Forms.TableLayoutPanel();
@@ -88,6 +113,9 @@
             this.textBoxServerIPPort = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.buttonConnectServer = new System.Windows.Forms.Button();
+            this.buttonHistory = new System.Windows.Forms.Button();
+            this.machines.SuspendLayout();
+            this.tableLayoutPanelMachine.SuspendLayout();
             this.machineTypes.SuspendLayout();
             this.tableLayoutPanelTypes.SuspendLayout();
             this.users.SuspendLayout();
@@ -106,12 +134,277 @@
             // 
             // machines
             // 
+            this.machines.Controls.Add(this.tableLayoutPanelMachine);
+            this.machines.Controls.Add(this.buttonClearMachineForm);
+            this.machines.Controls.Add(this.listViewMachine);
             this.machines.Location = new System.Drawing.Point(4, 22);
             this.machines.Name = "machines";
             this.machines.Size = new System.Drawing.Size(768, 380);
             this.machines.TabIndex = 2;
             this.machines.Text = "Machines";
             this.machines.UseVisualStyleBackColor = true;
+            // 
+            // tableLayoutPanelMachine
+            // 
+            this.tableLayoutPanelMachine.ColumnCount = 3;
+            this.tableLayoutPanelMachine.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanelMachine.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanelMachine.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tableLayoutPanelMachine.Controls.Add(this.buttonAddMachine, 2, 2);
+            this.tableLayoutPanelMachine.Controls.Add(this.buttonDeleteMachine, 2, 1);
+            this.tableLayoutPanelMachine.Controls.Add(this.textBoxMachineTutorial, 1, 3);
+            this.tableLayoutPanelMachine.Controls.Add(this.textBoxMachineTypeID, 1, 2);
+            this.tableLayoutPanelMachine.Controls.Add(this.label14, 0, 2);
+            this.tableLayoutPanelMachine.Controls.Add(this.label15, 0, 3);
+            this.tableLayoutPanelMachine.Controls.Add(this.label22, 0, 0);
+            this.tableLayoutPanelMachine.Controls.Add(this.buttonUpdateMachine, 2, 0);
+            this.tableLayoutPanelMachine.Controls.Add(this.textBoxMachineName, 1, 1);
+            this.tableLayoutPanelMachine.Controls.Add(this.label23, 0, 1);
+            this.tableLayoutPanelMachine.Controls.Add(this.textBoxMachineID, 1, 0);
+            this.tableLayoutPanelMachine.Controls.Add(this.label24, 0, 4);
+            this.tableLayoutPanelMachine.Controls.Add(this.label25, 0, 5);
+            this.tableLayoutPanelMachine.Controls.Add(this.label26, 0, 6);
+            this.tableLayoutPanelMachine.Controls.Add(this.label27, 0, 7);
+            this.tableLayoutPanelMachine.Controls.Add(this.textBoxMachineCreatedBy, 1, 6);
+            this.tableLayoutPanelMachine.Controls.Add(this.textBoxMachineCreatedAt, 1, 4);
+            this.tableLayoutPanelMachine.Controls.Add(this.textBoxMachineUpdatedAt, 1, 5);
+            this.tableLayoutPanelMachine.Controls.Add(this.textBoxMachineUpdatedBy, 1, 7);
+            this.tableLayoutPanelMachine.Controls.Add(this.buttonHistory, 2, 3);
+            this.tableLayoutPanelMachine.Location = new System.Drawing.Point(199, 3);
+            this.tableLayoutPanelMachine.Name = "tableLayoutPanelMachine";
+            this.tableLayoutPanelMachine.RowCount = 8;
+            this.tableLayoutPanelMachine.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanelMachine.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanelMachine.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanelMachine.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanelMachine.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanelMachine.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanelMachine.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanelMachine.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanelMachine.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanelMachine.Size = new System.Drawing.Size(566, 368);
+            this.tableLayoutPanelMachine.TabIndex = 6;
+            // 
+            // buttonAddMachine
+            // 
+            this.buttonAddMachine.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.buttonAddMachine.Location = new System.Drawing.Point(399, 103);
+            this.buttonAddMachine.Name = "buttonAddMachine";
+            this.buttonAddMachine.Size = new System.Drawing.Size(164, 23);
+            this.buttonAddMachine.TabIndex = 32;
+            this.buttonAddMachine.Text = "Create Machine";
+            this.buttonAddMachine.UseVisualStyleBackColor = true;
+            this.buttonAddMachine.Visible = false;
+            // 
+            // buttonDeleteMachine
+            // 
+            this.buttonDeleteMachine.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.buttonDeleteMachine.Location = new System.Drawing.Point(399, 57);
+            this.buttonDeleteMachine.Name = "buttonDeleteMachine";
+            this.buttonDeleteMachine.Size = new System.Drawing.Size(164, 23);
+            this.buttonDeleteMachine.TabIndex = 30;
+            this.buttonDeleteMachine.Text = "Delete";
+            this.buttonDeleteMachine.UseVisualStyleBackColor = true;
+            // 
+            // textBoxMachineTutorial
+            // 
+            this.textBoxMachineTutorial.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxMachineTutorial.Location = new System.Drawing.Point(116, 151);
+            this.textBoxMachineTutorial.Name = "textBoxMachineTutorial";
+            this.textBoxMachineTutorial.Size = new System.Drawing.Size(277, 20);
+            this.textBoxMachineTutorial.TabIndex = 16;
+            // 
+            // textBoxMachineTypeID
+            // 
+            this.textBoxMachineTypeID.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxMachineTypeID.Location = new System.Drawing.Point(116, 105);
+            this.textBoxMachineTypeID.Name = "textBoxMachineTypeID";
+            this.textBoxMachineTypeID.Size = new System.Drawing.Size(277, 20);
+            this.textBoxMachineTypeID.TabIndex = 14;
+            // 
+            // label14
+            // 
+            this.label14.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(3, 108);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(31, 13);
+            this.label14.TabIndex = 2;
+            this.label14.Text = "Type";
+            // 
+            // label15
+            // 
+            this.label15.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(3, 154);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(42, 13);
+            this.label15.TabIndex = 3;
+            this.label15.Text = "Tutorial";
+            // 
+            // label22
+            // 
+            this.label22.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(3, 16);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(62, 13);
+            this.label22.TabIndex = 0;
+            this.label22.Text = "Machine ID";
+            // 
+            // buttonUpdateMachine
+            // 
+            this.buttonUpdateMachine.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.buttonUpdateMachine.Location = new System.Drawing.Point(399, 11);
+            this.buttonUpdateMachine.Name = "buttonUpdateMachine";
+            this.buttonUpdateMachine.Size = new System.Drawing.Size(164, 23);
+            this.buttonUpdateMachine.TabIndex = 29;
+            this.buttonUpdateMachine.Text = "Update";
+            this.buttonUpdateMachine.UseVisualStyleBackColor = true;
+            // 
+            // textBoxMachineName
+            // 
+            this.textBoxMachineName.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxMachineName.Location = new System.Drawing.Point(116, 59);
+            this.textBoxMachineName.Name = "textBoxMachineName";
+            this.textBoxMachineName.Size = new System.Drawing.Size(277, 20);
+            this.textBoxMachineName.TabIndex = 12;
+            // 
+            // label23
+            // 
+            this.label23.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(3, 62);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(79, 13);
+            this.label23.TabIndex = 0;
+            this.label23.Text = "Machine Name";
+            // 
+            // textBoxMachineID
+            // 
+            this.textBoxMachineID.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxMachineID.Enabled = false;
+            this.textBoxMachineID.Location = new System.Drawing.Point(116, 13);
+            this.textBoxMachineID.Name = "textBoxMachineID";
+            this.textBoxMachineID.Size = new System.Drawing.Size(277, 20);
+            this.textBoxMachineID.TabIndex = 12;
+            // 
+            // label24
+            // 
+            this.label24.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(3, 200);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(53, 13);
+            this.label24.TabIndex = 6;
+            this.label24.Text = "createdAt";
+            // 
+            // label25
+            // 
+            this.label25.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(3, 246);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(56, 13);
+            this.label25.TabIndex = 7;
+            this.label25.Text = "updatedAt";
+            // 
+            // label26
+            // 
+            this.label26.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(3, 292);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(55, 13);
+            this.label26.TabIndex = 8;
+            this.label26.Text = "createdBy";
+            // 
+            // label27
+            // 
+            this.label27.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(3, 338);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(58, 13);
+            this.label27.TabIndex = 9;
+            this.label27.Text = "updatedBy";
+            // 
+            // textBoxMachineCreatedBy
+            // 
+            this.textBoxMachineCreatedBy.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxMachineCreatedBy.Location = new System.Drawing.Point(116, 289);
+            this.textBoxMachineCreatedBy.Name = "textBoxMachineCreatedBy";
+            this.textBoxMachineCreatedBy.Size = new System.Drawing.Size(277, 20);
+            this.textBoxMachineCreatedBy.TabIndex = 18;
+            // 
+            // textBoxMachineCreatedAt
+            // 
+            this.textBoxMachineCreatedAt.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxMachineCreatedAt.Enabled = false;
+            this.textBoxMachineCreatedAt.Location = new System.Drawing.Point(116, 197);
+            this.textBoxMachineCreatedAt.Name = "textBoxMachineCreatedAt";
+            this.textBoxMachineCreatedAt.Size = new System.Drawing.Size(277, 20);
+            this.textBoxMachineCreatedAt.TabIndex = 22;
+            // 
+            // textBoxMachineUpdatedAt
+            // 
+            this.textBoxMachineUpdatedAt.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxMachineUpdatedAt.Enabled = false;
+            this.textBoxMachineUpdatedAt.Location = new System.Drawing.Point(116, 243);
+            this.textBoxMachineUpdatedAt.Name = "textBoxMachineUpdatedAt";
+            this.textBoxMachineUpdatedAt.Size = new System.Drawing.Size(277, 20);
+            this.textBoxMachineUpdatedAt.TabIndex = 24;
+            // 
+            // textBoxMachineUpdatedBy
+            // 
+            this.textBoxMachineUpdatedBy.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxMachineUpdatedBy.Location = new System.Drawing.Point(116, 335);
+            this.textBoxMachineUpdatedBy.Name = "textBoxMachineUpdatedBy";
+            this.textBoxMachineUpdatedBy.Size = new System.Drawing.Size(277, 20);
+            this.textBoxMachineUpdatedBy.TabIndex = 26;
+            // 
+            // buttonClearMachineForm
+            // 
+            this.buttonClearMachineForm.Location = new System.Drawing.Point(4, 354);
+            this.buttonClearMachineForm.Name = "buttonClearMachineForm";
+            this.buttonClearMachineForm.Size = new System.Drawing.Size(190, 23);
+            this.buttonClearMachineForm.TabIndex = 5;
+            this.buttonClearMachineForm.Text = "Add New Machine";
+            this.buttonClearMachineForm.UseVisualStyleBackColor = true;
+            // 
+            // listViewMachine
+            // 
+            this.listViewMachine.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listViewMachine.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.machineID,
+            this.machineName,
+            this.machineType});
+            this.listViewMachine.FullRowSelect = true;
+            this.listViewMachine.GridLines = true;
+            this.listViewMachine.Location = new System.Drawing.Point(3, 3);
+            this.listViewMachine.MultiSelect = false;
+            this.listViewMachine.Name = "listViewMachine";
+            this.listViewMachine.Size = new System.Drawing.Size(191, 347);
+            this.listViewMachine.TabIndex = 2;
+            this.listViewMachine.UseCompatibleStateImageBehavior = false;
+            this.listViewMachine.View = System.Windows.Forms.View.Details;
+            this.listViewMachine.ItemActivate += new System.EventHandler(this.listViewMachine_ItemActivate);
+            // 
+            // machineID
+            // 
+            this.machineID.Text = "ID";
+            this.machineID.Width = 42;
+            // 
+            // machineName
+            // 
+            this.machineName.Text = "Name";
+            this.machineName.Width = 82;
+            // 
+            // machineType
+            // 
+            this.machineType.Text = "Type";
             // 
             // machineTypes
             // 
@@ -746,6 +1039,17 @@
             this.buttonConnectServer.UseVisualStyleBackColor = true;
             this.buttonConnectServer.Click += new System.EventHandler(this.buttonConnectServer_Click);
             // 
+            // buttonHistory
+            // 
+            this.buttonHistory.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.buttonHistory.Location = new System.Drawing.Point(399, 149);
+            this.buttonHistory.Name = "buttonHistory";
+            this.buttonHistory.Size = new System.Drawing.Size(164, 23);
+            this.buttonHistory.TabIndex = 32;
+            this.buttonHistory.Text = "History";
+            this.buttonHistory.UseVisualStyleBackColor = true;
+            this.buttonHistory.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -757,6 +1061,9 @@
             this.Controls.Add(this.tabControl);
             this.Name = "Form1";
             this.Text = "PWP Client";
+            this.machines.ResumeLayout(false);
+            this.tableLayoutPanelMachine.ResumeLayout(false);
+            this.tableLayoutPanelMachine.PerformLayout();
             this.machineTypes.ResumeLayout(false);
             this.tableLayoutPanelTypes.ResumeLayout(false);
             this.tableLayoutPanelTypes.PerformLayout();
@@ -831,6 +1138,32 @@
         private System.Windows.Forms.TextBox textBoxTypeCreatedAt;
         private System.Windows.Forms.TextBox textBoxTypeUpdatedAt;
         private System.Windows.Forms.TextBox textBoxTypeUpdatedBy;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanelMachine;
+        private System.Windows.Forms.Button buttonAddMachine;
+        private System.Windows.Forms.Button buttonDeleteMachine;
+        private System.Windows.Forms.TextBox textBoxMachineTutorial;
+        private System.Windows.Forms.TextBox textBoxMachineTypeID;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Button buttonUpdateMachine;
+        private System.Windows.Forms.TextBox textBoxMachineName;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.TextBox textBoxMachineID;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.TextBox textBoxMachineCreatedBy;
+        private System.Windows.Forms.TextBox textBoxMachineCreatedAt;
+        private System.Windows.Forms.TextBox textBoxMachineUpdatedAt;
+        private System.Windows.Forms.TextBox textBoxMachineUpdatedBy;
+        private System.Windows.Forms.Button buttonClearMachineForm;
+        private System.Windows.Forms.ListView listViewMachine;
+        private System.Windows.Forms.ColumnHeader machineID;
+        private System.Windows.Forms.ColumnHeader machineName;
+        private System.Windows.Forms.ColumnHeader machineType;
+        private System.Windows.Forms.Button buttonHistory;
     }
 }
 

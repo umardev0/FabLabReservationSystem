@@ -67,7 +67,33 @@ public class fablabMachineType
 
 public class fablabMachine
 {
+    public string machineID;
+    public string machineName;
+    public string typeID;
+    public string tutorial;
+    public string createdAt;
+    public string createdBy;
+    public string updatedAt;
+    public string updatedBy;
 
+    public fablabMachine(string machineID, string machineName, string typeID, string tutorial, string createdAt, string createdBy, string updatedAt, string updatedBy)
+    {
+        this.machineID = machineID;
+        this.machineName = machineName;
+        this.typeID = typeID;
+        this.tutorial = tutorial;
+        this.createdAt = createdAt;
+        this.createdBy = createdBy;
+        this.updatedAt = updatedAt;
+        this.updatedBy = updatedBy;
+    }
+
+    public fablabMachine(string machineID, string machineName, string typeID)
+    {
+        this.machineID = machineID;
+        this.machineName = machineName;
+        this.typeID = typeID;
+    }
 }
 
 public class fablabReservation
