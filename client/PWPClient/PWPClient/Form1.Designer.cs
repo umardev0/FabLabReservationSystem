@@ -29,6 +29,34 @@
         private void InitializeComponent()
         {
             this.reservations = new System.Windows.Forms.TabPage();
+            this.buttonClearFormReservation = new System.Windows.Forms.Button();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.textBoxReservationUpdatedBy = new System.Windows.Forms.TextBox();
+            this.textBoxReservationCreatedBy = new System.Windows.Forms.TextBox();
+            this.textBoxReservationUpdatedAt = new System.Windows.Forms.TextBox();
+            this.textBoxReservationCreatedAt = new System.Windows.Forms.TextBox();
+            this.textBoxReservationEndTime = new System.Windows.Forms.TextBox();
+            this.textBoxReservationStartTime = new System.Windows.Forms.TextBox();
+            this.textBoxReservationMachineID = new System.Windows.Forms.TextBox();
+            this.label28 = new System.Windows.Forms.Label();
+            this.label29 = new System.Windows.Forms.Label();
+            this.label30 = new System.Windows.Forms.Label();
+            this.label31 = new System.Windows.Forms.Label();
+            this.label32 = new System.Windows.Forms.Label();
+            this.label33 = new System.Windows.Forms.Label();
+            this.label34 = new System.Windows.Forms.Label();
+            this.label35 = new System.Windows.Forms.Label();
+            this.buttonUpdateReservation = new System.Windows.Forms.Button();
+            this.textBoxReservationID = new System.Windows.Forms.TextBox();
+            this.textBoxReservationUserID = new System.Windows.Forms.TextBox();
+            this.label37 = new System.Windows.Forms.Label();
+            this.checkBoxReservationActive = new System.Windows.Forms.CheckBox();
+            this.label36 = new System.Windows.Forms.Label();
+            this.buttonAddReservation = new System.Windows.Forms.Button();
+            this.listViewReservations = new System.Windows.Forms.ListView();
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.machines = new System.Windows.Forms.TabPage();
             this.tableLayoutPanelMachine = new System.Windows.Forms.TableLayoutPanel();
             this.buttonAddMachine = new System.Windows.Forms.Button();
@@ -38,7 +66,7 @@
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
-            this.buttonUpdateMachine = new System.Windows.Forms.Button();
+            this.buttonModifyMachine = new System.Windows.Forms.Button();
             this.textBoxMachineName = new System.Windows.Forms.TextBox();
             this.label23 = new System.Windows.Forms.Label();
             this.textBoxMachineID = new System.Windows.Forms.TextBox();
@@ -50,6 +78,7 @@
             this.textBoxMachineCreatedAt = new System.Windows.Forms.TextBox();
             this.textBoxMachineUpdatedAt = new System.Windows.Forms.TextBox();
             this.textBoxMachineUpdatedBy = new System.Windows.Forms.TextBox();
+            this.buttonHistory = new System.Windows.Forms.Button();
             this.buttonClearMachineForm = new System.Windows.Forms.Button();
             this.listViewMachine = new System.Windows.Forms.ListView();
             this.machineID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -113,7 +142,8 @@
             this.textBoxServerIPPort = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.buttonConnectServer = new System.Windows.Forms.Button();
-            this.buttonHistory = new System.Windows.Forms.Button();
+            this.reservations.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             this.machines.SuspendLayout();
             this.tableLayoutPanelMachine.SuspendLayout();
             this.machineTypes.SuspendLayout();
@@ -125,12 +155,312 @@
             // 
             // reservations
             // 
+            this.reservations.Controls.Add(this.buttonClearFormReservation);
+            this.reservations.Controls.Add(this.tableLayoutPanel1);
+            this.reservations.Controls.Add(this.listViewReservations);
             this.reservations.Location = new System.Drawing.Point(4, 22);
             this.reservations.Name = "reservations";
             this.reservations.Size = new System.Drawing.Size(768, 380);
             this.reservations.TabIndex = 3;
             this.reservations.Text = "Reservations";
             this.reservations.UseVisualStyleBackColor = true;
+            // 
+            // buttonClearFormReservation
+            // 
+            this.buttonClearFormReservation.Location = new System.Drawing.Point(3, 354);
+            this.buttonClearFormReservation.Name = "buttonClearFormReservation";
+            this.buttonClearFormReservation.Size = new System.Drawing.Size(190, 23);
+            this.buttonClearFormReservation.TabIndex = 5;
+            this.buttonClearFormReservation.Text = "Add New Reservation";
+            this.buttonClearFormReservation.UseVisualStyleBackColor = true;
+            this.buttonClearFormReservation.Click += new System.EventHandler(this.buttonClearFormReservation_Click);
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 3;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tableLayoutPanel1.Controls.Add(this.textBoxReservationUpdatedBy, 1, 9);
+            this.tableLayoutPanel1.Controls.Add(this.textBoxReservationCreatedBy, 1, 8);
+            this.tableLayoutPanel1.Controls.Add(this.textBoxReservationUpdatedAt, 1, 7);
+            this.tableLayoutPanel1.Controls.Add(this.textBoxReservationCreatedAt, 1, 6);
+            this.tableLayoutPanel1.Controls.Add(this.textBoxReservationEndTime, 1, 4);
+            this.tableLayoutPanel1.Controls.Add(this.textBoxReservationStartTime, 1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.textBoxReservationMachineID, 1, 2);
+            this.tableLayoutPanel1.Controls.Add(this.label28, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.label29, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.label30, 0, 4);
+            this.tableLayoutPanel1.Controls.Add(this.label31, 0, 5);
+            this.tableLayoutPanel1.Controls.Add(this.label32, 0, 6);
+            this.tableLayoutPanel1.Controls.Add(this.label33, 0, 7);
+            this.tableLayoutPanel1.Controls.Add(this.label34, 0, 8);
+            this.tableLayoutPanel1.Controls.Add(this.label35, 0, 9);
+            this.tableLayoutPanel1.Controls.Add(this.buttonUpdateReservation, 2, 0);
+            this.tableLayoutPanel1.Controls.Add(this.textBoxReservationID, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.textBoxReservationUserID, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.label37, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.checkBoxReservationActive, 1, 5);
+            this.tableLayoutPanel1.Controls.Add(this.label36, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.buttonAddReservation, 2, 1);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(199, 3);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 10;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(566, 368);
+            this.tableLayoutPanel1.TabIndex = 4;
+            // 
+            // textBoxReservationUpdatedBy
+            // 
+            this.textBoxReservationUpdatedBy.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxReservationUpdatedBy.Location = new System.Drawing.Point(116, 336);
+            this.textBoxReservationUpdatedBy.Name = "textBoxReservationUpdatedBy";
+            this.textBoxReservationUpdatedBy.Size = new System.Drawing.Size(277, 20);
+            this.textBoxReservationUpdatedBy.TabIndex = 28;
+            // 
+            // textBoxReservationCreatedBy
+            // 
+            this.textBoxReservationCreatedBy.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxReservationCreatedBy.Location = new System.Drawing.Point(116, 296);
+            this.textBoxReservationCreatedBy.Name = "textBoxReservationCreatedBy";
+            this.textBoxReservationCreatedBy.Size = new System.Drawing.Size(277, 20);
+            this.textBoxReservationCreatedBy.TabIndex = 26;
+            // 
+            // textBoxReservationUpdatedAt
+            // 
+            this.textBoxReservationUpdatedAt.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxReservationUpdatedAt.Enabled = false;
+            this.textBoxReservationUpdatedAt.Location = new System.Drawing.Point(116, 260);
+            this.textBoxReservationUpdatedAt.Name = "textBoxReservationUpdatedAt";
+            this.textBoxReservationUpdatedAt.Size = new System.Drawing.Size(277, 20);
+            this.textBoxReservationUpdatedAt.TabIndex = 24;
+            // 
+            // textBoxReservationCreatedAt
+            // 
+            this.textBoxReservationCreatedAt.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxReservationCreatedAt.Enabled = false;
+            this.textBoxReservationCreatedAt.Location = new System.Drawing.Point(116, 224);
+            this.textBoxReservationCreatedAt.Name = "textBoxReservationCreatedAt";
+            this.textBoxReservationCreatedAt.Size = new System.Drawing.Size(277, 20);
+            this.textBoxReservationCreatedAt.TabIndex = 22;
+            // 
+            // textBoxReservationEndTime
+            // 
+            this.textBoxReservationEndTime.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxReservationEndTime.Location = new System.Drawing.Point(116, 152);
+            this.textBoxReservationEndTime.Name = "textBoxReservationEndTime";
+            this.textBoxReservationEndTime.Size = new System.Drawing.Size(277, 20);
+            this.textBoxReservationEndTime.TabIndex = 18;
+            // 
+            // textBoxReservationStartTime
+            // 
+            this.textBoxReservationStartTime.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxReservationStartTime.Location = new System.Drawing.Point(116, 116);
+            this.textBoxReservationStartTime.Name = "textBoxReservationStartTime";
+            this.textBoxReservationStartTime.Size = new System.Drawing.Size(277, 20);
+            this.textBoxReservationStartTime.TabIndex = 16;
+            // 
+            // textBoxReservationMachineID
+            // 
+            this.textBoxReservationMachineID.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxReservationMachineID.Location = new System.Drawing.Point(116, 80);
+            this.textBoxReservationMachineID.Name = "textBoxReservationMachineID";
+            this.textBoxReservationMachineID.Size = new System.Drawing.Size(277, 20);
+            this.textBoxReservationMachineID.TabIndex = 14;
+            // 
+            // label28
+            // 
+            this.label28.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(3, 83);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(62, 13);
+            this.label28.TabIndex = 2;
+            this.label28.Text = "Machine ID";
+            // 
+            // label29
+            // 
+            this.label29.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(3, 119);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(55, 13);
+            this.label29.TabIndex = 3;
+            this.label29.Text = "Start Time";
+            // 
+            // label30
+            // 
+            this.label30.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(3, 155);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(52, 13);
+            this.label30.TabIndex = 4;
+            this.label30.Text = "End Time";
+            // 
+            // label31
+            // 
+            this.label31.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(3, 191);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(48, 13);
+            this.label31.TabIndex = 5;
+            this.label31.Text = "Is Active";
+            // 
+            // label32
+            // 
+            this.label32.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(3, 227);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(53, 13);
+            this.label32.TabIndex = 6;
+            this.label32.Text = "createdAt";
+            // 
+            // label33
+            // 
+            this.label33.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(3, 263);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(56, 13);
+            this.label33.TabIndex = 7;
+            this.label33.Text = "updatedAt";
+            // 
+            // label34
+            // 
+            this.label34.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(3, 299);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(55, 13);
+            this.label34.TabIndex = 8;
+            this.label34.Text = "createdBy";
+            // 
+            // label35
+            // 
+            this.label35.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label35.AutoSize = true;
+            this.label35.Location = new System.Drawing.Point(3, 339);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(58, 13);
+            this.label35.TabIndex = 9;
+            this.label35.Text = "updatedBy";
+            // 
+            // buttonUpdateReservation
+            // 
+            this.buttonUpdateReservation.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.buttonUpdateReservation.Location = new System.Drawing.Point(399, 6);
+            this.buttonUpdateReservation.Name = "buttonUpdateReservation";
+            this.buttonUpdateReservation.Size = new System.Drawing.Size(164, 23);
+            this.buttonUpdateReservation.TabIndex = 29;
+            this.buttonUpdateReservation.Text = "Update";
+            this.buttonUpdateReservation.UseVisualStyleBackColor = true;
+            this.buttonUpdateReservation.Click += new System.EventHandler(this.buttonUpdateReservation_Click);
+            // 
+            // textBoxReservationID
+            // 
+            this.textBoxReservationID.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxReservationID.Enabled = false;
+            this.textBoxReservationID.Location = new System.Drawing.Point(116, 8);
+            this.textBoxReservationID.Name = "textBoxReservationID";
+            this.textBoxReservationID.Size = new System.Drawing.Size(277, 20);
+            this.textBoxReservationID.TabIndex = 12;
+            // 
+            // textBoxReservationUserID
+            // 
+            this.textBoxReservationUserID.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxReservationUserID.Location = new System.Drawing.Point(116, 44);
+            this.textBoxReservationUserID.Name = "textBoxReservationUserID";
+            this.textBoxReservationUserID.Size = new System.Drawing.Size(277, 20);
+            this.textBoxReservationUserID.TabIndex = 12;
+            // 
+            // label37
+            // 
+            this.label37.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label37.AutoSize = true;
+            this.label37.Location = new System.Drawing.Point(3, 47);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(43, 13);
+            this.label37.TabIndex = 0;
+            this.label37.Text = "User ID";
+            // 
+            // checkBoxReservationActive
+            // 
+            this.checkBoxReservationActive.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.checkBoxReservationActive.AutoSize = true;
+            this.checkBoxReservationActive.Location = new System.Drawing.Point(116, 191);
+            this.checkBoxReservationActive.Name = "checkBoxReservationActive";
+            this.checkBoxReservationActive.Size = new System.Drawing.Size(15, 14);
+            this.checkBoxReservationActive.TabIndex = 31;
+            this.checkBoxReservationActive.UseVisualStyleBackColor = true;
+            // 
+            // label36
+            // 
+            this.label36.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label36.AutoSize = true;
+            this.label36.Location = new System.Drawing.Point(3, 11);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(78, 13);
+            this.label36.TabIndex = 0;
+            this.label36.Text = "Reservation ID";
+            // 
+            // buttonAddReservation
+            // 
+            this.buttonAddReservation.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.buttonAddReservation.Location = new System.Drawing.Point(399, 42);
+            this.buttonAddReservation.Name = "buttonAddReservation";
+            this.buttonAddReservation.Size = new System.Drawing.Size(164, 23);
+            this.buttonAddReservation.TabIndex = 32;
+            this.buttonAddReservation.Text = "Create Reservation";
+            this.buttonAddReservation.UseVisualStyleBackColor = true;
+            this.buttonAddReservation.Visible = false;
+            this.buttonAddReservation.Click += new System.EventHandler(this.buttonAddReservation_Click);
+            // 
+            // listViewReservations
+            // 
+            this.listViewReservations.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listViewReservations.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader3,
+            this.columnHeader4,
+            this.columnHeader5});
+            this.listViewReservations.FullRowSelect = true;
+            this.listViewReservations.GridLines = true;
+            this.listViewReservations.Location = new System.Drawing.Point(3, 3);
+            this.listViewReservations.MultiSelect = false;
+            this.listViewReservations.Name = "listViewReservations";
+            this.listViewReservations.Size = new System.Drawing.Size(191, 347);
+            this.listViewReservations.TabIndex = 3;
+            this.listViewReservations.UseCompatibleStateImageBehavior = false;
+            this.listViewReservations.View = System.Windows.Forms.View.Details;
+            this.listViewReservations.ItemActivate += new System.EventHandler(this.listViewReservations_ItemActivate);
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "ID";
+            this.columnHeader3.Width = 42;
+            // 
+            // columnHeader4
+            // 
+            this.columnHeader4.Text = "User ID";
+            this.columnHeader4.Width = 82;
+            // 
+            // columnHeader5
+            // 
+            this.columnHeader5.Text = "Machine ID";
             // 
             // machines
             // 
@@ -157,7 +487,7 @@
             this.tableLayoutPanelMachine.Controls.Add(this.label14, 0, 2);
             this.tableLayoutPanelMachine.Controls.Add(this.label15, 0, 3);
             this.tableLayoutPanelMachine.Controls.Add(this.label22, 0, 0);
-            this.tableLayoutPanelMachine.Controls.Add(this.buttonUpdateMachine, 2, 0);
+            this.tableLayoutPanelMachine.Controls.Add(this.buttonModifyMachine, 2, 0);
             this.tableLayoutPanelMachine.Controls.Add(this.textBoxMachineName, 1, 1);
             this.tableLayoutPanelMachine.Controls.Add(this.label23, 0, 1);
             this.tableLayoutPanelMachine.Controls.Add(this.textBoxMachineID, 1, 0);
@@ -195,6 +525,7 @@
             this.buttonAddMachine.Text = "Create Machine";
             this.buttonAddMachine.UseVisualStyleBackColor = true;
             this.buttonAddMachine.Visible = false;
+            this.buttonAddMachine.Click += new System.EventHandler(this.buttonAddMachine_Click);
             // 
             // buttonDeleteMachine
             // 
@@ -205,6 +536,7 @@
             this.buttonDeleteMachine.TabIndex = 30;
             this.buttonDeleteMachine.Text = "Delete";
             this.buttonDeleteMachine.UseVisualStyleBackColor = true;
+            this.buttonDeleteMachine.Click += new System.EventHandler(this.buttonDeleteMachine_Click);
             // 
             // textBoxMachineTutorial
             // 
@@ -252,15 +584,16 @@
             this.label22.TabIndex = 0;
             this.label22.Text = "Machine ID";
             // 
-            // buttonUpdateMachine
+            // buttonModifyMachine
             // 
-            this.buttonUpdateMachine.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.buttonUpdateMachine.Location = new System.Drawing.Point(399, 11);
-            this.buttonUpdateMachine.Name = "buttonUpdateMachine";
-            this.buttonUpdateMachine.Size = new System.Drawing.Size(164, 23);
-            this.buttonUpdateMachine.TabIndex = 29;
-            this.buttonUpdateMachine.Text = "Update";
-            this.buttonUpdateMachine.UseVisualStyleBackColor = true;
+            this.buttonModifyMachine.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.buttonModifyMachine.Location = new System.Drawing.Point(399, 11);
+            this.buttonModifyMachine.Name = "buttonModifyMachine";
+            this.buttonModifyMachine.Size = new System.Drawing.Size(164, 23);
+            this.buttonModifyMachine.TabIndex = 29;
+            this.buttonModifyMachine.Text = "Update";
+            this.buttonModifyMachine.UseVisualStyleBackColor = true;
+            this.buttonModifyMachine.Click += new System.EventHandler(this.buttonModifyMachine_Click);
             // 
             // textBoxMachineName
             // 
@@ -363,6 +696,18 @@
             this.textBoxMachineUpdatedBy.Size = new System.Drawing.Size(277, 20);
             this.textBoxMachineUpdatedBy.TabIndex = 26;
             // 
+            // buttonHistory
+            // 
+            this.buttonHistory.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.buttonHistory.Location = new System.Drawing.Point(399, 149);
+            this.buttonHistory.Name = "buttonHistory";
+            this.buttonHistory.Size = new System.Drawing.Size(164, 23);
+            this.buttonHistory.TabIndex = 32;
+            this.buttonHistory.Text = "History";
+            this.buttonHistory.UseVisualStyleBackColor = true;
+            this.buttonHistory.Visible = false;
+            this.buttonHistory.Click += new System.EventHandler(this.buttonHistory_Click);
+            // 
             // buttonClearMachineForm
             // 
             this.buttonClearMachineForm.Location = new System.Drawing.Point(4, 354);
@@ -371,6 +716,7 @@
             this.buttonClearMachineForm.TabIndex = 5;
             this.buttonClearMachineForm.Text = "Add New Machine";
             this.buttonClearMachineForm.UseVisualStyleBackColor = true;
+            this.buttonClearMachineForm.Click += new System.EventHandler(this.buttonClearMachineForm_Click);
             // 
             // listViewMachine
             // 
@@ -1039,17 +1385,6 @@
             this.buttonConnectServer.UseVisualStyleBackColor = true;
             this.buttonConnectServer.Click += new System.EventHandler(this.buttonConnectServer_Click);
             // 
-            // buttonHistory
-            // 
-            this.buttonHistory.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.buttonHistory.Location = new System.Drawing.Point(399, 149);
-            this.buttonHistory.Name = "buttonHistory";
-            this.buttonHistory.Size = new System.Drawing.Size(164, 23);
-            this.buttonHistory.TabIndex = 32;
-            this.buttonHistory.Text = "History";
-            this.buttonHistory.UseVisualStyleBackColor = true;
-            this.buttonHistory.Visible = false;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1061,6 +1396,9 @@
             this.Controls.Add(this.tabControl);
             this.Name = "Form1";
             this.Text = "PWP Client";
+            this.reservations.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.machines.ResumeLayout(false);
             this.tableLayoutPanelMachine.ResumeLayout(false);
             this.tableLayoutPanelMachine.PerformLayout();
@@ -1146,7 +1484,7 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.Button buttonUpdateMachine;
+        private System.Windows.Forms.Button buttonModifyMachine;
         private System.Windows.Forms.TextBox textBoxMachineName;
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.TextBox textBoxMachineID;
@@ -1164,6 +1502,34 @@
         private System.Windows.Forms.ColumnHeader machineName;
         private System.Windows.Forms.ColumnHeader machineType;
         private System.Windows.Forms.Button buttonHistory;
+        private System.Windows.Forms.Button buttonClearFormReservation;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Button buttonAddReservation;
+        private System.Windows.Forms.TextBox textBoxReservationUpdatedBy;
+        private System.Windows.Forms.TextBox textBoxReservationCreatedBy;
+        private System.Windows.Forms.TextBox textBoxReservationUpdatedAt;
+        private System.Windows.Forms.TextBox textBoxReservationCreatedAt;
+        private System.Windows.Forms.TextBox textBoxReservationEndTime;
+        private System.Windows.Forms.TextBox textBoxReservationStartTime;
+        private System.Windows.Forms.TextBox textBoxReservationMachineID;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.Label label35;
+        private System.Windows.Forms.Button buttonUpdateReservation;
+        private System.Windows.Forms.TextBox textBoxReservationID;
+        private System.Windows.Forms.TextBox textBoxReservationUserID;
+        private System.Windows.Forms.Label label37;
+        private System.Windows.Forms.CheckBox checkBoxReservationActive;
+        private System.Windows.Forms.Label label36;
+        private System.Windows.Forms.ListView listViewReservations;
+        private System.Windows.Forms.ColumnHeader columnHeader3;
+        private System.Windows.Forms.ColumnHeader columnHeader4;
+        private System.Windows.Forms.ColumnHeader columnHeader5;
     }
 }
 

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Windows.Forms;
 
 namespace PWPClient
@@ -26,6 +27,14 @@ namespace PWPClient
             else if (tabControl.SelectedTab == machineTypes)
             {
                 updateListMachineTypes();
+            } 
+            else if (tabControl.SelectedTab == machines)
+            {
+                updateListMachine();
+            }
+            else if (tabControl.SelectedTab == reservations)
+            {
+                updateListReservation();
             }
         }
 
@@ -112,6 +121,34 @@ namespace PWPClient
             textBoxMachineUpdatedAt.Text = (machine.updatedAt != null) ? DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(machine.updatedAt)).ToOffset(new TimeSpan(+3, 0, 0)).ToString("dd/MMM/yyyy HH:mm:ss") : "";
             textBoxMachineCreatedBy.Text = machine.createdBy;
             textBoxMachineUpdatedBy.Text = machine.updatedBy;
+            buttonHistory.Visible = false;
+        }
+
+        private void reservationPanelClear()
+        {
+            textBoxReservationID.Clear();
+            textBoxReservationUserID.Clear();
+            textBoxReservationMachineID.Clear();
+            textBoxReservationStartTime.Text = "dd/MMM/yyyy hh:mm:ss";
+            textBoxReservationEndTime.Text = "dd/MMM/yyyy hh:mm:ss";
+            checkBoxReservationActive.Checked = false;
+            textBoxReservationCreatedAt.Clear();
+            textBoxReservationUpdatedAt.Clear();
+            textBoxReservationCreatedBy.Clear();
+            textBoxReservationUpdatedBy.Clear();
+        }
+
+        private void reservationPanelUpdate(fablabReservation reservation)
+        {
+            textBoxReservationUserID.Text = reservation.userID;
+            textBoxReservationMachineID.Text = reservation.machineID;
+            textBoxReservationStartTime.Text = DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(reservation.startTime)).ToOffset(new TimeSpan(+3, 0, 0)).ToString("dd/MMM/yyyy HH:mm:ss");
+            textBoxReservationEndTime.Text = DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(reservation.endTime)).ToOffset(new TimeSpan(+3, 0, 0)).ToString("dd/MMM/yyyy HH:mm:ss");
+            checkBoxReservationActive.Checked = reservation.isActive;
+            textBoxReservationCreatedAt.Text = DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(reservation.createdAt)).ToOffset(new TimeSpan(+3, 0, 0)).ToString("dd/MMM/yyyy HH:mm:ss");
+            textBoxReservationUpdatedAt.Text = (reservation.updatedAt != null) ? DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(reservation.updatedAt)).ToOffset(new TimeSpan(+3, 0, 0)).ToString("dd/MMM/yyyy HH:mm:ss") : "";
+            textBoxMachineCreatedBy.Text = reservation.createdBy;
+            textBoxMachineUpdatedBy.Text = reservation.updatedBy;
         }
         //---------------------Utility functions----------------------
         private List<fablabUser> parseUsers (String input)
@@ -174,7 +211,28 @@ namespace PWPClient
         private fablabMachine parseMachine(String input)
         {
             JObject obj = JObject.Parse(input);
-            fablabMachine tmp = new fablabMachine((string)obj["machineID"], (string)obj["machinename"], (string)obj["typeID"], (string)obj["tutorial"], (string)obj["createdAt"], (string)obj["updatedAt"], (string)obj["createdBy"], (string)obj["updatedBy"]);
+            fablabMachine tmp = new fablabMachine(machineID: (string)obj["machineID"], machineName: (string)obj["machinename"], typeID: (string)obj["typeID"], tutorial: (string)obj["tutorial"], createdAt: (string)obj["createdAt"], createdBy: (string)obj["createdBy"], updatedAt: (string)obj["updatedAt"], updatedBy: (string)obj["updatedBy"]);
+            return tmp;
+
+        }
+
+        private List<fablabReservation> parseReservations(String input)
+        {
+            List<fablabReservation> res = new List<fablabReservation>();
+            JObject obj = JObject.Parse(input);
+            JArray machineList = (JArray)obj["items"];
+            foreach (JObject item in machineList)
+            {
+                fablabReservation tmp = new fablabReservation((string)item["reservationID"], (string)item["userID"], (string)item["machineID"]);
+                res.Add(tmp);
+            }
+            return res;
+        }
+
+        private fablabReservation parseReservation(String input)
+        {
+            JObject obj = JObject.Parse(input);
+            fablabReservation tmp = new fablabReservation(userID: (string)obj["userID"], machineID: (string)obj["machineID"], startTime: (string)obj["startTime"], endTime: (string)obj["endTime"], isActive: (bool)obj["isActive"], createdAt: (string)obj["createdAt"], createdBy: (string)obj["createdBy"], updatedAt: (string)obj["updatedAt"], updatedBy: (string)obj["updatedBy"]);
             return tmp;
 
         }
@@ -203,7 +261,24 @@ namespace PWPClient
 
         private void updateListMachine()
         {
+            listViewMachine.Items.Clear();
+            List<fablabMachine> list = parseMachines(handler.HTTPGet(@"http://" + textBoxServerIPPort.Text + "/fablab/api/machines/"));
+            foreach (fablabMachine machine in list)
+            {
+                string[] row = { machine.machineID, machine.machineName, machine.typeID };
+                listViewMachine.Items.Add(new ListViewItem(row));
+            }
+        }
 
+        private void updateListReservation()
+        {
+            listViewReservations.Items.Clear();
+            List<fablabReservation> list = parseReservations(handler.HTTPGet(@"http://" + textBoxServerIPPort.Text + "/fablab/api/reservations/"));
+            foreach (fablabReservation reservation in list)
+            {
+                string[] row = { reservation.reservationID, reservation.userID, reservation.machineID };
+                listViewReservations.Items.Add(new ListViewItem(row));
+            }
         }
         //------------------
         private void listViewUsers_ItemActivate(object sender, EventArgs e)
@@ -264,6 +339,11 @@ namespace PWPClient
         private void buttonAdd_Click(object sender, EventArgs e)
         {
             String URL = @"http://" + textBoxServerIPPort.Text + "/fablab/api/users/";
+            if (textBoxUsername.Text == "")
+            {
+                MessageBox.Show("Username cannot be blanked");
+                return;
+            }
             JObject newData = new JObject(
                                 new JProperty("username", textBoxUsername.Text),
                                 new JProperty("password", textBoxPassword.Text),
@@ -358,7 +438,133 @@ namespace PWPClient
 
         private void listViewMachine_ItemActivate(object sender, EventArgs e)
         {
+            machinePanelClear();
+            tableLayoutPanelMachine.Visible = true;
+            String URL = @"http://" + textBoxServerIPPort.Text + "/fablab/api/machines/" + listViewMachine.SelectedItems[0].SubItems[0].Text + "/";
+            machinePanelUpdate(parseMachine(handler.HTTPGet(URL)));
+            buttonAddMachine.Enabled = true;
+            buttonDeleteMachine.Enabled = true;
+            buttonHistory.Visible = true;
+            if (tableLayoutPanelMachine.Visible == false)
+            {
+                tableLayoutPanelMachine.Visible = true;
+            }
+        }
 
+        private void buttonHistory_Click(object sender, EventArgs e)
+        {
+            String URL = @"http://" + textBoxServerIPPort.Text + "/fablab/api/machines/" + textBoxMachineID.Text + "/history/";
+            History history = new History(URL);
+            history.Show();
+        }
+
+        private void buttonClearMachineForm_Click(object sender, EventArgs e)
+        {
+            machinePanelClear();
+            buttonAddMachine.Visible = true;
+            buttonModifyMachine.Enabled = false;
+            buttonDeleteMachine.Enabled = false;
+            buttonHistory.Visible = false;
+            if (tableLayoutPanelMachine.Visible == false)
+            {
+                tableLayoutPanelMachine.Visible = true;
+            }
+        }
+
+        private void buttonModifyMachine_Click(object sender, EventArgs e)
+        {
+            String URL = @"http://" + textBoxServerIPPort.Text + "/fablab/api/machines/" + textBoxMachineID.Text + "/";
+            JObject newData = new JObject(
+                                new JProperty("machinename", textBoxMachineName.Text),
+                                new JProperty("typeID", textBoxMachineTypeID.Text),
+                                new JProperty("tutorial", textBoxMachineTutorial.Text),
+                                new JProperty("updatedBy", textBoxMachineUpdatedBy.Text)
+                                );
+            handler.HTTPPut(URL, newData);
+        }
+
+        private void buttonDeleteMachine_Click(object sender, EventArgs e)
+        {
+            String URL = @"http://" + textBoxServerIPPort.Text + "/fablab/api/machines/" + textBoxMachineID.Text + "/";
+            handler.HTTPDelete(URL);
+            updateListMachine();
+            tableLayoutPanelMachine.Visible = false;
+        }
+
+        private void buttonAddMachine_Click(object sender, EventArgs e)
+        {
+            String URL = @"http://" + textBoxServerIPPort.Text + "/fablab/api/machines/";
+            JObject newData = new JObject(
+                                new JProperty("machinename", textBoxMachineName.Text),
+                                new JProperty("typeID", textBoxMachineTypeID.Text),
+                                new JProperty("tutorial", textBoxMachineTutorial.Text),
+                                new JProperty("createdBy", textBoxMachineCreatedBy.Text)
+                                );
+            handler.HTTPPost(URL, newData);
+            machinePanelClear();
+            buttonAddMachine.Visible = false;
+            buttonModifyMachine.Enabled = true;
+            buttonDeleteMachine.Enabled = true;
+            if (tableLayoutPanelMachine.Visible == false)
+            {
+                tableLayoutPanelMachine.Visible = true;
+            }
+            updateListMachine();
+        }
+
+        private void listViewReservations_ItemActivate(object sender, EventArgs e)
+        {
+            reservationPanelClear();
+            String URL = @"http://" + textBoxServerIPPort.Text + "/fablab/api/reservations/" + listViewReservations.SelectedItems[0].SubItems[0].Text + "/";
+            reservationPanelUpdate(parseReservation(handler.HTTPGet(URL)));
+            textBoxReservationID.Text = listViewReservations.SelectedItems[0].SubItems[0].Text;
+            buttonAddReservation.Visible = false;
+            buttonUpdateReservation.Enabled = true;
+            if (tableLayoutPanel1.Visible == false)
+            {
+                tableLayoutPanel1.Visible = true;
+            }
+        }
+
+        private void buttonUpdateReservation_Click(object sender, EventArgs e)
+        {
+            String URL = @"http://" + textBoxServerIPPort.Text + "/fablab/api/reservations/" + textBoxReservationID.Text + "/";
+            JObject newData = new JObject(
+                                new JProperty("updatedBy", textBoxReservationUpdatedBy.Text)
+                                );
+            handler.HTTPPut(URL, newData);
+        }
+
+        private void buttonClearFormReservation_Click(object sender, EventArgs e)
+        {
+            reservationPanelClear();
+            buttonAddReservation.Visible = true;
+            buttonUpdateReservation.Enabled = false;
+            if (tableLayoutPanel1.Visible == false)
+            {
+                tableLayoutPanel1.Visible = true;
+            }
+        }
+
+        private void buttonAddReservation_Click(object sender, EventArgs e)
+        {
+            String URL = @"http://" + textBoxServerIPPort.Text + "/fablab/api/reservations/";
+            Console.WriteLine(DateTimeOffset.ParseExact(textBoxReservationStartTime.Text, "dd/MMM/yyyy HH:mm:ss", CultureInfo.InvariantCulture).ToOffset(new TimeSpan(+3, 0, 0)).ToUnixTimeSeconds());
+            JObject newData = new JObject(
+                                new JProperty("userID", textBoxReservationUserID.Text),
+                                new JProperty("machineID", textBoxReservationMachineID.Text),
+                                new JProperty("startTime", DateTimeOffset.ParseExact(textBoxReservationStartTime.Text, "dd/MMM/yyyy HH:mm:ss", CultureInfo.InvariantCulture).ToOffset(new TimeSpan(+3, 0, 0)).ToUnixTimeSeconds().ToString()),
+                                new JProperty("endTime", DateTimeOffset.ParseExact(textBoxReservationEndTime.Text, "dd/MMM/yyyy HH:mm:ss", CultureInfo.InvariantCulture).ToOffset(new TimeSpan(+3, 0, 0)).ToUnixTimeSeconds().ToString())
+                                );
+            handler.HTTPPost(URL, newData);
+            reservationPanelClear();
+            buttonAddReservation.Visible = false;
+            buttonUpdateReservation.Enabled = true;
+            if (tableLayoutPanel1.Visible == false)
+            {
+                tableLayoutPanel1.Visible = true;
+            }
+            updateListReservation();
         }
     }
 }

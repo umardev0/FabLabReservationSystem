@@ -1265,7 +1265,7 @@ class User(Resource):
             updatedBy = user_db["updatedBy"]            
         )
 
-        envelope.add_namespace("forum", LINK_RELATIONS_URL)
+        envelope.add_namespace("fablab", LINK_RELATIONS_URL)
         envelope.add_control("self", href=api.url_for(User, username=username))
         envelope.add_control("profile", href=FABLAB_USER_PROFILE)
         envelope.add_control_delete_user(username)
@@ -1693,9 +1693,9 @@ api.add_resource(History, "/fablab/api/machines/<machineID>/history/",
 def redirect_to_profile(profile_name):
     return redirect(APIARY_PROFILES_URL + profile_name)
 
-@app.route("/fablab/link-relations/<rel_name>/")
-def redirect_to_rels(rel_name):
-    return redirect(APIARY_RELS_URL + rel_name)
+@app.route("/fablab/link-relations/")
+def redirect_to_rels():
+    return redirect(APIARY_RELS_URL )
 
 #Send our schema file(s)
 @app.route("/fablab/schema/<schema_name>/")

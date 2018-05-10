@@ -23,3 +23,4 @@ D:\Workspace\PWP\fablab-reservation-api\client\PWPClient\PWPClient\bin\Debug\PWP
 D:\Workspace\PWP\fablab-reservation-api\client\PWPClient\PWPClient\bin\Debug\PWPClient.pdb
 D:\Workspace\PWP\fablab-reservation-api\client\PWPClient\PWPClient\bin\Debug\Newtonsoft.Json.dll
 D:\Workspace\PWP\fablab-reservation-api\client\PWPClient\PWPClient\bin\Debug\Newtonsoft.Json.xml
+D:\Workspace\PWP\fablab-reservation-api\client\PWPClient\PWPClient\obj\Debug\PWPClient.History.resources

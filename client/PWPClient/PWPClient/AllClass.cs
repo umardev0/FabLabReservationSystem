@@ -94,10 +94,53 @@ public class fablabMachine
         this.machineName = machineName;
         this.typeID = typeID;
     }
+
+    public fablabMachine()
+    {
+    }
 }
 
 public class fablabReservation
 {
+    public string reservationID;
+    public string userID;
+    public string machineID;
+    public string startTime;
+    public string endTime;
+    public bool isActive;
+    public string createdAt;
+    public string createdBy;
+    public string updatedAt;
+    public string updatedBy;
 
+    public fablabReservation(string reservationID, string userID, string machineID)
+    {
+        this.reservationID = reservationID;
+        this.userID = userID;
+        this.machineID = machineID;
+    }
+
+    public fablabReservation(string userID, string machineID, string startTime, string endTime, bool isActive, string createdAt, string createdBy, string updatedAt, string updatedBy)
+    {
+        this.userID = userID;
+        this.machineID = machineID;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.isActive = isActive;
+        this.createdAt = createdAt;
+        this.createdBy = createdBy;
+        this.updatedAt = updatedAt;
+        this.updatedBy = updatedBy;
+    }
+
+    public fablabReservation(string reservationID, string userID, string machineID, string startTime, string endTime, bool isActive)
+    {
+        this.reservationID = reservationID;
+        this.userID = userID;
+        this.machineID = machineID;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.isActive = isActive;
+    }
 }
 
