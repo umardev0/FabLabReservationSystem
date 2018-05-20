@@ -305,9 +305,11 @@ namespace PWPClient
                                 new JProperty("email", textBoxEmail.Text),
                                 new JProperty("mobile", textBoxMobile.Text),
                                 new JProperty("website", textBoxWebsite.Text),
-                                new JProperty("isAdmin", (checkBoxAdmin.Checked) ? 1 : 0),
+                                new JProperty("isAdmin", ((checkBoxAdmin.Checked) ? "1" : "0")),
                                 new JProperty("updatedBy", textBoxUserUpdatedBy.Text)
                                 );
+            Console.WriteLine(newData.ToString());
+            
             handler.HTTPPut(URL, newData);
         }
 

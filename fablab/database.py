@@ -1615,7 +1615,7 @@ class Connection(object):
             return False
         return True
 
-    def modify_user(self, username, password, email = None, mobile= None, website = None, updatedBy = '0'):
+    def modify_user(self, username, password, email = None, mobile= None, website = None, isAdmin = None, updatedBy = '0'):
         '''
         Modify the information of a user.
 
@@ -1636,7 +1636,7 @@ class Connection(object):
                 #Create the SQL Statements
           #SQL Statement to update the user_profile table
         query = 'UPDATE users SET password = ?,email = ?, \
-                                           mobile = ?,website = ?, \
+                                           mobile = ?,website = ?, isAdmin = ?, \
                                            updatedAt = ?, updatedBy = ? \
                                            WHERE username = ?'
         #temporal variables
@@ -1650,7 +1650,7 @@ class Connection(object):
         #Execute the statement to extract the id associated to a nickname
         #execute the main statement
         timestamp = time.mktime(datetime.now().timetuple())
-        pvalue = (password, email, mobile, website, timestamp,
+        pvalue = (password, email, mobile, website, isAdmin, timestamp,
                 updatedBy, username)
         cur.execute(query, pvalue)
         self.con.commit()

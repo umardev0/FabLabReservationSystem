@@ -1328,7 +1328,7 @@ class User(Resource):
         except KeyError:
             return create_error_response(400, "Wrong request format", "Be sure to include all mandatory properties")
 
-        if not g.con.modify_user(username, password, email, mobile, website, updatedBy):
+        if not g.con.modify_user(username, password, email, mobile, website, isAdmin, updatedBy):
             return create_error_response(404, "Unknown user", "There is no user with username {}".format(username))
 
         return "", 204
