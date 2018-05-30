@@ -22,8 +22,11 @@ USERAdmin = {'userID': USER_ADMIN_ID ,
          'username': USER_ADMIN_USERNAME , 'password':'adminpassword',
          'email':'admin@fablab.oulu.fi', 'mobile': '0414868685',
          'website': 'https://wiki.oulu.fi/display/FLOWS/Fab+Lab+Oulu+Wiki+Space',
-         'isAdmin': '1','createdAt': 1519472330,
-         'updatedAt': None
+         'isAdmin': '1',
+		 'createdAt': 1519472330,
+         'updatedAt': None,
+		 'createdBy': 0,
+         'updatedBy': None
          }
 USERAdmin_listobject = {'userID': USER_ADMIN_ID ,
                         'username': USER_ADMIN_USERNAME}
@@ -39,7 +42,9 @@ USER1 = {'userID': USER1_ID ,
          'website': 'https://wiki.oulu.fi/display/FLOWS/Fab+Lab+Oulu+Wiki+Space',
          'isAdmin': '1',
          'createdAt': 1519472333,
-         'updatedAt': 1519474333 
+         'updatedAt': 1519474333,
+		 'createdBy': 1,
+         'updatedBy': 0
 		 }
 M_USER1= {'username': USER1_USERNAME,'passwrod': 'muser1password',
          'email': 'muser1@fablab.oulu.fi','mobile': '0449518991',
@@ -67,7 +72,9 @@ USER2 = {'userID': USER2_ID ,
          'website': 'https://wiki.oulu.fi/display/FLOWS/Fab+Lab+Oulu+Wiki+Space',
          'isAdmin': '0', 
          'createdAt': 1519473318,
-         'updatedAt': None
+         'updatedAt': None,
+		 'createdBy': 2,
+         'updatedBy': None
         }
 USER2_listobject = {'userID': USER2_ID ,
                     'username': USER2_USERNAME}
