@@ -8,6 +8,11 @@
             "type": "string",
         },
         {
+            "title": "userID",
+            "description": "Name of the user",
+            "type": "string",
+        },
+        {
             "title": "password",
             "description": "Password of user",
             "type": "string"
