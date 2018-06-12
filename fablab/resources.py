@@ -168,8 +168,8 @@ class FablabObject(MasonObject):
             "schemaUrl": "/fablab/schema/machine/",
             "title": "machine schema"
         }
-		
-	 def add_control_machinetypes_schema(self):
+
+    def add_control_machinetypes_schema(self):
         """
         Adds the machinetypes schema link to an object
         """
@@ -178,7 +178,7 @@ class FablabObject(MasonObject):
             "schemaUrl": "/fablab/schema/machinetypes/",
             "title": "machinetypes schema"
         }
-
+    
     def add_control_machinetype_schema(self):
         """
         Adds the machinetype schema link to an object
@@ -188,8 +188,8 @@ class FablabObject(MasonObject):
             "schemaUrl": "/fablab/schema/machinetype/",
             "title": "machinetype schema"
         }
-		
-	def add_control_reservations_schema(self):
+
+    def add_control_reservations_schema(self):
         """
         Adds the reservations schema link to an object
         """
@@ -208,8 +208,8 @@ class FablabObject(MasonObject):
             "schemaUrl": "/fablab/schema/reservation/",
             "title": "reservation schema"
         }
-		
-	def add_control_history_schema(self):
+
+    def add_control_history_schema(self):
         """
         Adds the history schema link to an object
         """
@@ -719,7 +719,7 @@ class MachineTypes(Resource):
         envelope.add_control("self", href=api.url_for(MachineTypes))
         envelope.add_control_add_machinetype()
         envelope.add_control_machines_all()
-		envelope.add_control_machinetypes_schema()
+        envelope.add_control_machinetypes_schema()
 
         items = envelope["items"] = []
 
@@ -849,7 +849,7 @@ class MachineType(Resource):
         envelope.add_control("profile", href=FABLAB_MACHINE_TYPE_PROFILE)
         envelope.add_control("collection", href=api.url_for(MachineTypes))
         envelope.add_control("self", href=api.url_for(MachineType, typeID=typeID))
-		envelope.add_control_machinetype_schema()
+        envelope.add_control_machinetype_schema()
 
         #RENDER
         return Response(json.dumps(envelope), 200, mimetype=MASON+";" + FABLAB_MACHINE_TYPE_PROFILE)
@@ -969,7 +969,7 @@ class Reservations(Resource):
         envelope.add_control_add_reservation()
         envelope.add_control_machines_all()
         envelope.add_control_users_all()
-		envelope.add_control_reservations_schema()
+        envelope.add_control_reservations_schema()
 
         items = envelope["items"] = []
 
@@ -1096,7 +1096,7 @@ class Reservation(Resource):
         envelope.add_control("profile", href=FABLAB_RESERVATION_PROFILE)
         envelope.add_control("collection", href=api.url_for(Reservations))
         envelope.add_control("self", href=api.url_for(Reservation, reservationID=reservationID))
-		envelope.add_control_reservation_schema()
+        envelope.add_control_reservation_schema()
 
         #RENDER
         return Response(json.dumps(envelope), 200, mimetype=MASON+";" + FABLAB_RESERVATION_PROFILE)
@@ -1457,7 +1457,7 @@ class Machines(Resource):
         envelope.add_control("self", href=api.url_for(Machines))
         envelope.add_control_add_machine()
         envelope.add_control_machinetypes_all()
-		envelope.add_control_machines_schema()
+        envelope.add_control_machines_schema()
 
         items = envelope["items"] = []
 
@@ -1595,7 +1595,7 @@ class Machine(Resource):
         envelope.add_control("profile", href=FABLAB_MACHINE_PROFILE)
         envelope.add_control("collection", href=api.url_for(Machines))
         envelope.add_control("self", href=api.url_for(Machine, machineID=machineID))
-		envelope.add_control_machine_schema()
+        envelope.add_control_machine_schema()
 
         #RENDER
         return Response(json.dumps(envelope), 200, mimetype=MASON+";" + FABLAB_MACHINE_PROFILE)
@@ -1741,7 +1741,7 @@ class History(Resource):
         envelope.add_control_add_reservation()
         envelope.add_control_machines_all()
         envelope.add_control_users_all()
-		envelope.add_control_history_schema()
+        envelope.add_control_history_schema()
 
         items = envelope["items"] = []
 
