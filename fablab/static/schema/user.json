@@ -23,16 +23,16 @@
             "type": "string"
         },
         {
-		        "title": "mobile",
+		     "title": "mobile",
             "description": "User's mobile",
             "type": "string"
         },
-		    {
-		        "title": "website",
-            "description": "User's new website",
+		{
+		    "title": "website",
+            "description": "User's  website",
             "type": "string"
         },
-		    {
+		{
             "title": "isAdmin",
             "description": "User is Admin",
             "type": "integer"
@@ -42,17 +42,17 @@
             "description": "When User is created",
             "type": "integer"
         },
-		    {
+		{
             "title": "updatedAt",
             "description": "When user is updated",
             "type": "integer"
         },
-		    {
+		{
             "title": "createdBy",
             "description": "Who created this record",
             "type": "integer"
         },
-		    {
+		{
             "title": "updatedBy",
             "description": "Who updated this record",
             "type": "integer"

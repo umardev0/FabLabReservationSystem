@@ -1,0 +1,52 @@
+{
+    "type": "object",
+    "properties": [
+        {
+            "title": "userID",
+            "description": "ID of User",
+            "type": "integer"
+        },
+        {
+             "tittle": "machineID",
+             "description": "Machine reserved by user",
+             "type": "string"
+        },
+		{
+            "title": "startTime",
+            "description": "Start time of reservation",
+            "type": "integer"
+        },
+        {
+            "title": "endTime",
+            "description": "End time of reservation",
+            "type": "integer"
+        },
+		{
+            "title": "isActive",
+            "description": "Reservation is active or not",
+            "type": "integer"
+        },
+        {
+            "title": "createdAt",
+            "description": "When Reservation is created",
+            "type": "integer"
+        },
+		{
+            "title": "updatedAt",
+            "description": "When Reservation is updated",
+            "type": "integer"
+        },
+		{
+            "title": "createdBy",
+            "description": "Who created this record",
+            "type": "integer"
+        },
+		{
+            "title": "updatedBy",
+            "description": "Who updated this record",
+            "type": "integer"
+        }
+		
+   ]
+   
+}

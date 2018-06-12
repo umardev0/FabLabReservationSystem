@@ -1,31 +1,47 @@
 {
     "type": "object",
-    "properties": {
-        "typeName": {
+    "properties": 
+	[
+	   {
+            "title": "typeID",
+            "description": "TD of MachineType",
+            "type": "string"
+        },
+        {
             "title": "typeName",
-            "description": "Short name of the type",
-            "type": "string",
-        },
-        "typeFullname": {
-            "title": "typeFullname",
-            "description": "Full name of the type",
+            "description": "Short name of MachineType",
             "type": "string"
         },
-        "pastProject": {
-            "title": "pastProject",
-            "description": "Previous projects made by this type",
-            "type": "string"
+        {
+             "tittle": "typeFullname",
+             "description": "Full name of MachineType",
+             "type": "integer"
         },
-        "createdBy": {
-            "title": "createdBy",
-            "description": "Creator of the type",
+		{
+            "title": "passProject",
+            "description": "Previous project of MachineType",
             "type": "integer"
         },
-        "updatedBy": {
+        {
+            "title": "createdAt",
+            "description": "When MachineType is created",
+            "type": "integer"
+        },
+		    {
+            "title": "updatedAt",
+            "description": "When MachineType is updated",
+            "type": "integer"
+        },
+		    {
+            "title": "createdBy",
+            "description": "Who MachineType this record",
+            "type": "integer"
+        },
+		    {
             "title": "updatedBy",
-            "description": "User modified the type",
+            "description": "Who MachineType this record",
             "type": "integer"
         }
-   },
-    "required": ["typeName", "typeFullname", "pastProject"]
+   ]
+    
 }

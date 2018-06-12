@@ -1,0 +1,36 @@
+{
+    "type": "object",
+    "properties": [
+	    {
+            "title": "reservationID",
+            "description": "ID of reservation",
+            "type": "integer"
+        },
+        {
+            "title": "userID",
+            "description": "UserID who reserved",
+            "type": "integer"
+        },
+        {
+             "tittle": "machineID",
+             "description": "Machine reserved by user",
+             "type": "string"
+        },
+		{
+            "title": "startTime",
+            "description": "Start time of reservation",
+            "type": "integer"
+        },
+        {
+            "title": "endTime",
+            "description": "End time of reservation",
+            "type": "integer"
+        },
+		{
+            "title": "isActive",
+            "description": "Reservation is active or not",
+            "type": "integer"
+        }
+   ]
+   
+}

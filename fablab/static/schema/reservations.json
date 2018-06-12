@@ -1,0 +1,21 @@
+{
+    "type": "object",
+    "properties": [
+	    {
+            "title": "reservationID",
+            "description": "ID of reservation",
+            "type": "integer"
+        },
+        {
+            "title": "userID",
+            "description": "UserID who reserved",
+            "type": "integer"
+        },
+        {
+             "tittle": "machineID",
+             "description": "Machine reserved by user",
+             "type": "string"
+        } 
+   ]
+   
+}
