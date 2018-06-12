@@ -129,6 +129,26 @@ class FablabObject(MasonObject):
         super(FablabObject, self).__init__(**kwargs)
         self["@controls"] = {}
 
+    def add_control_users_schema(self):
+        """
+        Adds the users schema link to an object
+        """
+
+        self["@controls"]["schema"] = {
+            "schemaUrl": "/fablab/schema/users/",
+            "title": "users schema"
+        }
+
+    def add_control_user_schema(self):
+        """
+        Adds the user schema link to an object
+        """
+
+        self["@controls"]["schema"] = {
+            "schemaUrl": "/fablab/schema/user/",
+            "title": "user schema"
+        }
+
     def add_control_machinetypes_all(self):
         """
         Adds the machine type-all link to an object. Intended for the document object.
@@ -182,7 +202,7 @@ class FablabObject(MasonObject):
             "title": "Create user",
             "encoding": "json",
             "method": "POST",
-            "schemaUrl": "/fablab/schema/user/"
+            "schemaUrl": "/fablab/schema/add_user/"
         }
 
     def add_control_add_machinetype(self):
@@ -1110,6 +1130,7 @@ class Users(Resource):
         envelope.add_control_reservations_all()
         envelope.add_control_machines_all()
         envelope.add_control("self", href=api.url_for(Users))
+        envelope.add_control_users_schema()
 
         items = envelope["items"] = []
 
@@ -1262,7 +1283,7 @@ class User(Resource):
             createdAt = user_db["createdAt"],
             updatedAt = user_db["updatedAt"],
             createdBy = user_db["createdBy"],
-            updatedBy = user_db["updatedBy"]            
+            updatedBy = user_db["updatedBy"]
         )
 
         envelope.add_namespace("fablab", LINK_RELATIONS_URL)
@@ -1270,6 +1291,7 @@ class User(Resource):
         envelope.add_control("profile", href=FABLAB_USER_PROFILE)
         envelope.add_control_delete_user(username)
         envelope.add_control_edit_user(username)
+        envelope.add_control_user_schema()
 
         return Response(json.dumps(envelope), 200, mimetype=MASON+";" + FABLAB_USER_PROFILE)
 
