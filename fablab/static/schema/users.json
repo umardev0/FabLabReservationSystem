@@ -1,0 +1,16 @@
+{
+   "type": "object",
+   "properties":
+   [
+        {
+            "title": "username",
+            "description": "Name of the user",
+            "type": "string",
+        },
+        {
+            "title": "userID",
+            "description": "id of user",
+            "type": "integer"
+        }
+   ]
+}
