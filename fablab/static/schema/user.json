@@ -27,24 +27,29 @@
             "description": "User's new website",
             "type": "string"
         },
+		    {
+            "title": "isAdmin",
+            "description": "User is Admin",
+            "type": "integer"
+        },
         {
+            "title": "createdAt",
+            "description": "When User is created",
+            "type": "integer"
+        },
+		    {
             "title": "updatedAt",
-            "description": "User who updated this record",
+            "description": "When user is updated",
             "type": "integer"
         },
-        {
-            "title": "updatedBy",
-            "description": "User who updated this record",
+		    {
+            "title": "createdBy",
+            "description": "Who created this record",
             "type": "integer"
         },
-        {
+		    {
             "title": "updatedBy",
-            "description": "User who updated this record",
-            "type": "integer"
-        },
-        {
-            "title": "updatedBy",
-            "description": "User who updated this record",
+            "description": "Who updated this record",
             "type": "integer"
         }
    ]
