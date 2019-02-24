@@ -1,36 +1,37 @@
 {
    "type": "object",
-   "properties": {
-        "username": {
+   "properties":
+   [
+        {
             "title": "username",
             "description": "Name of the user",
             "type": "string",
         },
-        "password": {
+        {
             "title": "password",
             "description": "Password of user",
             "type": "string"
         },
-        "email": {
+        {
             "title": "email",
             "description": "User email",
             "type": "string"
         },
-        "mobile": {
-		    "title": "mobile",
+        {
+		        "title": "mobile",
             "description": "User's mobile",
             "type": "string"
         },
-		 "website": {
-		    "title": "website",
+		    {
+		        "title": "website",
             "description": "User's new website",
             "type": "string"
         },
-        "updatedBy": {
+        {
             "title": "updatedBy",
             "description": "User who updated this record",
             "type": "integer"
         }
-   },
+   ],
     "required": ["username", "password"]
 }

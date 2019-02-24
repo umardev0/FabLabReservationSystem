@@ -1,6 +1,6 @@
 {
     "type": "object",
-    "properties": 
+    "properties":
 	[
 	   {
             "title": "machineID",
@@ -13,7 +13,7 @@
             "type": "string"
         },
         {
-             "tittle": "typeID",
+             "title": "typeID",
              "description": "Type ID of Machine",
              "type": "integer"
          },
@@ -23,5 +23,5 @@
             "type": "integer"
         }
    ]
-    
+
 }

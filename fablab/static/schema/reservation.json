@@ -7,11 +7,11 @@
             "type": "integer"
         },
         {
-             "tittle": "machineID",
+             "title": "machineID",
              "description": "Machine reserved by user",
              "type": "string"
         },
-		{
+		    {
             "title": "startTime",
             "description": "Start time of reservation",
             "type": "integer"
@@ -21,7 +21,7 @@
             "description": "End time of reservation",
             "type": "integer"
         },
-		{
+		    {
             "title": "isActive",
             "description": "Reservation is active or not",
             "type": "integer"
@@ -46,7 +46,7 @@
             "description": "Who updated this record",
             "type": "integer"
         }
-		
+
    ]
-   
+
 }

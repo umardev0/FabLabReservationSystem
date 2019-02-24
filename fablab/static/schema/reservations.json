@@ -12,10 +12,10 @@
             "type": "integer"
         },
         {
-             "tittle": "machineID",
+             "title": "machineID",
              "description": "Machine reserved by user",
              "type": "string"
-        } 
+        }
    ]
-   
+
 }

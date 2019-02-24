@@ -7,7 +7,7 @@
             "type": "integer"
         },
          "updatedBy": {
-             "tittle": "updatedBy",
+             "title": "updatedBy",
              "description": "User modified the reservation",
              "type": "integer"
          }

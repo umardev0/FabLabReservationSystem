@@ -1,31 +1,32 @@
 {
     "type": "object",
-    "properties": {
-        "typeName": {
+    "properties":
+    [
+        {
             "title": "typeName",
             "description": "Short name of the type",
             "type": "string",
         },
-        "typeFullname": {
+        {
             "title": "typeFullname",
             "description": "Full name of the type",
             "type": "string"
         },
-        "pastProject": {
+        {
             "title": "pastProject",
             "description": "Previous projects made by this type",
             "type": "string"
         },
-        "createdBy": {
+        {
             "title": "createdBy",
             "description": "Creator of the type",
             "type": "integer"
         },
-        "updatedBy": {
+        {
             "title": "updatedBy",
             "description": "User modified the type",
             "type": "integer"
         }
-   },
+   ],
     "required": ["typeName", "typeFullname", "pastProject"]
 }

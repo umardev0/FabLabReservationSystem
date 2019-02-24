@@ -1,27 +1,27 @@
 {
     "type": "object",
-    "properties": {
-        "machinename": {
+    "properties":
+    [
+        {
             "title": "machinename",
             "description": "The model of machine",
             "type": "string"
         },
-         "typeID": {
-             "tittle": "typeID",
+        {
+             "title": "typeID",
              "description": "Type ID of Machine",
              "type": "integer"
-         },
-        "tutorial": {
+        },
+        {
             "title": "tutorial",
             "description": "How to use the machine",
             "type": "integer"
         },
-        "createdBy": {
+        {
             "title": "createdBy",
             "description": "The user who created the machine",
             "type": "integer"
         }
-   },
+   ],
     "required": ["machinename", "typeID", "tutorial"]
 }
-

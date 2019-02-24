@@ -1,5 +1,5 @@
 # PWP20 - FabLab reservation API
-In this implementation, we followed the example code from Programable web project by Ivan and Mika, University of Oulu
+In this implementation, we(Umar, Daniel, Sofeem and Murad) followed the example code from Programable web project by Ivan and Mika, University of Oulu
 
 The database is generated from SQLite (https://www.sqlite.org/index.html)
 

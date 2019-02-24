@@ -129,6 +129,21 @@ class FablabObject(MasonObject):
         super(FablabObject, self).__init__(**kwargs)
         self["@controls"] = {}
 
+    def add_control_endpoints(self, endpointsList):
+        """
+        Adds endpoints to an object
+        """
+        endpoints = []
+        for item in endpointsList:
+            if item == 'Machines':
+                endpoints.append({"endpointUrl": api.url_for(Machines),"title": item})
+            elif item == 'MachineTypes':
+                endpoints.append({"endpointUrl": api.url_for(MachineTypes),"title": item})
+            elif item == 'Reservations':
+                endpoints.append({"endpointUrl": api.url_for(Reservations),"title": item})
+
+        self["@controls"]["endpoints"] = endpoints
+
     def add_control_users_schema(self):
         """
         Adds the users schema link to an object
@@ -148,7 +163,7 @@ class FablabObject(MasonObject):
             "schemaUrl": "/fablab/schema/user/",
             "title": "user schema"
         }
-		
+
     def add_control_machines_schema(self):
         """
         Adds the machines schema link to an object
@@ -178,7 +193,7 @@ class FablabObject(MasonObject):
             "schemaUrl": "/fablab/schema/machinetypes/",
             "title": "machinetypes schema"
         }
-    
+
     def add_control_machinetype_schema(self):
         """
         Adds the machinetype schema link to an object
@@ -267,7 +282,7 @@ class FablabObject(MasonObject):
         2) the user schema is relatively large.
         """
 
-        self["@controls"]["fablab:add-user"] = {
+        self["@controls"]["add"] = {
             "href": api.url_for(Users),
             "title": "Create user",
             "encoding": "json",
@@ -283,7 +298,7 @@ class FablabObject(MasonObject):
         2) the user schema is relatively large.
         """
 
-        self["@controls"]["fablab:add-machinetype"] = {
+        self["@controls"]["add"] = {
             "href": api.url_for(MachineTypes),
             "title": "Create machine type",
             "encoding": "json",
@@ -299,7 +314,7 @@ class FablabObject(MasonObject):
         2) the user schema is relatively large.
         """
 
-        self["@controls"]["fablab:add-machine"] = {
+        self["@controls"]["add"] = {
             "href": api.url_for(Machines),
             "title": "Create machine",
             "encoding": "json",
@@ -315,7 +330,7 @@ class FablabObject(MasonObject):
         2) the user schema is relatively large.
         """
 
-        self["@controls"]["fablab:add-reservation"] = {
+        self["@controls"]["add"] = {
             "href": api.url_for(Reservations),
             "title": "Create reservation",
             "encoding": "json",
@@ -720,6 +735,7 @@ class MachineTypes(Resource):
         envelope.add_control_add_machinetype()
         envelope.add_control_machines_all()
         envelope.add_control_machinetypes_schema()
+        envelope.add_control_endpoints(['MachineTypes', 'Machines'])
 
         items = envelope["items"] = []
 
@@ -790,7 +806,7 @@ class MachineTypes(Resource):
 
         #RENDER
         #Return the response
-        return Response(status=201, headers={"Location": url})
+        return Response(json.dumps({"id":str(newType)}),status=201, headers={"Location": url})
 
 class MachineType(Resource):
 
@@ -970,6 +986,7 @@ class Reservations(Resource):
         envelope.add_control_machines_all()
         envelope.add_control_users_all()
         envelope.add_control_reservations_schema()
+        envelope.add_control_endpoints(['Reservations', 'Machines'])
 
         items = envelope["items"] = []
 
@@ -1039,7 +1056,7 @@ class Reservations(Resource):
 
         #RENDER
         #Return the response
-        return Response(status=201, headers={"Location": url})
+        return Response(json.dumps({"id":str(newType)}),status=201, headers={"Location": url})
 
 class Reservation(Resource):
 
@@ -1205,6 +1222,7 @@ class Users(Resource):
         envelope.add_control_machines_all()
         envelope.add_control("self", href=api.url_for(Users))
         envelope.add_control_users_schema()
+        envelope.add_control_endpoints(['Machines', 'MachineTypes', 'Reservations'])
 
         items = envelope["items"] = []
 
@@ -1278,16 +1296,16 @@ class Users(Resource):
         # pick up rest of the mandatory fields
         try:
             password = request_body["password"]
-            email = request_body["email"]
-            mobile = request_body["mobile"]
-            website = request_body["website"]
-            isAdmin = request_body["isAdmin"]
-            createdBy = request_body["createdBy"]
+            email = request_body.get("email", "")
+            mobile = request_body.get("mobile", "")
+            website = request_body.get("website", "")
+            isAdmin = request_body.get("isAdmin", "")
+            createdBy = request_body.get("createdBy", "")
         except KeyError:
             return create_error_response(400, "Wrong request format", "Be sure to include all mandatory properties")
 
         try:
-            username = g.con.create_user(username, password, email, mobile, website, createdBy)
+            id = g.con.create_user(username, password, email, mobile, website, createdBy)
         except ValueError:
             return create_error_response(400, "Wrong request format",
                                          "Be sure you include all"
@@ -1295,7 +1313,7 @@ class Users(Resource):
                                         )
 
         #CREATE RESPONSE AND RENDER
-        return Response(status=201,
+        return Response(json.dumps({"id":str(username)}), status=201,
             headers={"Location": api.url_for(User, username=username)})
 
 class User(Resource):
@@ -1416,11 +1434,11 @@ class User(Resource):
 
         try:
             password = request_body["password"]
-            email = request_body["email"]
-            mobile = request_body["mobile"]
-            website = request_body["website"]
-            isAdmin = request_body["isAdmin"]
-            updatedBy = request_body["updatedBy"]
+            email = request_body.get("email", "")
+            mobile = request_body.get("mobile", "")
+            website = request_body.get("website", "")
+            isAdmin = request_body.get("isAdmin", "")
+            updatedBy = request_body.get("updatedBy", "")
         except KeyError:
             return create_error_response(400, "Wrong request format", "Be sure to include all mandatory properties")
 
@@ -1458,6 +1476,7 @@ class Machines(Resource):
         envelope.add_control_add_machine()
         envelope.add_control_machinetypes_all()
         envelope.add_control_machines_schema()
+        envelope.add_control_endpoints(['Machines', 'MachineTypes'])
 
         items = envelope["items"] = []
 
@@ -1538,7 +1557,7 @@ class Machines(Resource):
 
         #RENDER
         #Return the response
-        return Response(status=201, headers={"Location": url})
+        return Response(json.dumps({"id":str(newMachine)}),status=201, headers={"Location": url})
 
 class Machine(Resource):
     def get(self, machineID):

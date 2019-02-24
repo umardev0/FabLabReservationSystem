@@ -1,9 +1,9 @@
 {
     "type": "object",
-    "properties": 
-	[
-	   {
-            "title": "typeID",
+    "properties":
+	  [
+	     {
+            "title": "id",
             "description": "TD of MachineType",
             "type": "string"
         },
@@ -13,10 +13,10 @@
             "type": "string"
         },
         {
-             "tittle": "typeFullname",
+             "title": "typeFullname",
              "description": "Full name of MachineType",
              "type": "integer"
         }
    ]
-    
+
 }
